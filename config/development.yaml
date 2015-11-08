@@ -1,0 +1,7 @@
+logger:
+  transports:
+    - type: console
+      level: debug
+    - type: file
+      level: debug
+      filename: logs/aeg-sdk.log
