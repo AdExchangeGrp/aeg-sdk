@@ -1,6 +1,6 @@
 'use strict';
 
-let SecurityApi = require('../../lib/securityApi.js');
+let SecurityApi = require('../../lib/api/securityApi.js');
 
 describe('securityApi', () => {
 
@@ -149,5 +149,5 @@ describe('securityApi', () => {
 		});
 
 	});
-Test
+
 });
