@@ -1,0 +1,35 @@
+{
+  "name": "@adexchange/aeg-sdk",
+  "version": "0.0.1",
+  "description": "SDK for CAMP 2.0",
+  "main": "lib/index.js",
+  "author": "Ad Exchange Group",
+  "repository": {
+    "type": "git",
+    "url": "git://git@bitbucket.org:AdExchangeGrp/aeg-sdk.git"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha --recursive test/",
+    "test:coverage": "istanbul cover _mocha -- --recursive test/",
+    "jshint": "jshint .",
+    "jshint:watch": "npm run jshint && onchange \"**/*.js\" \".jshint*\" -- npm run jshint",
+    "watch:server": "nodemon --exec npm run start",
+    "dev": "parallelshell \"npm run jshint:watch\" \"npm run watch:server\"",
+    "build": "npm run jshint && mocha --recursive test/unit/ -R xunit-file",
+    "postversion": "git push && git push --tags && npm publish ."
+  },
+  "devDependencies": {
+    "should": "^5.2.0",
+    "mocha": "^2.2.5",
+    "onchange": "^1.1.0",
+    "parallelshell": "^2.0.0",
+    "istanbul": "^0.3.17",
+    "xunit-file": "0.0.6"
+  },
+  "dependencies": {
+    "@adexchange/aeg-logger": "0.0.23",
+    "config": "^1.16.0"
+  }
+}
