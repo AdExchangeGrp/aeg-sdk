@@ -1,17 +1,24 @@
 'use strict';
 
+let config = require('config');
 let TestApi = require('../../lib/securityService.js').TestApi;
+
+let securityServiceConfig = config.get('securityService');
 
 describe('securityService', () => {
 
-	describe('#test()', () => {
+	describe('testApi', () => {
 
-		it('should return without error', (done) => {
-			var testApi = new TestApi('http://security-service.elasticbeanstalk.com', '/v1');
-			testApi.test('Justin').asCallback((err, result) => {
-				console.log(result);
-				done(err);
+		describe('#test()', () => {
+
+			it('should return without error', (done) => {
+				var testApi = new TestApi(securityServiceConfig.host, securityServiceConfig.baseUrl);
+				testApi.test('Justin').asCallback((err, result) => {
+					result.body.should.be.eql({message: 'Hello, Justin!'});
+					done(err);
+				});
 			});
+
 		});
 
 	});

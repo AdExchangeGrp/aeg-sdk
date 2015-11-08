@@ -5,3 +5,6 @@ logger:
     - type: file
       level: debug
       filename: logs/aeg-sdk.log
+securityService:
+  host: http://security-service.elasticbeanstalk.com
+  baseUrl: /v1
