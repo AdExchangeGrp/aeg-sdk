@@ -4,7 +4,7 @@ let securityApi = require('../../lib/api/securityApi.js');
 
 describe('securityApi', () => {
 
-	let apiKey = 'Basic ' + new Buffer('H7D88LNKLC8XT8P7PE9WRICAX:A7kZnx/CHZ5BhBK/yrUG2nJ2pphM5DBKHxUB0swSCgs').toString('base64');
+	let apiKey = 'Basic ' + new Buffer('C00VP88XEHZWNWRV024UZQ7WX:vNgsdwamvM7Z6nUwFzK7Ic2Xm2vi56TowUdMsd2Joig').toString('base64');
 	let apiTokenAuthorizationNotScoped;
 	let apiTokenAuthorizationScoped;
 	let passwordAuthorizationNotScoped;
@@ -188,29 +188,33 @@ describe('securityApi', () => {
 
 			});
 
-			//			securityApi.revokeApiToken({
-			//					authorization: apiTokenAuthorizationScoped,
-			//					accessToken: apiTokenAuthorizationScoped
-			//				})
-			//				.then((result) => {
-			//					result.message.should.be.equal('success');
-			//					done();
-			//				})
-			//				.fail((err) => {
-			//					done(err);
-			//				});
+			//it('should revoke the access token', (done) => {
+			//	securityApi.revokeApiToken({
+			//			authorization: apiTokenAuthorizationScoped,
+			//			accessToken: apiTokenAuthorizationScoped
+			//		})
+			//		.then((result) => {
+			//			result.body.message.should.be.equal('success');
+			//			done();
+			//		})
+			//		.fail((err) => {
+			//			done(err);
+			//		});
+			//});
 			//
-			//			securityApi.revokeApiToken({
-			//					authorization: apiTokenAuthorizationNotScoped,
-			//					accessToken: apiTokenAuthorizationNotScoped
-			//				})
-			//				.then((result) => {
-			//					result.message.should.be.equal('success');
-			//					done();
-			//				})
-			//				.fail((err) => {
-			//					done(err);
-			//				});
+			//it('should revoke the access token', (done) => {
+			//	securityApi.revokeApiToken({
+			//			authorization: apiTokenAuthorizationNotScoped,
+			//			accessToken: apiTokenAuthorizationNotScoped
+			//		})
+			//		.then((result) => {
+			//			result.body.message.should.be.equal('success');
+			//			done();
+			//		})
+			//		.fail((err) => {
+			//			done(err);
+			//		});
+			//});
 
 		});
 
@@ -242,26 +246,27 @@ describe('securityApi', () => {
 			//	});
 			//});
 
-			//it('should return with 401 with a bas password token', (done) => {
-			//	SecurityApi.testApi.testScopeProtected(passwordAuthorizationScoped, 'Justin').asCallback((err) => {
-			//		if (err) {
-			//			err.response.statusCode.should.be.equal(401);
-			//			return done();
-			//		} else {
+			//it('should return with 401 with a bad password token', (done) => {
+			//	console.log(passwordAuthorizationScoped);
+			//	securityApi.testScopeProtected({authorization: passwordAuthorizationScoped, name: 'Justin'})
+			//		.then(() => {
 			//			done(new Error('Call should have failed unauthorized'));
-			//		}
-			//	});
+			//		})
+			//		.fail((err) => {
+			//			err.response.statusCode.should.be.equal(401);
+			//			done();
+			//		});
 			//});
 			//
-			//it('should return with 401 with a bas password token', (done) => {
-			//	SecurityApi.testApi.testScopeProtected(passwordAuthorizationNotScoped, 'Justin').asCallback((err) => {
-			//		if (err) {
-			//			err.response.statusCode.should.be.equal(401);
-			//			return done();
-			//		} else {
+			//it('should return with 401 with a bad password token', (done) => {
+			//	securityApi.testScopeProtected({authorization: passwordAuthorizationNotScoped, name: 'Justin'})
+			//		.then(() => {
 			//			done(new Error('Call should have failed unauthorized'));
-			//		}
-			//	});
+			//		})
+			//		.fail((err) => {
+			//			err.response.statusCode.should.be.equal(401);
+			//			done();
+			//		});
 			//});
 
 		});
