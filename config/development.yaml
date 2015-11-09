@@ -6,5 +6,5 @@ logger:
       level: debug
       filename: logs/aeg-sdk.log
 securityService:
-  host: http://localhost:52091
+  host: http://localhost:3000
   baseUrl: /v1
