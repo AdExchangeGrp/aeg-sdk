@@ -29,6 +29,7 @@
   "dependencies": {
     "@adexchange/aeg-logger": "0.0.23",
     "config": "^1.16.0",
+    "express-stormpath": "^2.2.0",
     "q": "^1.4.1",
     "request": "^2.65.0",
     "swagger-js-codegen": "^1.1.5",
