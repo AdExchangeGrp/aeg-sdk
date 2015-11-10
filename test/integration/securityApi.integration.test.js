@@ -4,7 +4,7 @@ let securityApi = require('../../lib/api/securityApi.js');
 
 describe('securityApi', () => {
 
-	let apiKey = 'Basic ' + new Buffer('C00VP88XEHZWNWRV024UZQ7WX:vNgsdwamvM7Z6nUwFzK7Ic2Xm2vi56TowUdMsd2Joig').toString('base64');
+	let apiKey = 'Basic ' + new Buffer('18IDK3HV0H460UB767DBUM3LF:aTM6JHBli5V87316fzlDEY5xsGMmVCQ8WsJ2YqdhsZ8').toString('base64');
 	let apiTokenAuthorizationNotScoped;
 	let apiTokenAuthorizationScoped;
 	let passwordAuthorizationNotScoped;
@@ -159,7 +159,7 @@ describe('securityApi', () => {
 
 		describe('#revokeAccessToken', () => {
 
-			it('should revoke the access token', (done) => {
+			it('should revoke the password access token with scope', (done) => {
 				securityApi.revokePasswordToken({
 						authorization: passwordAuthorizationScoped,
 						accessToken: passwordAuthorizationScoped
@@ -173,7 +173,7 @@ describe('securityApi', () => {
 					});
 			});
 
-			it('should revoke the access token', (done) => {
+			it('should revoke the password access token without scope', (done) => {
 				securityApi.revokePasswordToken({
 						authorization: passwordAuthorizationNotScoped,
 						accessToken: passwordAuthorizationNotScoped
@@ -201,7 +201,7 @@ describe('securityApi', () => {
 			//			done(err);
 			//		});
 			//});
-			//
+
 			//it('should revoke the access token', (done) => {
 			//	securityApi.revokeApiToken({
 			//			authorization: apiTokenAuthorizationNotScoped,
@@ -246,28 +246,27 @@ describe('securityApi', () => {
 			//	});
 			//});
 
-			//it('should return with 401 with a bad password token', (done) => {
-			//	console.log(passwordAuthorizationScoped);
-			//	securityApi.testScopeProtected({authorization: passwordAuthorizationScoped, name: 'Justin'})
-			//		.then(() => {
-			//			done(new Error('Call should have failed unauthorized'));
-			//		})
-			//		.fail((err) => {
-			//			err.response.statusCode.should.be.equal(401);
-			//			done();
-			//		});
-			//});
-			//
-			//it('should return with 401 with a bad password token', (done) => {
-			//	securityApi.testScopeProtected({authorization: passwordAuthorizationNotScoped, name: 'Justin'})
-			//		.then(() => {
-			//			done(new Error('Call should have failed unauthorized'));
-			//		})
-			//		.fail((err) => {
-			//			err.response.statusCode.should.be.equal(401);
-			//			done();
-			//		});
-			//});
+			it('should return with 401 with a bad password token that was scoped', (done) => {
+				securityApi.testScopeProtected({authorization: passwordAuthorizationScoped, name: 'Justin'})
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
+			});
+
+			it('should return with 401 with a bad password token that was not scoped', (done) => {
+				securityApi.testScopeProtected({authorization: passwordAuthorizationNotScoped, name: 'Justin'})
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
+			});
 
 		});
 
