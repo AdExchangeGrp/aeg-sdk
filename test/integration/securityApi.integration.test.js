@@ -1,6 +1,7 @@
 'use strict';
 
 let securityApi = require('../../lib/api/securityApi.js');
+let ApiError = require('../../lib/errors/apiError.js');
 
 describe('securityApi', () => {
 
@@ -22,7 +23,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new Error(err.body.message));
+					done(new ApiError(err));
 				});
 		});
 
@@ -36,7 +37,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 	});
@@ -53,7 +54,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -67,7 +68,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -82,7 +83,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -119,7 +120,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -141,7 +142,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -163,7 +164,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 		});
 
@@ -177,7 +178,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new ApiError(err));
 				});
 
 		});
