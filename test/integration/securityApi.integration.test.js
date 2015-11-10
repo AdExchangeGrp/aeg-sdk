@@ -22,7 +22,7 @@ describe('securityApi', () => {
 					done();
 				})
 				.fail((err) => {
-					done(err);
+					done(new Error(err.body.message));
 				});
 		});
 
