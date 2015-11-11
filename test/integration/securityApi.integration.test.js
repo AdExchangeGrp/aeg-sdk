@@ -10,6 +10,7 @@ describe('securityApi', () => {
 	let apiTokenAuthorizationScoped;
 	let passwordAuthorizationNotScoped;
 	let passwordAuthorizationScoped;
+	let refreshPasswordAuthorizationScoped;
 	let refreshToken;
 
 	describe('#apiToken()', () => {
@@ -41,6 +42,7 @@ describe('securityApi', () => {
 					done(new ApiError(err));
 				});
 		});
+
 	});
 
 	describe('#passwordToken()', () => {
@@ -159,8 +161,24 @@ describe('securityApi', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorizationScoped = 'Bearer ' + result.body.accessToken;
+					refreshPasswordAuthorizationScoped = 'Bearer ' + result.body.accessToken;
 					refreshToken = result.body.refreshToken;
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
+	});
+
+	describe('#testScopeProtected()', () => {
+
+		it('should execute with a password token', (done) => {
+			console.log(refreshPasswordAuthorizationScoped);
+			securityApi.testScopeProtected({authorization: refreshPasswordAuthorizationScoped, name: 'Justin'})
+				.then((result) => {
+					result.body.should.be.eql({message: 'Hello, Justin!'});
 					done();
 				})
 				.fail((err) => {
@@ -200,6 +218,22 @@ describe('securityApi', () => {
 				});
 
 		});
+
+		it('should revoke the password access via refresh token with scope', (done) => {
+			securityApi.revokePasswordToken({
+					authorization: refreshPasswordAuthorizationScoped,
+					accessToken: refreshPasswordAuthorizationScoped.split(' ')[1]
+				})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+
+		});
+
 	});
 
 	describe('#revokePasswordToken', () => {
@@ -271,6 +305,17 @@ describe('securityApi', () => {
 
 		it('should return with 401 with a bad password token that was not scoped', (done) => {
 			securityApi.testScopeProtected({authorization: passwordAuthorizationNotScoped, name: 'Justin'})
+				.then(() => {
+					done(new Error('Call should have failed unauthorized'));
+				})
+				.fail((err) => {
+					err.response.statusCode.should.be.equal(401);
+					done();
+				});
+		});
+
+		it('should return with 401 with a bad password token that was from a refresh and scoped', (done) => {
+			securityApi.testScopeProtected({authorization: refreshPasswordAuthorizationScoped, name: 'Justin'})
 				.then(() => {
 					done(new Error('Call should have failed unauthorized'));
 				})
