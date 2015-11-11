@@ -10,6 +10,7 @@ describe('securityApi', () => {
 	let apiTokenAuthorizationScoped;
 	let passwordAuthorizationNotScoped;
 	let passwordAuthorizationScoped;
+	let refreshToken;
 
 	describe('#apiToken()', () => {
 
@@ -51,6 +52,7 @@ describe('securityApi', () => {
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					passwordAuthorizationScoped = 'Bearer ' + result.body.accessToken;
+					refreshToken = result.body.refreshToken;
 					done();
 				})
 				.fail((err) => {
@@ -150,6 +152,22 @@ describe('securityApi', () => {
 
 	describe('#refreshToken()', () => {
 
+		it('should refresh a password token', (done) => {
+			//console.log(refreshToken);
+			securityApi.refreshPasswordToken({refreshToken: refreshToken})
+				.then((result) => {
+					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.accessToken.should.be.a.String;
+					result.body.accessToken.length.should.be.greaterThan(0);
+					passwordAuthorizationScoped = 'Bearer ' + result.body.accessToken;
+					refreshToken = result.body.refreshToken;
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
 	});
 
 	describe('#revokePasswordToken', () => {
@@ -157,7 +175,7 @@ describe('securityApi', () => {
 		it('should revoke the password access token with scope', (done) => {
 			securityApi.revokePasswordToken({
 					authorization: passwordAuthorizationScoped,
-					accessToken: passwordAuthorizationScoped
+					accessToken: passwordAuthorizationScoped.split(' ')[1]
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -171,7 +189,7 @@ describe('securityApi', () => {
 		it('should revoke the password access token without scope', (done) => {
 			securityApi.revokePasswordToken({
 					authorization: passwordAuthorizationNotScoped,
-					accessToken: passwordAuthorizationNotScoped
+					accessToken: passwordAuthorizationNotScoped.split(' ')[1]
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -189,7 +207,7 @@ describe('securityApi', () => {
 		//it('should revoke the access token', (done) => {
 		//	securityApi.revokeApiToken({
 		//			authorization: apiTokenAuthorizationScoped,
-		//			accessToken: apiTokenAuthorizationScoped
+		//			accessToken: apiTokenAuthorizationScoped.split(' ')[1]
 		//		})
 		//		.then((result) => {
 		//			result.body.message.should.be.equal('success');
@@ -203,7 +221,7 @@ describe('securityApi', () => {
 		//it('should revoke the access token', (done) => {
 		//	securityApi.revokeApiToken({
 		//			authorization: apiTokenAuthorizationNotScoped,
-		//			accessToken: apiTokenAuthorizationNotScoped
+		//			accessToken: apiTokenAuthorizationNotScoped.split(' ')[1]
 		//		})
 		//		.then((result) => {
 		//			result.body.message.should.be.equal('success');
