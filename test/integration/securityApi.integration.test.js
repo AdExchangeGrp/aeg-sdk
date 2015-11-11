@@ -155,8 +155,10 @@ describe('securityApi', () => {
 	describe('#refreshToken()', () => {
 
 		it('should refresh a password token', (done) => {
-			//console.log(refreshToken);
-			securityApi.refreshPasswordToken({refreshToken: refreshToken})
+			securityApi.refreshPasswordToken({
+					refreshToken: refreshToken,
+					priorAccessToken: passwordAuthorizationScoped.split(' ')[1]
+				})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
@@ -175,7 +177,6 @@ describe('securityApi', () => {
 	describe('#testScopeProtected()', () => {
 
 		it('should execute with a password token', (done) => {
-			console.log(refreshPasswordAuthorizationScoped);
 			securityApi.testScopeProtected({authorization: refreshPasswordAuthorizationScoped, name: 'Justin'})
 				.then((result) => {
 					result.body.should.be.eql({message: 'Hello, Justin!'});
