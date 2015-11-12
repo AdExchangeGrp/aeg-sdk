@@ -10,6 +10,10 @@ var path = require('path');
 
 var securityServiceConfig = config.get('securityService');
 
+if (process.env.NODE_ENV !== 'production') {
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+}
+
 var argv = require('yargs')
 	.usage('Usage: {0} <command> [options]')
 	.command('swaggerCodeGen', 'Generate a swagger API client', function (yargs) {
