@@ -5,45 +5,14 @@ let ApiError = require('../../lib/errors/apiError.js');
 
 describe('securityApi', () => {
 
-	let apiKey = 'Basic ' + new Buffer('18IDK3HV0H460UB767DBUM3LF:aTM6JHBli5V87316fzlDEY5xsGMmVCQ8WsJ2YqdhsZ8').toString('base64');
+	let apiKeyNotScoped;
+	let apiKeyScoped;
 	let apiTokenAuthorizationNotScoped;
 	let apiTokenAuthorizationScoped;
 	let passwordAuthorizationNotScoped;
 	let passwordAuthorizationScoped;
 	let refreshPasswordAuthorizationScoped;
 	let refreshToken;
-
-	describe('#apiToken()', () => {
-
-		it('should return scoped api token without error', (done) => {
-			securityApi.apiToken({authorization: apiKey, grantType: 'client_credentials', scope: 'test'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					apiTokenAuthorizationScoped = 'Bearer ' + result.body.accessToken;
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
-		});
-
-		it('should return api token without error', (done) => {
-			securityApi.apiToken({authorization: apiKey, grantType: 'client_credentials'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					apiTokenAuthorizationNotScoped = 'Bearer ' + result.body.accessToken;
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
-		});
-
-	});
 
 	describe('#passwordToken()', () => {
 
@@ -69,6 +38,73 @@ describe('securityApi', () => {
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					passwordAuthorizationNotScoped = 'Bearer ' + result.body.accessToken;
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
+	});
+
+	describe('#createApiKey()', () => {
+
+		it('should return api key without error', (done) => {
+			securityApi.createApiKey({authorization: passwordAuthorizationNotScoped})
+				.then((result) => {
+					result.body.should.have.properties(['id', 'secret']);
+					result.body.id.should.be.a.String;
+					result.body.id.length.should.be.greaterThan(0);
+					result.body.secret.should.be.a.String;
+					result.body.secret.length.should.be.greaterThan(0);
+					apiKeyScoped = 'Basic ' + new Buffer(result.body.id + ':' + result.body.secret).toString('base64');
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
+		it('should return api key without error', (done) => {
+			securityApi.createApiKey({authorization: passwordAuthorizationNotScoped})
+				.then((result) => {
+					result.body.should.have.properties(['id', 'secret']);
+					result.body.id.should.be.a.String;
+					result.body.id.length.should.be.greaterThan(0);
+					result.body.secret.should.be.a.String;
+					result.body.secret.length.should.be.greaterThan(0);
+					apiKeyNotScoped = 'Basic ' + new Buffer(result.body.id + ':' + result.body.secret).toString('base64');
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+	});
+
+	describe('#apiToken()', () => {
+
+		it('should return scoped api token without error', (done) => {
+			securityApi.apiToken({authorization: apiKeyScoped, grantType: 'client_credentials', scope: 'test'})
+				.then((result) => {
+					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.accessToken.should.be.a.String;
+					result.body.accessToken.length.should.be.greaterThan(0);
+					apiTokenAuthorizationScoped = 'Bearer ' + result.body.accessToken;
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
+		it('should return api token without error', (done) => {
+			securityApi.apiToken({authorization: apiKeyNotScoped, grantType: 'client_credentials'})
+				.then((result) => {
+					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.accessToken.should.be.a.String;
+					result.body.accessToken.length.should.be.greaterThan(0);
+					apiTokenAuthorizationNotScoped = 'Bearer ' + result.body.accessToken;
 					done();
 				})
 				.fail((err) => {
@@ -237,61 +273,61 @@ describe('securityApi', () => {
 
 	});
 
-	describe('#revokePasswordToken', () => {
+	describe('#revokeApiToken', () => {
 
-		//it('should revoke the access token', (done) => {
-		//	securityApi.revokeApiToken({
-		//			authorization: apiTokenAuthorizationScoped,
-		//			accessToken: apiTokenAuthorizationScoped.split(' ')[1]
-		//		})
-		//		.then((result) => {
-		//			result.body.message.should.be.equal('success');
-		//			done();
-		//		})
-		//		.fail((err) => {
-		//			done(err);
-		//		});
-		//});
+		it('should revoke the access token that was scoped', (done) => {
+			securityApi.revokeApiToken({
+					authorization: apiTokenAuthorizationScoped,
+					accessToken: apiTokenAuthorizationScoped.split(' ')[1]
+				})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
 
-		//it('should revoke the access token', (done) => {
-		//	securityApi.revokeApiToken({
-		//			authorization: apiTokenAuthorizationNotScoped,
-		//			accessToken: apiTokenAuthorizationNotScoped.split(' ')[1]
-		//		})
-		//		.then((result) => {
-		//			result.body.message.should.be.equal('success');
-		//			done();
-		//		})
-		//		.fail((err) => {
-		//			done(err);
-		//		});
-		//});
+		it('should revoke the access token that was not scoped', (done) => {
+			securityApi.revokeApiToken({
+					authorization: apiTokenAuthorizationNotScoped,
+					accessToken: apiTokenAuthorizationNotScoped.split(' ')[1]
+				})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
 
 	});
 
 	describe('#testScopeProtected()', () => {
 
-		//it('should return with 401 with a bad api token', (done) => {
-		//	SecurityApi.testApi.testScopeProtected(apiTokenAuthorizationScoped, 'Justin').asCallback((err) => {
-		//		if (err) {
-		//			err.response.statusCode.should.be.equal(401);
-		//			return done();
-		//		} else {
-		//			done(new Error('Call should have failed unauthorized'));
-		//		}
-		//	});
-		//});
-		//
-		//it('should return with 401 with a bad api token', (done) => {
-		//	SecurityApi.testApi.testScopeProtected(apiTokenAuthorizationNotScoped, 'Justin').asCallback((err) => {
-		//		if (err) {
-		//			err.response.statusCode.should.be.equal(401);
-		//			return done();
-		//		} else {
-		//			done(new Error('Call should have failed unauthorized'));
-		//		}
-		//	});
-		//});
+		it('should return with 401 with a bad api token that was scoped', (done) => {
+			securityApi.testScopeProtected({authorization: apiTokenAuthorizationScoped, name: 'Justin'})
+				.then(() => {
+					done(new Error('Call should have failed unauthorized'));
+				})
+				.fail((err) => {
+					err.response.statusCode.should.be.equal(401);
+					done();
+				});
+		});
+
+		it('should return with 401 with a bad api token that was not scoped', (done) => {
+			securityApi.testScopeProtected({authorization: apiTokenAuthorizationNotScoped, name: 'Justin'})
+				.then(() => {
+					done(new Error('Call should have failed unauthorized'));
+				})
+				.fail((err) => {
+					err.response.statusCode.should.be.equal(401);
+					done();
+				});
+		});
 
 		it('should return with 401 with a bad password token that was scoped', (done) => {
 			securityApi.testScopeProtected({authorization: passwordAuthorizationScoped, name: 'Justin'})
