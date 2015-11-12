@@ -3,10 +3,6 @@
 let securityApi = require('../../lib/api/securityApi.js');
 let ApiError = require('../../lib/errors/apiError.js');
 
-if (process.env.NODE_ENV !== 'production') {
-	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-}
-
 describe('securityApi', () => {
 
 	let apiKeyNotScoped;
