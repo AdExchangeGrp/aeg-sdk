@@ -35,7 +35,15 @@ if (command === 'swaggerCodeGen') {
 			if (err) {
 				throw err;
 			}
-			var client = CodeGen.getNodeCode({className: 'SecurityService', swagger: result.body});
+			var client = CodeGen.getCustomCode({
+				className: 'SecurityService',
+				swagger: result.body,
+				template: {
+					class: fs.readFileSync('lib/swagger/templates/node-class.mustache', 'utf-8'),
+					method: fs.readFileSync('lib/swagger/templates/method.mustache', 'utf-8'),
+					request: fs.readFileSync('lib/swagger/templates/node-request.mustache', 'utf-8')
+				}
+			});
 			fs.writeFileSync(path.join(__dirname, 'lib', 'api', 'securityService.js'), client);
 		});
 
