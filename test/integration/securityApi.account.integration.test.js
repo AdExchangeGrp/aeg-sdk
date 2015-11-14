@@ -89,9 +89,17 @@ describe('securityApi - Account', () => {
 			securityApi.updateAccount({authorization: registeredPasswordToken, username: newUserName})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
 
-					//todo: test update by doing get
-
+		it('should get updated account', (done) => {
+			securityApi.getAccount({authorization: registeredPasswordToken})
+				.then((result) => {
+					result.body.username.should.be.equal(newUserName);
 					done();
 				})
 				.fail((err) => {
@@ -111,6 +119,16 @@ describe('securityApi - Account', () => {
 				})
 				.fail((err) => {
 					done(new ApiError(err));
+				});
+		});
+
+		it('should not get the account', (done) => {
+			securityApi.getAccount({authorization: registeredPasswordToken})
+				.then(() => {
+					done(new Error('Should not have retrieved account'));
+				})
+				.fail(() => {
+					done();
 				});
 		});
 
