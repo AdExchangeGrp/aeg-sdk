@@ -5,7 +5,8 @@ let ApiError = require('../../lib/errors/apiError.js');
 
 describe('securityApi', () => {
 
-	let passwordToken;
+	let adminPasswordToken;
+	//let registeredPasswordToken;
 
 	describe('#passwordToken()', () => {
 
@@ -15,7 +16,7 @@ describe('securityApi', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordToken = 'Bearer ' + result.body.accessToken;
+					adminPasswordToken = 'Bearer ' + result.body.accessToken;
 					done();
 				})
 				.fail((err) => {
@@ -25,6 +26,7 @@ describe('securityApi', () => {
 
 	});
 
+	//todo:auto-verify this user
 	//describe('#register()', () => {
 	//
 	//	it('should return without error', (done) => {
@@ -52,12 +54,33 @@ describe('securityApi', () => {
 	//
 	//});
 
+	//todo: login the new user
+	//describe('#passwordToken()', () => {
+	//
+	//	it('should return scoped password token without error', (done) => {
+	//		securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
+	//				.then((result) => {
+	//					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+	//					result.body.accessToken.should.be.a.String;
+	//					result.body.accessToken.length.should.be.greaterThan(0);
+	//					passwordToken = 'Bearer ' + result.body.accessToken;
+	//					done();
+	//				})
+	//				.fail((err) => {
+	//					done(new ApiError(err));
+	//				});
+	//	});
+	//
+	//});
+
+	//todo: revoke the newly created user
+
 	describe('#revokePasswordToken', () => {
 
 		it('should revoke the password access token with scope', (done) => {
 			securityApi.revokePasswordToken({
-					authorization: passwordToken,
-					accessToken: passwordToken.split(' ')[1]
+					authorization: adminPasswordToken,
+					accessToken: adminPasswordToken.split(' ')[1]
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
