@@ -2,6 +2,7 @@
 
 let securityApi = require('../../lib/api/securityApi.js');
 let ApiError = require('../../lib/errors/apiError.js');
+var uuid = require('node-uuid');
 
 describe('securityApi - Account', () => {
 
@@ -71,6 +72,26 @@ describe('securityApi - Account', () => {
 					result.body.accessToken.length.should.be.greaterThan(0);
 					registeredPasswordToken = 'Bearer ' + result.body.accessToken;
 					registeredRefreshToken = result.body.refreshToken;
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
+		});
+
+	});
+
+	describe('#updateAccount', () => {
+
+		var newUserName = uuid.v4();
+
+		it('should update account', (done) => {
+			securityApi.updateAccount({authorization: registeredPasswordToken, username: newUserName})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+
+					//todo: test update by doing get
+
 					done();
 				})
 				.fail((err) => {
