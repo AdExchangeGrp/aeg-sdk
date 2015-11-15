@@ -4,6 +4,7 @@ let securityApi = require('../../lib/api/securityApi.js');
 let ApiError = require('../../lib/errors/apiError.js');
 var uuid = require('node-uuid');
 
+/** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
 
 	let adminPasswordToken;

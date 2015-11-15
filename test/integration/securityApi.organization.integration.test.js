@@ -4,6 +4,7 @@ let securityApi = require('../../lib/api/securityApi.js');
 let ApiError = require('../../lib/errors/apiError.js');
 let _ = require('underscore');
 
+/** @namespace result.body.should.have */
 describe('securityApi - Organization', () => {
 
 	let adminPasswordToken;
