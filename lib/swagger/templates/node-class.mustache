@@ -33,10 +33,10 @@ var {{&className}} = (function(){
          * @param {boolean} isQuery - true if send the token as query param, otherwise, send as header param
          *
          */
-        {{&className}}.prototype.setToken = function (value, headerOrQueryName, isQuery) {
+        {{&className}}.prototype.setToken = function (value) {
             this.token.value = value;
-            this.token.headerOrQueryName = headerOrQueryName;
-            this.token.isQuery = isQuery;
+            this.token.headerOrQueryName = null;
+            this.token.isQuery = false;
         };
     {{/isSecure}}
 

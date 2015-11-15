@@ -22,7 +22,7 @@ describe('securityApi - OAuth', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorizationScoped = 'Bearer ' + result.body.accessToken;
+					passwordAuthorizationScoped = result.body.accessToken;
 					refreshToken = result.body.refreshToken;
 					done();
 				})
@@ -37,7 +37,7 @@ describe('securityApi - OAuth', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorizationNotScoped = 'Bearer ' + result.body.accessToken;
+					passwordAuthorizationNotScoped = result.body.accessToken;
 					done();
 				})
 				.fail((err) => {
@@ -50,7 +50,8 @@ describe('securityApi - OAuth', () => {
 	describe('#createApiKey()', () => {
 
 		it('should return api key without error', (done) => {
-			securityApi.createApiKey({Authorization: passwordAuthorizationNotScoped})
+			securityApi.setToken(passwordAuthorizationNotScoped);
+			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
 					result.body.id.should.be.a.String;
@@ -66,7 +67,7 @@ describe('securityApi - OAuth', () => {
 		});
 
 		it('should return api key without error', (done) => {
-			securityApi.createApiKey({Authorization: passwordAuthorizationNotScoped})
+			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
 					result.body.id.should.be.a.String;
