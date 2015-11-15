@@ -24,8 +24,11 @@ describe('securityApi - Organization', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = 'Bearer ' + result.body.accessToken;
+					adminPasswordToken = result.body.accessToken;
 					adminRefreshToken = result.body.refreshToken;
+
+					securityApi.setToken(adminPasswordToken);
+
 					done();
 				})
 				.fail((err) => {
@@ -81,7 +84,7 @@ describe('securityApi - Organization', () => {
 				childOrg = result.body.href;
 
 				//child
-				securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
+				securityApi.getOrganization({organization: result.body.href})
 					.then((result) => {
 						result.body.should.have.properties(['href', 'name', 'customData']);
 						result.body.customData.parent.should.be.equal(parentOrg);
@@ -115,8 +118,7 @@ describe('securityApi - Organization', () => {
 	describe('#deleteOrganization', () => {
 
 		it('should delete an organization', (done) => {
-
-			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: parentOrg})
+			securityApi.deleteOrganization({organization: parentOrg})
 				.then((result) => {
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
@@ -132,7 +134,7 @@ describe('securityApi - Organization', () => {
 
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: childOrg})
+			securityApi.deleteOrganization({organization: childOrg})
 				.then((result) => {
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
@@ -187,7 +189,7 @@ describe('securityApi - Organization', () => {
 	describe('#deleteOrganization', () => {
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: childOrg})
+			securityApi.deleteOrganization({organization: childOrg})
 				.then((result) => {
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
@@ -202,7 +204,7 @@ describe('securityApi - Organization', () => {
 		});
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: parentOrg})
+			securityApi.deleteOrganization({organization: parentOrg})
 				.then((result) => {
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
@@ -226,7 +228,6 @@ describe('securityApi - Organization', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					Authorization: adminPasswordToken,
 					accessToken: adminRefreshToken
 				})
 				.then((result) => {
@@ -240,8 +241,7 @@ describe('securityApi - Organization', () => {
 
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					Authorization: adminPasswordToken,
-					accessToken: adminPasswordToken.split(' ')[1]
+					accessToken: adminPasswordToken
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -259,7 +259,6 @@ describe('securityApi - Organization', () => {
 function createOrg(token, name, parentOrg, callback) {
 
 	var req = {
-		Authorization: token,
 		type: 'affiliate',
 		name: name,
 		createDirectory: true,
