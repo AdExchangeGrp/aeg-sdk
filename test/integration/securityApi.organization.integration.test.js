@@ -15,7 +15,7 @@ describe('securityApi - Organization', () => {
 
 	describe('#setup()', () => {
 
-		it('should return scoped password token without error', (done) => {
+		it('should return admin scoped password token without error', (done) => {
 			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);

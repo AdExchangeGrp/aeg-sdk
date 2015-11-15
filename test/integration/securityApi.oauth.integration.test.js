@@ -50,7 +50,7 @@ describe('securityApi - OAuth', () => {
 
 	describe('#createApiKey()', () => {
 
-		it('should return api key without error', (done) => {
+		it('should return scoped api key without error', (done) => {
 			securityApi.setToken(passwordAuthorizationNotScoped);
 			securityApi.createApiKey()
 				.then((result) => {
@@ -67,7 +67,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return api key without error', (done) => {
+		it('should return non-scoped api key without error', (done) => {
 			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
@@ -86,7 +86,7 @@ describe('securityApi - OAuth', () => {
 
 	describe('#apiToken()', () => {
 
-		it('should return scoped api token without error', (done) => {
+		it('should return scoped api token for api key without error', (done) => {
 			securityApi.apiToken({
 					Authorization: 'Basic ' + apiKeyScoped,
 					grantType: 'client_credentials',
@@ -104,7 +104,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return api token without error', (done) => {
+		it('should return non-scoped api token for api key without error', (done) => {
 			securityApi.apiToken({Authorization: 'Basic ' + apiKeyNotScoped, grantType: 'client_credentials'})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
@@ -218,10 +218,6 @@ describe('securityApi - OAuth', () => {
 					done(new ApiError(err));
 				});
 		});
-
-	});
-
-	describe('#testScopeProtected()', () => {
 
 		it('should execute with a password token', (done) => {
 			securityApi.setToken(refreshPasswordAuthorizationScoped);
