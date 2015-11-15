@@ -19,7 +19,7 @@ describe('securityApi - Account', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = 'Bearer ' + result.body.accessToken;
+					adminPasswordToken = result.body.accessToken;
 					adminRefreshToken = result.body.refreshToken;
 					done();
 				})
@@ -33,8 +33,8 @@ describe('securityApi - Account', () => {
 	describe('#register()', () => {
 
 		it('should return without error', (done) => {
+			securityApi.setToken(adminPasswordToken);
 			securityApi.registerAccount({
-					Authorization: adminPasswordToken,
 					email: 'test@test.com',
 					password: 'Pa$$w0rd',
 					givenName: 'test',
@@ -70,7 +70,7 @@ describe('securityApi - Account', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					registeredPasswordToken = 'Bearer ' + result.body.accessToken;
+					registeredPasswordToken = result.body.accessToken;
 					registeredRefreshToken = result.body.refreshToken;
 					done();
 				})
@@ -86,7 +86,8 @@ describe('securityApi - Account', () => {
 		var newUserName = uuid.v4();
 
 		it('should update account', (done) => {
-			securityApi.updateAccount({Authorization: registeredPasswordToken, username: newUserName})
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.updateAccount({username: newUserName})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -97,7 +98,8 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should get updated account', (done) => {
-			securityApi.getAccount({Authorization: registeredPasswordToken})
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.getAccount()
 				.then((result) => {
 					result.body.username.should.be.equal(newUserName);
 					done();
@@ -112,7 +114,8 @@ describe('securityApi - Account', () => {
 	describe('#revokeAccount', () => {
 
 		it('should revoke user', (done) => {
-			securityApi.revokeAccount({Authorization: registeredPasswordToken})
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.revokeAccount()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -123,7 +126,8 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should not get the account', (done) => {
-			securityApi.getAccount({Authorization: registeredPasswordToken})
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.getAccount()
 				.then(() => {
 					done(new Error('Should not have retrieved account'));
 				})
@@ -137,8 +141,8 @@ describe('securityApi - Account', () => {
 	describe('#revokeTokens', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
+			securityApi.setToken(adminPasswordToken);
 			securityApi.revokePasswordToken({
-					Authorization: adminPasswordToken,
 					accessToken: adminRefreshToken
 				})
 				.then((result) => {
@@ -151,9 +155,9 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should revoke the password access token for the admin', (done) => {
+			securityApi.setToken(adminPasswordToken);
 			securityApi.revokePasswordToken({
-					Authorization: adminPasswordToken,
-					accessToken: adminPasswordToken.split(' ')[1]
+					accessToken: adminPasswordToken
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
