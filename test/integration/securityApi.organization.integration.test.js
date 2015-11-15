@@ -13,11 +13,7 @@ describe('securityApi - Organization', () => {
 	let parentOrg;
 	let childOrg;
 
-	/*
-	 * Create tokens
-	 */
-
-	describe('#passwordToken()', () => {
+	describe('#setup()', () => {
 
 		it('should return scoped password token without error', (done) => {
 			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
@@ -39,187 +35,209 @@ describe('securityApi - Organization', () => {
 
 	});
 
-	/*
-	 * This flow org A -> B
-	 * Delete A then B
-	 */
+	describe('#Delete the parent and then the child', () => {
 
-	describe('#createOrganization', () => {
+		describe('#createOrganization', () => {
 
-		it('should create the parent organization', (done) => {
-			createOrg('Test Affiliate Parent', null, function (err, href) {
-				if (err) {
-					return done(err);
-				}
+			it('should create the parent organization', (done) => {
+				createOrg('Test Affiliate Parent', null, function (err, href) {
+					if (err) {
+						return done(err);
+					}
 
-				parentOrg = href;
+					parentOrg = href;
 
-				securityApi.getOrganization({organization: href})
-					.then((result) => {
-						result.body.should.have.properties(['href', 'name', 'customData']);
-						should.not.exist(result.body.customData.parent);
-						result.body.customData.children.should.be.an.Array;
-						result.body.customData.children.length.should.be.equal(0);
-						result.body.customData.type.should.be.equal('affiliate');
-						done();
-					})
-					.fail((err) => {
-						return done(new ApiError(err));
-					});
-			});
-		});
-
-		it('should create the child organization', (done) => {
-			createOrg('Test Affiliate Child', parentOrg, function (err, href) {
-				if (err) {
-					return done(err);
-				}
-
-				childOrg = href;
-
-				//child
-				securityApi.getOrganization({organization: href})
-					.then((result) => {
-
-						result.body.should.have.properties(['href', 'name', 'customData']);
-						result.body.customData.parent.should.be.equal(parentOrg);
-						result.body.customData.children.should.be.an.Array;
-						result.body.customData.children.length.should.be.equal(0);
-						result.body.customData.type.should.be.equal('affiliate');
-
-						//parent
-						securityApi.getOrganization({organization: parentOrg})
+					securityApi.getOrganization({organization: href})
 							.then((result) => {
 								result.body.should.have.properties(['href', 'name', 'customData']);
 								should.not.exist(result.body.customData.parent);
 								result.body.customData.children.should.be.an.Array;
-								result.body.customData.children.length.should.be.equal(1);
-								result.body.customData.children[0].should.be.equal(childOrg);
+								result.body.customData.children.length.should.be.equal(0);
 								result.body.customData.type.should.be.equal('affiliate');
 								done();
 							})
 							.fail((err) => {
 								return done(new ApiError(err));
 							});
-					})
-					.fail((err) => {
-						return done(new ApiError(err));
-					});
+				});
+			});
+
+			it('should create the child organization', (done) => {
+				createOrg('Test Affiliate Child', parentOrg, function (err, href) {
+					if (err) {
+						return done(err);
+					}
+
+					childOrg = href;
+
+					//child
+					securityApi.getOrganization({organization: href})
+							.then((result) => {
+
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								result.body.customData.parent.should.be.equal(parentOrg);
+								result.body.customData.children.should.be.an.Array;
+								result.body.customData.children.length.should.be.equal(0);
+								result.body.customData.type.should.be.equal('affiliate');
+
+								//parent
+								securityApi.getOrganization({organization: parentOrg})
+										.then((result) => {
+											result.body.should.have.properties(['href', 'name', 'customData']);
+											should.not.exist(result.body.customData.parent);
+											result.body.customData.children.should.be.an.Array;
+											result.body.customData.children.length.should.be.equal(1);
+											result.body.customData.children[0].should.be.equal(childOrg);
+											result.body.customData.type.should.be.equal('affiliate');
+											done();
+										})
+										.fail((err) => {
+											return done(new ApiError(err));
+										});
+							})
+							.fail((err) => {
+								return done(new ApiError(err));
+							});
+				});
+			});
+
+		});
+
+		describe('#deleteOrganization', () => {
+
+			it('should delete an organization', (done) => {
+				securityApi.deleteOrganization({organization: parentOrg})
+						.then((result) => {
+							result.body.should.have.properties(['message']);
+							result.body.message.should.be.equal('success');
+
+							//child
+							securityApi.getOrganization({organization: childOrg})
+									.then((result) => {
+
+										result.body.should.have.properties(['href', 'name', 'customData']);
+										should.not.exist(result.body.customData.parent);
+										result.body.customData.children.should.be.an.Array;
+										result.body.customData.children.length.should.be.equal(0);
+										result.body.customData.type.should.be.equal('affiliate');
+										done();
+									})
+									.fail((err) => {
+										done(new ApiError(err));
+									});
+						})
+						.fail((err) => {
+							done(new ApiError(err));
+						});
+			});
+
+
+			it('should delete an organization', (done) => {
+				securityApi.deleteOrganization({organization: childOrg})
+						.then((result) => {
+							result.body.should.have.properties(['message']);
+							result.body.message.should.be.equal('success');
+							done();
+						})
+						.fail((err) => {
+							done(new ApiError(err));
+						});
 			});
 		});
 
 	});
 
-	describe('#deleteOrganization', () => {
+	describe('#Delete the child and then the parent', () => {
 
-		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({organization: parentOrg})
-				.then((result) => {
-					result.body.should.have.properties(['message']);
-					result.body.message.should.be.equal('success');
+		describe('#createOrganization', () => {
 
-					//todo:test custom data
+			it('should create the parent organization', (done) => {
+				createOrg('Test Affiliate Parent', null, function (err, href) {
+					if (err) {
+						return done(err);
+					}
 
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
+					parentOrg = href;
+
+					//parent
+					securityApi.getOrganization({organization: href})
+							.then((result) => {
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								done();
+							})
+							.fail((err) => {
+								return done(new ApiError(err));
+							});
 				});
-		});
-
-
-		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({organization: childOrg})
-				.then((result) => {
-					result.body.should.have.properties(['message']);
-					result.body.message.should.be.equal('success');
-
-					//todo:test custom data
-
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
-		});
-	});
-
-	/*
-	 * This flow org A -> B
-	 * Delete B then A
-	 */
-
-	describe('#createOrganization', () => {
-
-		it('should create the parent organization', (done) => {
-			createOrg('Test Affiliate Parent', null, function (err, result) {
-				if (err) {
-					return done(err);
-				}
-
-				//todo:test custom data
-
-				parentOrg = result;
-
-				done();
 			});
-		});
 
-		it('should create the child organization', (done) => {
-			createOrg('Test Affiliate Child', parentOrg, function (err, result) {
-				if (err) {
-					return done(err);
-				}
+			it('should create the child organization', (done) => {
+				createOrg('Test Affiliate Child', parentOrg, function (err, href) {
+					if (err) {
+						return done(err);
+					}
 
-				//todo:test custom data
+					childOrg = href;
 
-				childOrg = result;
-
-				done();
+					//parent
+					securityApi.getOrganization({organization: href})
+							.then((result) => {
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								done();
+							})
+							.fail((err) => {
+								return done(new ApiError(err));
+							});
+				});
 			});
+
+		});
+
+		describe('#deleteOrganization', () => {
+
+			it('should delete an organization', (done) => {
+				securityApi.deleteOrganization({organization: childOrg})
+						.then((result) => {
+							result.body.should.have.properties(['message']);
+							result.body.message.should.be.equal('success');
+
+							//parent
+							securityApi.getOrganization({organization: parentOrg})
+									.then((result) => {
+
+										result.body.should.have.properties(['href', 'name', 'customData']);
+										should.not.exist(result.body.customData.parent);
+										result.body.customData.children.should.be.an.Array;
+										result.body.customData.children.length.should.be.equal(0);
+										result.body.customData.type.should.be.equal('affiliate');
+										done();
+									})
+									.fail((err) => {
+										done(new ApiError(err));
+									});
+						})
+						.fail((err) => {
+							done(new ApiError(err));
+						});
+			});
+
+			it('should delete an organization', (done) => {
+				securityApi.deleteOrganization({organization: parentOrg})
+						.then((result) => {
+							result.body.should.have.properties(['message']);
+							result.body.message.should.be.equal('success');
+							done();
+						})
+						.fail((err) => {
+							done(new ApiError(err));
+						});
+			});
+
 		});
 
 	});
 
-	describe('#deleteOrganization', () => {
-
-		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({organization: childOrg})
-				.then((result) => {
-					result.body.should.have.properties(['message']);
-					result.body.message.should.be.equal('success');
-
-					//todo:test custom data
-
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
-		});
-
-		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({organization: parentOrg})
-				.then((result) => {
-					result.body.should.have.properties(['message']);
-					result.body.message.should.be.equal('success');
-
-					//todo:test custom data
-
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
-		});
-
-	});
-
-	/*
-	 * Cleanup tokens
-	 */
-
-	describe('#revokeTokens', () => {
+	describe('#teardown', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.revokePasswordToken({
