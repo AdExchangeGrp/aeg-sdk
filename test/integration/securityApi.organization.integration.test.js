@@ -3,6 +3,7 @@
 let securityApi = require('../../lib/api/securityApi.js');
 let ApiError = require('../../lib/errors/apiError.js');
 let _ = require('underscore');
+let should = require('should');
 
 /** @namespace result.body.should.have */
 describe('securityApi - Organization', () => {
@@ -46,61 +47,55 @@ describe('securityApi - Organization', () => {
 	describe('#createOrganization', () => {
 
 		it('should create the parent organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function (err, result) {
+			createOrg('Test Affiliate Parent', null, function (err, href) {
 				if (err) {
-					return done(new ApiError(err));
+					return done(err);
 				}
 
-				console.log(result);
+				parentOrg = href;
 
-				done();
-
-				//parentOrg = result.body.href;
-				//
-				//securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
-				//	.then((result) => {
-				//
-				//		console.log(result);
-				//
-				//		result.body.should.have.properties(['href', 'name', 'customData']);
-				//		result.body.customData.parent.should.be.equal(null);
-				//		result.body.customData.children.should.be.an.Array;
-				//		result.body.customData.children.length.should.be.equal(0);
-				//		result.body.type.should.be.equal('affiliate');
-				//		done();
-				//	})
-				//	.fail((err) => {
-				//		return done(new ApiError(err));
-				//	});
+				securityApi.getOrganization({organization: href})
+					.then((result) => {
+						result.body.should.have.properties(['href', 'name', 'customData']);
+						should.not.exist(result.body.customData.parent);
+						result.body.customData.children.should.be.an.Array;
+						result.body.customData.children.length.should.be.equal(0);
+						result.body.customData.type.should.be.equal('affiliate');
+						done();
+					})
+					.fail((err) => {
+						return done(new ApiError(err));
+					});
 			});
 		});
 
 		it('should create the child organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function (err, result) {
+			createOrg('Test Affiliate Child', parentOrg, function (err, href) {
 				if (err) {
-					return done(new ApiError(err));
+					return done(err);
 				}
 
-				childOrg = result.body.href;
+				childOrg = href;
 
 				//child
-				securityApi.getOrganization({organization: result.body.href})
+				securityApi.getOrganization({organization: href})
 					.then((result) => {
+
 						result.body.should.have.properties(['href', 'name', 'customData']);
 						result.body.customData.parent.should.be.equal(parentOrg);
 						result.body.customData.children.should.be.an.Array;
 						result.body.customData.children.length.should.be.equal(0);
-						result.body.type.should.be.equal('affiliate');
+						result.body.customData.type.should.be.equal('affiliate');
 
 						//parent
-						securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
+						securityApi.getOrganization({organization: parentOrg})
 							.then((result) => {
 								result.body.should.have.properties(['href', 'name', 'customData']);
-								result.body.customData.parent.should.be.equal(null);
+								should.not.exist(result.body.customData.parent);
 								result.body.customData.children.should.be.an.Array;
 								result.body.customData.children.length.should.be.equal(1);
 								result.body.customData.children[0].should.be.equal(childOrg);
-								result.body.type.should.be.equal('affiliate');
+								result.body.customData.type.should.be.equal('affiliate');
 								done();
 							})
 							.fail((err) => {
@@ -157,7 +152,7 @@ describe('securityApi - Organization', () => {
 	describe('#createOrganization', () => {
 
 		it('should create the parent organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function (err, result) {
+			createOrg('Test Affiliate Parent', null, function (err, result) {
 				if (err) {
 					return done(err);
 				}
@@ -171,7 +166,7 @@ describe('securityApi - Organization', () => {
 		});
 
 		it('should create the child organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function (err, result) {
+			createOrg('Test Affiliate Child', parentOrg, function (err, result) {
 				if (err) {
 					return done(err);
 				}
@@ -256,9 +251,9 @@ describe('securityApi - Organization', () => {
 
 });
 
-function createOrg(token, name, parentOrg, callback) {
+function createOrg(name, parentOrg, callback) {
 
-	var req = {
+	let req = {
 		type: 'affiliate',
 		name: name,
 		createDirectory: true,
@@ -271,7 +266,6 @@ function createOrg(token, name, parentOrg, callback) {
 
 	securityApi.createOrganization(req)
 		.then((result) => {
-			console.log('argh');
 			result.body.should.have.properties(['organization', 'directory', 'scopes']);
 			result.body.organization.should.have.properties(['name', 'href', 'status']);
 			result.body.organization.name.should.be.equal(name);
@@ -285,7 +279,6 @@ function createOrg(token, name, parentOrg, callback) {
 			_.isArray(result.body.scopes).should.be.ok;
 
 			_.each(result.body.scopes, function (scope) {
-				console.log(scope);
 				scope.should.have.properties(['name', 'href', 'status']);
 				scope.name.should.be.equal('organization:admin');
 				scope.status.should.be.equal('ENABLED');
