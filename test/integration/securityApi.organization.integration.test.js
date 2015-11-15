@@ -42,30 +42,70 @@ describe('securityApi - Organization', () => {
 	describe('#createOrganization', () => {
 
 		it('should create the parent organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function(err, result) {
+			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function (err, result) {
 				if (err) {
-					return done(err);
+					return done(new ApiError(err));
 				}
 
-				//todo:test custom data
-
-				parentOrg = result;
+				console.log(result);
 
 				done();
+
+				//parentOrg = result.body.href;
+				//
+				//securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
+				//	.then((result) => {
+				//
+				//		console.log(result);
+				//
+				//		result.body.should.have.properties(['href', 'name', 'customData']);
+				//		result.body.customData.parent.should.be.equal(null);
+				//		result.body.customData.children.should.be.an.Array;
+				//		result.body.customData.children.length.should.be.equal(0);
+				//		result.body.type.should.be.equal('affiliate');
+				//		done();
+				//	})
+				//	.fail((err) => {
+				//		return done(new ApiError(err));
+				//	});
 			});
 		});
 
 		it('should create the child organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function(err, result) {
+			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function (err, result) {
 				if (err) {
-					return done(err);
+					return done(new ApiError(err));
 				}
 
-				//todo:test custom data
+				childOrg = result.body.href;
 
-				childOrg = result;
+				//child
+				securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
+					.then((result) => {
+						result.body.should.have.properties(['href', 'name', 'customData']);
+						result.body.customData.parent.should.be.equal(parentOrg);
+						result.body.customData.children.should.be.an.Array;
+						result.body.customData.children.length.should.be.equal(0);
+						result.body.type.should.be.equal('affiliate');
 
-				done();
+						//parent
+						securityApi.getOrganization({Authorization: adminPasswordToken, organization: result.body.href})
+							.then((result) => {
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								result.body.customData.parent.should.be.equal(null);
+								result.body.customData.children.should.be.an.Array;
+								result.body.customData.children.length.should.be.equal(1);
+								result.body.customData.children[0].should.be.equal(childOrg);
+								result.body.type.should.be.equal('affiliate');
+								done();
+							})
+							.fail((err) => {
+								return done(new ApiError(err));
+							});
+					})
+					.fail((err) => {
+						return done(new ApiError(err));
+					});
 			});
 		});
 
@@ -75,9 +115,8 @@ describe('securityApi - Organization', () => {
 
 		it('should delete an organization', (done) => {
 
-			securityApi.deleteOrganization({authorization: adminPasswordToken, organization: parentOrg})
+			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: parentOrg})
 				.then((result) => {
-					console.log(result);
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
 
@@ -92,9 +131,8 @@ describe('securityApi - Organization', () => {
 
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({authorization: adminPasswordToken, organization: childOrg})
+			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: childOrg})
 				.then((result) => {
-					console.log(result);
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
 
@@ -116,7 +154,7 @@ describe('securityApi - Organization', () => {
 	describe('#createOrganization', () => {
 
 		it('should create the parent organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function(err, result) {
+			createOrg(adminPasswordToken, 'Test Affiliate Parent', null, function (err, result) {
 				if (err) {
 					return done(err);
 				}
@@ -130,7 +168,7 @@ describe('securityApi - Organization', () => {
 		});
 
 		it('should create the child organization', (done) => {
-			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function(err, result) {
+			createOrg(adminPasswordToken, 'Test Affiliate Child', parentOrg, function (err, result) {
 				if (err) {
 					return done(err);
 				}
@@ -148,33 +186,33 @@ describe('securityApi - Organization', () => {
 	describe('#deleteOrganization', () => {
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({authorization: adminPasswordToken, organization: childOrg})
-					.then((result) => {
-						result.body.should.have.properties(['message']);
-						result.body.message.should.be.equal('success');
+			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: childOrg})
+				.then((result) => {
+					result.body.should.have.properties(['message']);
+					result.body.message.should.be.equal('success');
 
-						//todo:test custom data
+					//todo:test custom data
 
-						done();
-					})
-					.fail((err) => {
-						done(new ApiError(err));
-					});
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
 		});
 
 		it('should delete an organization', (done) => {
-			securityApi.deleteOrganization({authorization: adminPasswordToken, organization: parentOrg})
-					.then((result) => {
-						result.body.should.have.properties(['message']);
-						result.body.message.should.be.equal('success');
+			securityApi.deleteOrganization({Authorization: adminPasswordToken, organization: parentOrg})
+				.then((result) => {
+					result.body.should.have.properties(['message']);
+					result.body.message.should.be.equal('success');
 
-						//todo:test custom data
+					//todo:test custom data
 
-						done();
-					})
-					.fail((err) => {
-						done(new ApiError(err));
-					});
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
 		});
 
 	});
@@ -187,7 +225,7 @@ describe('securityApi - Organization', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					authorization: adminPasswordToken,
+					Authorization: adminPasswordToken,
 					accessToken: adminRefreshToken
 				})
 				.then((result) => {
@@ -201,7 +239,7 @@ describe('securityApi - Organization', () => {
 
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					authorization: adminPasswordToken,
+					Authorization: adminPasswordToken,
 					accessToken: adminPasswordToken.split(' ')[1]
 				})
 				.then((result) => {
@@ -218,14 +256,22 @@ describe('securityApi - Organization', () => {
 });
 
 function createOrg(token, name, parentOrg, callback) {
-	securityApi.createOrganization({
-			authorization: token,
-			type: 'affiliate',
-			name: name,
-			createDirectory: true,
-			parentOrganization: parentOrg
-		})
+
+	var req = {
+		Authorization: token,
+		type: 'affiliate',
+		name: name,
+		createDirectory: true,
+		parentOrganization: parentOrg
+	};
+
+	if (parentOrg) {
+		req.parentOrganization = parentOrg;
+	}
+
+	securityApi.createOrganization(req)
 		.then((result) => {
+			console.log('argh');
 			result.body.should.have.properties(['organization', 'directory', 'scopes']);
 			result.body.organization.should.have.properties(['name', 'href', 'status']);
 			result.body.organization.name.should.be.equal(name);

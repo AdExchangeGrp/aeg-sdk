@@ -34,7 +34,7 @@ describe('securityApi - Account', () => {
 
 		it('should return without error', (done) => {
 			securityApi.registerAccount({
-					authorization: adminPasswordToken,
+					Authorization: adminPasswordToken,
 					email: 'test@test.com',
 					password: 'Pa$$w0rd',
 					givenName: 'test',
@@ -86,7 +86,7 @@ describe('securityApi - Account', () => {
 		var newUserName = uuid.v4();
 
 		it('should update account', (done) => {
-			securityApi.updateAccount({authorization: registeredPasswordToken, username: newUserName})
+			securityApi.updateAccount({Authorization: registeredPasswordToken, username: newUserName})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -97,7 +97,7 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should get updated account', (done) => {
-			securityApi.getAccount({authorization: registeredPasswordToken})
+			securityApi.getAccount({Authorization: registeredPasswordToken})
 				.then((result) => {
 					result.body.username.should.be.equal(newUserName);
 					done();
@@ -112,7 +112,7 @@ describe('securityApi - Account', () => {
 	describe('#revokeAccount', () => {
 
 		it('should revoke user', (done) => {
-			securityApi.revokeAccount({authorization: registeredPasswordToken})
+			securityApi.revokeAccount({Authorization: registeredPasswordToken})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -123,7 +123,7 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should not get the account', (done) => {
-			securityApi.getAccount({authorization: registeredPasswordToken})
+			securityApi.getAccount({Authorization: registeredPasswordToken})
 				.then(() => {
 					done(new Error('Should not have retrieved account'));
 				})
@@ -138,7 +138,7 @@ describe('securityApi - Account', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					authorization: adminPasswordToken,
+					Authorization: adminPasswordToken,
 					accessToken: adminRefreshToken
 				})
 				.then((result) => {
@@ -152,7 +152,7 @@ describe('securityApi - Account', () => {
 
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.revokePasswordToken({
-					authorization: adminPasswordToken,
+					Authorization: adminPasswordToken,
 					accessToken: adminPasswordToken.split(' ')[1]
 				})
 				.then((result) => {
