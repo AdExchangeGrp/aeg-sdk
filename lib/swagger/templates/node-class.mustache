@@ -29,14 +29,14 @@ var {{&className}} = (function(){
          * @method
          * @name {{&className}}#setToken
          * @param {string} value - token's value
-         * @param {string} headerOrQueryName - the header or query name to send the token at
-         * @param {boolean} isQuery - true if send the token as query param, otherwise, send as header param
+         * @param {string} prefix - the token header prefix (Basic, Bearer)
          *
          */
-        {{&className}}.prototype.setToken = function (value) {
+        {{&className}}.prototype.setToken = function (value, prefix) {
             this.token.value = value;
             this.token.headerOrQueryName = null;
             this.token.isQuery = false;
+            this.token.prefix = prefix;
         };
     {{/isSecure}}
 
