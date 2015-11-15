@@ -12,9 +12,9 @@ describe('securityApi - Account', () => {
 	let registeredPasswordToken;
 	let registeredRefreshToken;
 
-	describe('#passwordToken()', () => {
+	describe('#setup()', () => {
 
-		it('should return scoped password token without error', (done) => {
+		it('should return admin scoped password token without error', (done) => {
 			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
@@ -36,7 +36,7 @@ describe('securityApi - Account', () => {
 
 	describe('#register()', () => {
 
-		it('should return without error', (done) => {
+		it('should register without error', (done) => {
 			securityApi.registerAccount({
 					email: 'test@test.com',
 					password: 'Pa$$w0rd',
@@ -58,31 +58,27 @@ describe('securityApi - Account', () => {
 				});
 		});
 
-	});
-
-	describe('#passwordToken()', () => {
-
 		it('should return scoped password token without error', (done) => {
 			securityApi.passwordToken({
-					username: 'test@test.com',
-					password: 'Pa$$w0rd',
-					scope: 'platform:admin',
-					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
-				})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					registeredPasswordToken = result.body.accessToken;
-					registeredRefreshToken = result.body.refreshToken;
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						scope: 'platform:admin',
+						organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+						result.body.accessToken.should.be.a.String;
+						result.body.accessToken.length.should.be.greaterThan(0);
+						registeredPasswordToken = result.body.accessToken;
+						registeredRefreshToken = result.body.refreshToken;
 
-					securityApi.setToken(registeredPasswordToken);
+						securityApi.setToken(registeredPasswordToken);
 
-					done();
-				})
-				.fail((err) => {
-					done(new ApiError(err));
-				});
+						done();
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 		});
 
 	});
@@ -140,7 +136,7 @@ describe('securityApi - Account', () => {
 
 	});
 
-	describe('#revokeTokens', () => {
+	describe('#teardown', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.setToken(adminPasswordToken);
@@ -170,4 +166,5 @@ describe('securityApi - Account', () => {
 		});
 
 	});
+
 });
