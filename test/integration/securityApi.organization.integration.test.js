@@ -47,6 +47,8 @@ describe('securityApi - Organization', () => {
 					return done(err);
 				}
 
+				//todo:test custom data
+
 				parentOrg = result;
 
 				done();
@@ -58,6 +60,8 @@ describe('securityApi - Organization', () => {
 				if (err) {
 					return done(err);
 				}
+
+				//todo:test custom data
 
 				childOrg = result;
 
@@ -76,6 +80,9 @@ describe('securityApi - Organization', () => {
 					console.log(result);
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
+
+					//todo:test custom data
+
 					done();
 				})
 				.fail((err) => {
@@ -90,6 +97,9 @@ describe('securityApi - Organization', () => {
 					console.log(result);
 					result.body.should.have.properties(['message']);
 					result.body.message.should.be.equal('success');
+
+					//todo:test custom data
+
 					done();
 				})
 				.fail((err) => {
@@ -111,6 +121,8 @@ describe('securityApi - Organization', () => {
 					return done(err);
 				}
 
+				//todo:test custom data
+
 				parentOrg = result;
 
 				done();
@@ -122,6 +134,8 @@ describe('securityApi - Organization', () => {
 				if (err) {
 					return done(err);
 				}
+
+				//todo:test custom data
 
 				childOrg = result;
 
@@ -138,6 +152,9 @@ describe('securityApi - Organization', () => {
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
+
+						//todo:test custom data
+
 						done();
 					})
 					.fail((err) => {
@@ -150,6 +167,9 @@ describe('securityApi - Organization', () => {
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
+
+						//todo:test custom data
+
 						done();
 					})
 					.fail((err) => {
