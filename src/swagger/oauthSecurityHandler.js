@@ -20,7 +20,7 @@ let stormpathConfig = config.get('stormpath');
  * @param {function} callback
  * @returns {*}
  */
-module.exports = (req, def, routeScopes, callback) => {
+export default (req, def, routeScopes, callback) => {
 
 	//check for the Authorization header
 	if (!req.headers.authorization) {

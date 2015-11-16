@@ -2,4 +2,6 @@
 
 import securityApi from './securityApi';
 
-export default { securityApi };
+export {securityApi};
+
+export default {securityApi};

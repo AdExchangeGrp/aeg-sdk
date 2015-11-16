@@ -3,4 +3,6 @@
 import UnauthorizedError from './unauthorizedError';
 import ApiError from './apiError';
 
-export default { UnauthorizedError, ApiError };
+export {UnauthorizedError, ApiError};
+
+export default {UnauthorizedError, ApiError};

@@ -11,7 +11,7 @@ import { logout } from 'express-stormpath/lib/controllers';
  * @param {Request} req
  * @param {Response} res
  */
-module.exports = (req, res) => {
+export default (req, res) => {
 
 	let accessToken = (req.cookies && req.cookies.access_token) ? req.cookies.access_token : null;
 	let refreshToken = (req.cookies && req.cookies.refresh_token) ? req.cookies.refresh_token : null;

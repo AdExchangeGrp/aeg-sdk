@@ -2,4 +2,6 @@
 
 import oauthSecurityHandler from './oauthSecurityHandler';
 
-export default { oauthSecurityHandler };
+export {oauthSecurityHandler};
+
+export default {oauthSecurityHandler};
