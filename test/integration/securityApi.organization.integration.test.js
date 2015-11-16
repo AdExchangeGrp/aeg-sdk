@@ -1,9 +1,9 @@
 'use strict';
 
-let securityApi = require('../../lib/api/securityApi.js');
-let ApiError = require('../../lib/errors/apiError.js');
-let _ = require('underscore');
-let should = require('should');
+import securityApi from '../../lib/api/securityApi.js';
+import ApiError from '../../lib/errors/apiError.js';
+import _ from 'underscore';
+import should from 'should';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Organization', () => {
@@ -48,17 +48,17 @@ describe('securityApi - Organization', () => {
 					parentOrg = href;
 
 					securityApi.getOrganization({organization: href})
-							.then((result) => {
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								should.not.exist(result.body.customData.parent);
-								result.body.customData.children.should.be.an.Array;
-								result.body.customData.children.length.should.be.equal(0);
-								result.body.customData.type.should.be.equal('affiliate');
-								done();
-							})
-							.fail((err) => {
-								return done(new ApiError(err));
-							});
+						.then((result) => {
+							result.body.should.have.properties(['href', 'name', 'customData']);
+							should.not.exist(result.body.customData.parent);
+							result.body.customData.children.should.be.an.Array;
+							result.body.customData.children.length.should.be.equal(0);
+							result.body.customData.type.should.be.equal('affiliate');
+							done();
+						})
+						.fail((err) => {
+							return done(new ApiError(err));
+						});
 				});
 			});
 
@@ -72,32 +72,32 @@ describe('securityApi - Organization', () => {
 
 					//child
 					securityApi.getOrganization({organization: href})
-							.then((result) => {
+						.then((result) => {
 
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								result.body.customData.parent.should.be.equal(parentOrg);
-								result.body.customData.children.should.be.an.Array;
-								result.body.customData.children.length.should.be.equal(0);
-								result.body.customData.type.should.be.equal('affiliate');
+							result.body.should.have.properties(['href', 'name', 'customData']);
+							result.body.customData.parent.should.be.equal(parentOrg);
+							result.body.customData.children.should.be.an.Array;
+							result.body.customData.children.length.should.be.equal(0);
+							result.body.customData.type.should.be.equal('affiliate');
 
-								//parent
-								securityApi.getOrganization({organization: parentOrg})
-										.then((result) => {
-											result.body.should.have.properties(['href', 'name', 'customData']);
-											should.not.exist(result.body.customData.parent);
-											result.body.customData.children.should.be.an.Array;
-											result.body.customData.children.length.should.be.equal(1);
-											result.body.customData.children[0].should.be.equal(childOrg);
-											result.body.customData.type.should.be.equal('affiliate');
-											done();
-										})
-										.fail((err) => {
-											return done(new ApiError(err));
-										});
-							})
-							.fail((err) => {
-								return done(new ApiError(err));
-							});
+							//parent
+							securityApi.getOrganization({organization: parentOrg})
+								.then((result) => {
+									result.body.should.have.properties(['href', 'name', 'customData']);
+									should.not.exist(result.body.customData.parent);
+									result.body.customData.children.should.be.an.Array;
+									result.body.customData.children.length.should.be.equal(1);
+									result.body.customData.children[0].should.be.equal(childOrg);
+									result.body.customData.type.should.be.equal('affiliate');
+									done();
+								})
+								.fail((err) => {
+									return done(new ApiError(err));
+								});
+						})
+						.fail((err) => {
+							return done(new ApiError(err));
+						});
 				});
 			});
 
@@ -107,41 +107,41 @@ describe('securityApi - Organization', () => {
 
 			it('should delete an organization', (done) => {
 				securityApi.deleteOrganization({organization: parentOrg})
-						.then((result) => {
-							result.body.should.have.properties(['message']);
-							result.body.message.should.be.equal('success');
+					.then((result) => {
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
 
-							//child
-							securityApi.getOrganization({organization: childOrg})
-									.then((result) => {
+						//child
+						securityApi.getOrganization({organization: childOrg})
+							.then((result) => {
 
-										result.body.should.have.properties(['href', 'name', 'customData']);
-										should.not.exist(result.body.customData.parent);
-										result.body.customData.children.should.be.an.Array;
-										result.body.customData.children.length.should.be.equal(0);
-										result.body.customData.type.should.be.equal('affiliate');
-										done();
-									})
-									.fail((err) => {
-										done(new ApiError(err));
-									});
-						})
-						.fail((err) => {
-							done(new ApiError(err));
-						});
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								should.not.exist(result.body.customData.parent);
+								result.body.customData.children.should.be.an.Array;
+								result.body.customData.children.length.should.be.equal(0);
+								result.body.customData.type.should.be.equal('affiliate');
+								done();
+							})
+							.fail((err) => {
+								done(new ApiError(err));
+							});
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 			});
 
 
 			it('should delete an organization', (done) => {
 				securityApi.deleteOrganization({organization: childOrg})
-						.then((result) => {
-							result.body.should.have.properties(['message']);
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(new ApiError(err));
-						});
+					.then((result) => {
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 			});
 		});
 
@@ -161,13 +161,13 @@ describe('securityApi - Organization', () => {
 
 					//parent
 					securityApi.getOrganization({organization: href})
-							.then((result) => {
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								done();
-							})
-							.fail((err) => {
-								return done(new ApiError(err));
-							});
+						.then((result) => {
+							result.body.should.have.properties(['href', 'name', 'customData']);
+							done();
+						})
+						.fail((err) => {
+							return done(new ApiError(err));
+						});
 				});
 			});
 
@@ -181,13 +181,13 @@ describe('securityApi - Organization', () => {
 
 					//parent
 					securityApi.getOrganization({organization: href})
-							.then((result) => {
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								done();
-							})
-							.fail((err) => {
-								return done(new ApiError(err));
-							});
+						.then((result) => {
+							result.body.should.have.properties(['href', 'name', 'customData']);
+							done();
+						})
+						.fail((err) => {
+							return done(new ApiError(err));
+						});
 				});
 			});
 
@@ -197,40 +197,40 @@ describe('securityApi - Organization', () => {
 
 			it('should delete an organization', (done) => {
 				securityApi.deleteOrganization({organization: childOrg})
-						.then((result) => {
-							result.body.should.have.properties(['message']);
-							result.body.message.should.be.equal('success');
+					.then((result) => {
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
 
-							//parent
-							securityApi.getOrganization({organization: parentOrg})
-									.then((result) => {
+						//parent
+						securityApi.getOrganization({organization: parentOrg})
+							.then((result) => {
 
-										result.body.should.have.properties(['href', 'name', 'customData']);
-										should.not.exist(result.body.customData.parent);
-										result.body.customData.children.should.be.an.Array;
-										result.body.customData.children.length.should.be.equal(0);
-										result.body.customData.type.should.be.equal('affiliate');
-										done();
-									})
-									.fail((err) => {
-										done(new ApiError(err));
-									});
-						})
-						.fail((err) => {
-							done(new ApiError(err));
-						});
+								result.body.should.have.properties(['href', 'name', 'customData']);
+								should.not.exist(result.body.customData.parent);
+								result.body.customData.children.should.be.an.Array;
+								result.body.customData.children.length.should.be.equal(0);
+								result.body.customData.type.should.be.equal('affiliate');
+								done();
+							})
+							.fail((err) => {
+								done(new ApiError(err));
+							});
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 			});
 
 			it('should delete an organization', (done) => {
 				securityApi.deleteOrganization({organization: parentOrg})
-						.then((result) => {
-							result.body.should.have.properties(['message']);
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(new ApiError(err));
-						});
+					.then((result) => {
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 			});
 
 		});

@@ -1,7 +1,7 @@
 'use strict';
 
-let securityApi = require('../../lib/api/securityApi.js');
-let ApiError = require('../../lib/errors/apiError.js');
+import securityApi from '../../lib/api/securityApi.js';
+import ApiError from '../../lib/errors/apiError.js';
 
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {

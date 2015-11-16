@@ -1,8 +1,8 @@
 'use strict';
 
-let securityApi = require('../../lib/api/securityApi.js');
-let ApiError = require('../../lib/errors/apiError.js');
-var uuid = require('node-uuid');
+import securityApi from '../../lib/api/securityApi.js';
+import ApiError from '../../lib/errors/apiError.js';
+import uuid from 'node-uuid';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
@@ -60,32 +60,32 @@ describe('securityApi - Account', () => {
 
 		it('should return scoped password token without error', (done) => {
 			securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
-						scope: 'platform:admin',
-						organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
-					})
-					.then((result) => {
-						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-						result.body.accessToken.should.be.a.String;
-						result.body.accessToken.length.should.be.greaterThan(0);
-						registeredPasswordToken = result.body.accessToken;
-						registeredRefreshToken = result.body.refreshToken;
+					username: 'test@test.com',
+					password: 'Pa$$w0rd',
+					scope: 'platform:admin',
+					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+				})
+				.then((result) => {
+					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.accessToken.should.be.a.String;
+					result.body.accessToken.length.should.be.greaterThan(0);
+					registeredPasswordToken = result.body.accessToken;
+					registeredRefreshToken = result.body.refreshToken;
 
-						securityApi.setToken(registeredPasswordToken);
+					securityApi.setToken(registeredPasswordToken);
 
-						done();
-					})
-					.fail((err) => {
-						done(new ApiError(err));
-					});
+					done();
+				})
+				.fail((err) => {
+					done(new ApiError(err));
+				});
 		});
 
 	});
 
 	describe('#updateAccount', () => {
 
-		var newUserName = uuid.v4();
+		let newUserName = uuid.v4();
 
 		it('should update account', (done) => {
 			securityApi.updateAccount({username: newUserName})
