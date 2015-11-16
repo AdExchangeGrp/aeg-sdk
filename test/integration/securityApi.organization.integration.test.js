@@ -1,7 +1,7 @@
 'use strict';
 
-import securityApi from '../../lib/api/securityApi.js';
-import ApiError from '../../lib/errors/apiError.js';
+import securityApi from '../../src/api/securityApi.js';
+import ApiError from '../../src/errors/apiError.js';
 import _ from 'underscore';
 import should from 'should';
 
