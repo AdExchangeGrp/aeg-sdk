@@ -21,7 +21,7 @@
     "postversion": "git push && git push --tags && npm publish ."
   },
   "devDependencies": {
-    "babel": "^6.1.18",
+    "babel-cli": "^6.1.18",
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
     "onchange": "^1.1.0",
