@@ -46,11 +46,18 @@ describe('securityApi - Account', () => {
 					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
 				})
 				.then((result) => {
-					result.body.should.have.properties(['href', 'status']);
-					result.body.href.should.be.a.String;
-					result.body.href.length.should.be.greaterThan(0);
-					result.body.status.should.be.a.String;
-					result.body.status.length.should.be.greaterThan(0);
+					result.body.should.have.properties(['account']);
+					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
+					result.body.account.href.should.be.a.String;
+					result.body.account.href.length.should.be.greaterThan(0);
+					result.body.account.status.should.be.a.String;
+					result.body.account.status.length.should.be.greaterThan(0);
+					result.body.account.status.toLowerCase().should.be.equal('enabled');
+					result.body.account.givenName.should.be.a.String;
+					result.body.account.givenName.length.should.be.greaterThan(0);
+					result.body.account.surname.should.be.a.String;
+					result.body.account.surname.length.should.be.greaterThan(0);
+					result.body.account.customData.should.be.an.Object;
 					done();
 				})
 				.fail((err) => {
