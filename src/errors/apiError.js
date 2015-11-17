@@ -9,7 +9,7 @@ function ApiError(err) {
 	let temp = Error.apply(this, arguments);
 	temp.name = this.name = 'ApiError';
 	this.stack = temp.stack;
-	this.message = err.body.message ? err.body.message : 'An unknown error occurred';
+	this.message = (err.body && err.body.message) ? err.body.message : 'An unknown error occurred';
 	this.status = 400;
 }
 

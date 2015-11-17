@@ -1,7 +1,6 @@
 'use strict';
 
 import securityApi from '../../src/api/securityApi.js';
-import ApiError from '../../src/errors/apiError.js';
 import _ from 'underscore';
 import should from 'should';
 
@@ -29,7 +28,7 @@ describe('securityApi - Organization', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -49,7 +48,6 @@ describe('securityApi - Organization', () => {
 
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-
 							result.body.should.have.properties(['organization', 'directory']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
 							should.not.exist(result.body.organization.customData.parent);
@@ -69,7 +67,7 @@ describe('securityApi - Organization', () => {
 							done();
 						})
 						.fail((err) => {
-							return done(new ApiError(err));
+							done(err);
 						});
 				});
 			});
@@ -106,11 +104,11 @@ describe('securityApi - Organization', () => {
 									done();
 								})
 								.fail((err) => {
-									return done(new ApiError(err));
+									done(err);
 								});
 						})
 						.fail((err) => {
-							return done(new ApiError(err));
+							done(err);
 						});
 				});
 			});
@@ -127,7 +125,7 @@ describe('securityApi - Organization', () => {
 						done();
 					})
 					.fail((err) => {
-						return done(new ApiError(err));
+						done(err);
 					});
 			});
 
@@ -142,7 +140,7 @@ describe('securityApi - Organization', () => {
 						done();
 					})
 					.fail((err) => {
-						done(new ApiError(err));
+						done(err);
 					});
 			});
 
@@ -168,11 +166,11 @@ describe('securityApi - Organization', () => {
 								done();
 							})
 							.fail((err) => {
-								done(new ApiError(err));
+								done(err);
 							});
 					})
 					.fail((err) => {
-						done(new ApiError(err));
+						done(err);
 					});
 			});
 
@@ -185,7 +183,7 @@ describe('securityApi - Organization', () => {
 						done();
 					})
 					.fail((err) => {
-						done(new ApiError(err));
+						done(err);
 					});
 			});
 		});
@@ -212,7 +210,7 @@ describe('securityApi - Organization', () => {
 							done();
 						})
 						.fail((err) => {
-							return done(new ApiError(err));
+							done(err);
 						});
 				});
 			});
@@ -233,7 +231,7 @@ describe('securityApi - Organization', () => {
 							done();
 						})
 						.fail((err) => {
-							return done(new ApiError(err));
+							done(err);
 						});
 				});
 			});
@@ -260,11 +258,11 @@ describe('securityApi - Organization', () => {
 								done();
 							})
 							.fail((err) => {
-								done(new ApiError(err));
+								done(err);
 							});
 					})
 					.fail((err) => {
-						done(new ApiError(err));
+						done(err);
 					});
 			});
 
@@ -276,7 +274,7 @@ describe('securityApi - Organization', () => {
 						done();
 					})
 					.fail((err) => {
-						done(new ApiError(err));
+						done(err);
 					});
 			});
 
@@ -295,7 +293,7 @@ describe('securityApi - Organization', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -308,7 +306,7 @@ describe('securityApi - Organization', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -353,6 +351,6 @@ function createOrg(name, parentOrg, callback) {
 			callback(null, result.body.organization.href);
 		})
 		.fail((err) => {
-			callback(new ApiError(err));
+			callback(err);
 		});
 }
