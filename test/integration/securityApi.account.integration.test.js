@@ -92,10 +92,10 @@ describe('securityApi - Account', () => {
 
 	describe('#updateAccount', () => {
 
-		let newUserName = uuid.v4();
+		let givenName = uuid.v4();
 
 		it('should update account', (done) => {
-			securityApi.updateAccount({username: newUserName})
+			securityApi.updateAccount({givenName: givenName})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -108,7 +108,19 @@ describe('securityApi - Account', () => {
 		it('should get updated account', (done) => {
 			securityApi.getAccount()
 				.then((result) => {
-					result.body.username.should.be.equal(newUserName);
+					result.body.should.have.properties(['account']);
+					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
+					result.body.account.href.should.be.a.String;
+					result.body.account.href.length.should.be.greaterThan(0);
+					result.body.account.status.should.be.a.String;
+					result.body.account.status.length.should.be.greaterThan(0);
+					result.body.account.status.toLowerCase().should.be.equal('enabled');
+					result.body.account.givenName.should.be.a.String;
+					result.body.account.givenName.length.should.be.greaterThan(0);
+					result.body.account.surname.should.be.a.String;
+					result.body.account.surname.length.should.be.greaterThan(0);
+					result.body.account.customData.should.be.an.Object;
+					result.body.account.givenName.should.be.equal(givenName);
 					done();
 				})
 				.fail((err) => {
