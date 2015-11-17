@@ -37,12 +37,12 @@ if (command === 'swaggerCodeGen') {
 				className: 'SecurityService',
 				swagger: result.body,
 				template: {
-					class: fs.readFileSync('lib/swagger/templates/node-class.mustache', 'utf-8'),
-					method: fs.readFileSync('lib/swagger/templates/method.mustache', 'utf-8'),
-					request: fs.readFileSync('lib/swagger/templates/node-request.mustache', 'utf-8')
+					class: fs.readFileSync('src/swagger/templates/node-class.mustache', 'utf-8'),
+					method: fs.readFileSync('src/swagger/templates/method.mustache', 'utf-8'),
+					request: fs.readFileSync('src/swagger/templates/node-request.mustache', 'utf-8')
 				}
 			});
-			fs.writeFileSync(path.join(__dirname, 'lib', 'api', 'securityService.js'), client);
+			fs.writeFileSync(path.join(__dirname, 'src', 'api', 'securityService.js'), client);
 		});
 
 	}
