@@ -293,7 +293,7 @@ function createOrg(name, parentOrg, callback) {
 			result.body.should.have.properties(['organization', 'directory', 'scopes']);
 			result.body.organization.should.have.properties(['name', 'href', 'status']);
 			result.body.organization.name.should.be.equal(name);
-			result.body.organization.status.should.be.equal('DISABLED');
+			result.body.organization.status.toLowerCase().should.be.equal('disabled');
 			result.body.organization.href.length.should.be.greaterThan(0);
 			result.body.directory.should.have.properties(['name', 'href', 'status']);
 			result.body.directory.name.should.be.equal(name);
@@ -305,7 +305,7 @@ function createOrg(name, parentOrg, callback) {
 			_.each(result.body.scopes, function (scope) {
 				scope.should.have.properties(['name', 'href', 'status']);
 				scope.name.should.be.equal('organization:admin');
-				scope.status.should.be.equal('ENABLED');
+				scope.status.toLowerCase().should.be.equal('enabled');
 				scope.href.length.should.be.greaterThan(0);
 			});
 
