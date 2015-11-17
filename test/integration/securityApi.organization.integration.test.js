@@ -49,13 +49,23 @@ describe('securityApi - Organization', () => {
 
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-							result.body.should.have.properties(['organization']);
+
+							result.body.should.have.properties(['organization', 'directory']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
 							should.not.exist(result.body.organization.customData.parent);
 							result.body.organization.customData.children.should.be.an.Array;
 							result.body.organization.customData.children.length.should.be.equal(0);
 							result.body.organization.customData.type.should.be.equal('affiliate');
 							result.body.organization.status.toLowerCase().should.be.equal('disabled');
+
+							result.body.directory.should.have.properties(['href', 'name', 'status']);
+							result.body.directory.href.should.be.a.String;
+							result.body.directory.href.length.should.be.greaterThan(0);
+							result.body.directory.name.should.be.a.String;
+							result.body.directory.name.length.should.be.greaterThan(0);
+							result.body.directory.status.should.be.a.String;
+							result.body.directory.status.length.should.be.greaterThan(0);
+
 							done();
 						})
 						.fail((err) => {
@@ -103,6 +113,37 @@ describe('securityApi - Organization', () => {
 							return done(new ApiError(err));
 						});
 				});
+			});
+
+		});
+
+		describe('#approveOrganization', () => {
+
+			it('should approve an organization', (done) => {
+				securityApi.approveOrganization({organization: parentOrg})
+					.then((result) => {
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						return done(new ApiError(err));
+					});
+			});
+
+			it('should get an approved organization', (done) => {
+				securityApi.getOrganization({organization: parentOrg})
+					.then((result) => {
+						result.body.should.have.properties(['organization', 'directory']);
+						result.body.organization.should.have.properties(['status']);
+						result.body.organization.status.toLowerCase().should.be.equal('enabled');
+						result.body.directory.should.have.properties(['status']);
+						result.body.directory.status.toLowerCase().should.be.equal('enabled');
+						done();
+					})
+					.fail((err) => {
+						done(new ApiError(err));
+					});
 			});
 
 		});
