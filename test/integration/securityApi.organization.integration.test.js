@@ -49,12 +49,13 @@ describe('securityApi - Organization', () => {
 
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-							result.body.should.have.properties(['href', 'name', 'customData']);
-							should.not.exist(result.body.customData.parent);
-							result.body.customData.children.should.be.an.Array;
-							result.body.customData.children.length.should.be.equal(0);
-							result.body.customData.type.should.be.equal('affiliate');
-							result.body.status.toLowerCase().should.be.equal('disabled');
+							result.body.should.have.properties(['organization']);
+							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							should.not.exist(result.body.organization.customData.parent);
+							result.body.organization.customData.children.should.be.an.Array;
+							result.body.organization.customData.children.length.should.be.equal(0);
+							result.body.organization.customData.type.should.be.equal('affiliate');
+							result.body.organization.status.toLowerCase().should.be.equal('disabled');
 							done();
 						})
 						.fail((err) => {
@@ -74,23 +75,24 @@ describe('securityApi - Organization', () => {
 					//child
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-
-							result.body.should.have.properties(['href', 'name', 'customData']);
-							result.body.customData.parent.should.be.equal(parentOrg);
-							result.body.customData.children.should.be.an.Array;
-							result.body.customData.children.length.should.be.equal(0);
-							result.body.customData.type.should.be.equal('affiliate');
-							result.body.status.toLowerCase().should.be.equal('disabled');
+							result.body.should.have.properties(['organization']);
+							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							result.body.organization.customData.parent.should.be.equal(parentOrg);
+							result.body.organization.customData.children.should.be.an.Array;
+							result.body.organization.customData.children.length.should.be.equal(0);
+							result.body.organization.customData.type.should.be.equal('affiliate');
+							result.body.organization.status.toLowerCase().should.be.equal('disabled');
 
 							//parent
 							securityApi.getOrganization({organization: parentOrg})
 								.then((result) => {
-									result.body.should.have.properties(['href', 'name', 'customData']);
-									should.not.exist(result.body.customData.parent);
-									result.body.customData.children.should.be.an.Array;
-									result.body.customData.children.length.should.be.equal(1);
-									result.body.customData.children[0].should.be.equal(childOrg);
-									result.body.customData.type.should.be.equal('affiliate');
+									result.body.should.have.properties(['organization']);
+									result.body.organization.should.have.properties(['href', 'name', 'customData']);
+									should.not.exist(result.body.organization.customData.parent);
+									result.body.organization.customData.children.should.be.an.Array;
+									result.body.organization.customData.children.length.should.be.equal(1);
+									result.body.organization.customData.children[0].should.be.equal(childOrg);
+									result.body.organization.customData.type.should.be.equal('affiliate');
 									done();
 								})
 								.fail((err) => {
@@ -116,12 +118,12 @@ describe('securityApi - Organization', () => {
 						//child
 						securityApi.getOrganization({organization: childOrg})
 							.then((result) => {
-
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								should.not.exist(result.body.customData.parent);
-								result.body.customData.children.should.be.an.Array;
-								result.body.customData.children.length.should.be.equal(0);
-								result.body.customData.type.should.be.equal('affiliate');
+								result.body.should.have.properties(['organization']);
+								result.body.organization.should.have.properties(['href', 'name', 'customData']);
+								should.not.exist(result.body.organization.customData.parent);
+								result.body.organization.customData.children.should.be.an.Array;
+								result.body.organization.customData.children.length.should.be.equal(0);
+								result.body.organization.customData.type.should.be.equal('affiliate');
 								done();
 							})
 							.fail((err) => {
@@ -164,7 +166,8 @@ describe('securityApi - Organization', () => {
 					//parent
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-							result.body.should.have.properties(['href', 'name', 'customData']);
+							result.body.should.have.properties(['organization']);
+							result.body.organization.should.have.properties(['href', 'name', 'customData']);
 							done();
 						})
 						.fail((err) => {
@@ -184,7 +187,8 @@ describe('securityApi - Organization', () => {
 					//parent
 					securityApi.getOrganization({organization: href})
 						.then((result) => {
-							result.body.should.have.properties(['href', 'name', 'customData']);
+							result.body.should.have.properties(['organization']);
+							result.body.organization.should.have.properties(['href', 'name', 'customData']);
 							done();
 						})
 						.fail((err) => {
@@ -206,12 +210,12 @@ describe('securityApi - Organization', () => {
 						//parent
 						securityApi.getOrganization({organization: parentOrg})
 							.then((result) => {
-
-								result.body.should.have.properties(['href', 'name', 'customData']);
-								should.not.exist(result.body.customData.parent);
-								result.body.customData.children.should.be.an.Array;
-								result.body.customData.children.length.should.be.equal(0);
-								result.body.customData.type.should.be.equal('affiliate');
+								result.body.should.have.properties(['organization']);
+								result.body.organization.should.have.properties(['href', 'name', 'customData']);
+								should.not.exist(result.body.organization.customData.parent);
+								result.body.organization.customData.children.should.be.an.Array;
+								result.body.organization.customData.children.length.should.be.equal(0);
+								result.body.organization.customData.type.should.be.equal('affiliate');
 								done();
 							})
 							.fail((err) => {
@@ -289,7 +293,7 @@ function createOrg(name, parentOrg, callback) {
 			result.body.should.have.properties(['organization', 'directory', 'scopes']);
 			result.body.organization.should.have.properties(['name', 'href', 'status']);
 			result.body.organization.name.should.be.equal(name);
-			result.body.organization.status.should.be.equal('ENABLED');
+			result.body.organization.status.should.be.equal('DISABLED');
 			result.body.organization.href.length.should.be.greaterThan(0);
 			result.body.directory.should.have.properties(['name', 'href', 'status']);
 			result.body.directory.name.should.be.equal(name);
