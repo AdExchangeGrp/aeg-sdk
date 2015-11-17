@@ -54,6 +54,7 @@ describe('securityApi - Organization', () => {
 							result.body.customData.children.should.be.an.Array;
 							result.body.customData.children.length.should.be.equal(0);
 							result.body.customData.type.should.be.equal('affiliate');
+							result.body.status.toLowerCase().should.be.equal('disabled');
 							done();
 						})
 						.fail((err) => {
@@ -79,6 +80,7 @@ describe('securityApi - Organization', () => {
 							result.body.customData.children.should.be.an.Array;
 							result.body.customData.children.length.should.be.equal(0);
 							result.body.customData.type.should.be.equal('affiliate');
+							result.body.status.toLowerCase().should.be.equal('disabled');
 
 							//parent
 							securityApi.getOrganization({organization: parentOrg})
