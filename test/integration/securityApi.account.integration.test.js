@@ -1,7 +1,6 @@
 'use strict';
 
 import securityApi from '../../src/api/securityApi.js';
-import ApiError from '../../src/errors/apiError.js';
 import uuid from 'node-uuid';
 
 /** @namespace result.body.should.have */
@@ -28,7 +27,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -61,7 +60,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -84,7 +83,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -101,7 +100,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -124,7 +123,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -139,7 +138,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -167,7 +166,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -180,7 +179,7 @@ describe('securityApi - Account', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 

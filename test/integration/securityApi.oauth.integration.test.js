@@ -1,7 +1,6 @@
 'use strict';
 
 import securityApi from '../../src/api/securityApi.js';
-import ApiError from '../../src/errors/apiError.js';
 
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {
@@ -28,7 +27,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -42,7 +41,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -63,7 +62,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -79,7 +78,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 	});
@@ -100,7 +99,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -114,7 +113,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -129,7 +128,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -169,7 +168,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -193,7 +192,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -215,7 +214,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -227,7 +226,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -245,7 +244,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 		});
 
@@ -259,7 +258,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 
 		});
@@ -274,7 +273,7 @@ describe('securityApi - OAuth', () => {
 					done();
 				})
 				.fail((err) => {
-					done(new ApiError(err));
+					done(err);
 				});
 
 		});
