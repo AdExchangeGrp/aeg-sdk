@@ -16,15 +16,11 @@ export default (req, res) => {
 	let accessToken = (req.cookies && req.cookies.access_token) ? req.cookies.access_token : null;
 	let refreshToken = (req.cookies && req.cookies.refresh_token) ? req.cookies.refresh_token : null;
 
-	securityApi.setToken(accessToken);
-
 	async.series([
 		(callback) => {
 			if (refreshToken && accessToken) {
-				securityApi.revokePasswordToken(
-					{
-						accessToken: refreshToken
-					})
+				securityApi.setToken(refreshToken);
+				securityApi.revokePasswordToken()
 					.then(() => {
 						callback();
 					})
@@ -38,10 +34,8 @@ export default (req, res) => {
 		},
 		(callback) => {
 			if (accessToken) {
-				securityApi.revokePasswordToken(
-					{
-						accessToken: accessToken
-					})
+				securityApi.setToken(accessToken);
+				securityApi.revokePasswordToken()
 					.then(() => {
 						callback();
 					})
