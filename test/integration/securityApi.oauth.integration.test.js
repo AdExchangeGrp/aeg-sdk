@@ -9,27 +9,11 @@ describe('securityApi - OAuth', () => {
 	let apiKeyScoped;
 	let apiTokenAuthorizationNotScoped;
 	let apiTokenAuthorizationScoped;
-	let passwordAuthorizationNotScoped;
-	let passwordAuthorizationScoped;
-	let refreshPasswordAuthorizationScoped;
+	let passwordAuthorization;
+	let refreshPasswordAuthorization;
 	let refreshToken;
 
 	describe('#passwordToken()', () => {
-
-		it('should return scoped password token without error', (done) => {
-			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', scope: 'test'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorizationScoped = result.body.accessToken;
-					refreshToken = result.body.refreshToken;
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
-		});
 
 		it('should return password token without error', (done) => {
 			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd'})
@@ -37,7 +21,8 @@ describe('securityApi - OAuth', () => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorizationNotScoped = result.body.accessToken;
+					passwordAuthorization = result.body.accessToken;
+					refreshToken = result.body.refreshToken;
 					done();
 				})
 				.fail((err) => {
@@ -50,7 +35,7 @@ describe('securityApi - OAuth', () => {
 	describe('#createApiKey()', () => {
 
 		it('should return scoped api key without error', (done) => {
-			securityApi.setToken(passwordAuthorizationNotScoped);
+			securityApi.setToken(passwordAuthorization);
 			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
@@ -172,20 +157,8 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return with 401 with an password token not scoped', (done) => {
-			securityApi.setToken(passwordAuthorizationNotScoped);
-			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					return done();
-				});
-		});
-
 		it('should execute with a password token', (done) => {
-			securityApi.setToken(passwordAuthorizationScoped);
+			securityApi.setToken(passwordAuthorization);
 			securityApi.testScopeProtected({name: 'Justin'})
 				.then((result) => {
 					result.body.should.be.eql({message: 'Hello, Justin!'});
@@ -202,15 +175,13 @@ describe('securityApi - OAuth', () => {
 
 		it('should refresh a password token', (done) => {
 			securityApi.refreshPasswordToken({
-					refreshToken: refreshToken,
-					priorAccessToken: passwordAuthorizationScoped
+					refreshToken: refreshToken
 				})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
-					refreshPasswordAuthorizationScoped = result.body.accessToken;
-					refreshToken = result.body.refreshToken;
+					refreshPasswordAuthorization = result.body.accessToken;
 					done();
 				})
 				.fail((err) => {
@@ -219,7 +190,7 @@ describe('securityApi - OAuth', () => {
 		});
 
 		it('should execute with a password token', (done) => {
-			securityApi.setToken(refreshPasswordAuthorizationScoped);
+			securityApi.setToken(refreshPasswordAuthorization);
 			securityApi.testScopeProtected({name: 'Justin'})
 				.then((result) => {
 					result.body.should.be.eql({message: 'Hello, Justin!'});
@@ -234,10 +205,10 @@ describe('securityApi - OAuth', () => {
 
 	describe('#revokePasswordToken', () => {
 
-		it('should revoke the password access token with scope', (done) => {
-			securityApi.setToken(passwordAuthorizationScoped);
+		it('should revoke the password access token', (done) => {
+			securityApi.setToken(passwordAuthorization);
 			securityApi.revokePasswordToken({
-					accessToken: passwordAuthorizationScoped
+					accessToken: passwordAuthorization
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -248,10 +219,22 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should revoke the password access token without scope', (done) => {
-			securityApi.setToken(passwordAuthorizationNotScoped);
+		it('should return with 401 with a bad password token', (done) => {
+			securityApi.setToken(passwordAuthorization);
+			securityApi.testScopeProtected({name: 'Justin'})
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
+		});
+
+		it('should revoke the password access via refresh token', (done) => {
+			securityApi.setToken(refreshPasswordAuthorization);
 			securityApi.revokePasswordToken({
-					accessToken: passwordAuthorizationNotScoped
+					accessToken: refreshPasswordAuthorization
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -263,19 +246,30 @@ describe('securityApi - OAuth', () => {
 
 		});
 
-		it('should revoke the password access via refresh token with scope', (done) => {
-			securityApi.setToken(refreshPasswordAuthorizationScoped);
-			securityApi.revokePasswordToken({
-					accessToken: refreshPasswordAuthorizationScoped
-				})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should return with 401 with a bad password token that was from a refresh', (done) => {
+			securityApi.setToken(refreshPasswordAuthorization);
+			securityApi.testScopeProtected({name: 'Justin'})
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
+		});
 
+		it('should revoke the password refresh token', (done) => {
+			securityApi.setToken(refreshToken);
+			securityApi.revokePasswordToken({
+						accessToken: refreshToken
+					})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 		});
 
 	});
@@ -296,6 +290,18 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
+		it('should return with 401 with a bad api token that was scoped', (done) => {
+			securityApi.setToken(apiTokenAuthorizationScoped);
+			securityApi.testScopeProtected({name: 'Justin'})
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
+		});
+
 		it('should revoke the access token that was not scoped', (done) => {
 			securityApi.setToken(apiTokenAuthorizationNotScoped);
 			securityApi.revokeApiToken({
@@ -310,68 +316,16 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-	});
-
-	describe('#testScopeProtected()', () => {
-
-		it('should return with 401 with a bad api token that was scoped', (done) => {
-			securityApi.setToken(apiTokenAuthorizationScoped);
-			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					done();
-				});
-		});
-
 		it('should return with 401 with a bad api token that was not scoped', (done) => {
 			securityApi.setToken(apiTokenAuthorizationNotScoped);
 			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					done();
-				});
-		});
-
-		it('should return with 401 with a bad password token that was scoped', (done) => {
-			securityApi.setToken(passwordAuthorizationScoped);
-			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					done();
-				});
-		});
-
-		it('should return with 401 with a bad password token that was not scoped', (done) => {
-			securityApi.setToken(passwordAuthorizationNotScoped);
-			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					done();
-				});
-		});
-
-		it('should return with 401 with a bad password token that was from a refresh and scoped', (done) => {
-			securityApi.setToken(refreshPasswordAuthorizationScoped);
-			securityApi.testScopeProtected({name: 'Justin'})
-				.then(() => {
-					done(new Error('Call should have failed unauthorized'));
-				})
-				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
-					done();
-				});
+					.then(() => {
+						done(new Error('Call should have failed unauthorized'));
+					})
+					.fail((err) => {
+						err.response.statusCode.should.be.equal(401);
+						done();
+					});
 		});
 
 	});
