@@ -65,7 +65,7 @@ function authorizePasswordToken(req, routeScopes, callback) {
 			return callback(new UnauthorizedError());
 		}
 
-		expandAndVerifyAccount(result, (err, expandedAccount) => {
+		expandAndVerifyAccount(req, result, (err, expandedAccount) => {
 
 			if (err) {
 				return callback(err);
@@ -107,7 +107,7 @@ function authorizeApiToken(req, routeScopes, tokenScopes, callback) {
 			return callback(new UnauthorizedError());
 		}
 
-		expandAndVerifyAccount(result, (err, expandedAccount) => {
+		expandAndVerifyAccount(req, result, (err, expandedAccount) => {
 
 			if (err) {
 				return callback(err);
@@ -130,7 +130,7 @@ function authorizeApiToken(req, routeScopes, tokenScopes, callback) {
  * @param {AuthenticationResult} authenticationResult
  * @param {function} callback
  */
-function expandAndVerifyAccount(authenticationResult, callback) {
+function expandAndVerifyAccount(req, authenticationResult, callback) {
 
 	let client = req.app.get('stormpathClient');
 
