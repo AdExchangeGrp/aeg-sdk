@@ -5,7 +5,6 @@ import helpers from 'express-stormpath/lib/helpers';
 import njwt from 'njwt';
 import config from 'config';
 import Unauthorized from '../errors/unauthorizedError';
-import { accountUtil } from '../stormpath';
 import async from 'async';
 
 let stormpathConfig = config.get('stormpath');
@@ -63,26 +62,11 @@ export default (req, res, loginUri) => {
 						return processErrorResponse(req, res, 500, {message: err.message});
 					}
 
-					accountUtil.getGroupNamesFromMembership(account, (err, result) => {
-
-						if (err) {
-							return processErrorResponse(req, res, 500, {message: err.message});
-						}
-
-						if (result && result.length) {
-							accessToken.body.scope = result.join(' ');
-							accessToken.setSigningKey(stormpathConfig.apiKey.secret);
-							let scopedToken = njwt.create(accessToken.body.toJSON(), stormpathConfig.apiKey.secret);
-							scopedToken.header = accessToken.header;
-							accessToken = scopedToken;
-						}
-
-						helpers.loginResponder(
-							{
-								accessToken: accessToken,
-								refreshToken: refreshToken
-							}, account, req, res);
-					});
+					helpers.loginResponder(
+						{
+							accessToken: accessToken,
+							refreshToken: refreshToken
+						}, account, req, res);
 				});
 			});
 		})
