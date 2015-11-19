@@ -157,10 +157,8 @@ describe('securityApi - Account', () => {
 	describe('#teardown', () => {
 
 		it('should revoke the refresh token for the admin', (done) => {
-			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken({
-					accessToken: adminRefreshToken
-				})
+			securityApi.setToken(adminRefreshToken);
+			securityApi.revokePasswordToken()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -171,9 +169,8 @@ describe('securityApi - Account', () => {
 		});
 
 		it('should revoke the password access token for the admin', (done) => {
-			securityApi.revokePasswordToken({
-					accessToken: adminPasswordToken
-				})
+			securityApi.setToken(adminPasswordToken);
+			securityApi.revokePasswordToken()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();

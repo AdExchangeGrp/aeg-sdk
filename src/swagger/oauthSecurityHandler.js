@@ -22,6 +22,8 @@ let stormpathConfig = config.get('stormpath');
  */
 export default (req, def, routeScopes, callback) => {
 
+	logger.debug(`Authorizing ${req.swagger.apiPath}`);
+
 	//check for the Authorization header
 	if (!req.headers.authorization) {
 		return callback(new UnauthorizedError('Invalid token'));
@@ -46,7 +48,7 @@ export default (req, def, routeScopes, callback) => {
 				});
 
 			} else {
-				return callback(new _errors.UnauthorizedError('Invalid token'));
+				return callback(new UnauthorizedError('Invalid token'));
 			}
 		} else {
 
