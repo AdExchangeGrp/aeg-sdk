@@ -84,6 +84,7 @@ function authorizePasswordToken(req, routeScopes, callback) {
 					}
 
 					req.account = expandedAccount;
+					callback();
 				}
 			});
 		});
