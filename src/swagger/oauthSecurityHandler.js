@@ -118,7 +118,7 @@ function authorizePasswordToken(req, routeScopes, callback) {
 					return callback(new UnauthorizedError('Could not retrieve account scopes'));
 				} else {
 
-					logger.info('API Token Scopes', {
+					logger.debug('API Token Scopes', {
 						routeScopes: routeScopes,
 						validScopes: groups
 					});
@@ -209,7 +209,7 @@ function checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, account, call
 			validScopes = [];
 		}
 
-		logger.info('API Token Scopes', {
+		logger.debug('API Token Scopes', {
 			routeScopes: routeScopes,
 			tokenScopes: tokenScopes,
 			validScopes: validScopes
