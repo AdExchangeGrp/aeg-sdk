@@ -37,7 +37,7 @@ export default (req, def, routeScopes, callback) => {
 				refreshAccessToken(req, (err, token) => {
 
 					if (err) {
-						return callback(new _errors.UnauthorizedError('Invalid token, could not refresh'));
+						return callback(new UnauthorizedError('Invalid token, could not refresh'));
 					}
 
 					req.headers.authorization = 'Bearer ' + token.accessTokenResponse.access_token;
