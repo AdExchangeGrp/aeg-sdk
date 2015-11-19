@@ -37,7 +37,7 @@ export default (req, def, routeScopes, callback) => {
 			let tokenScopes = token.parseScopesFromJwt(expandedJwt);
 
 			if (token.isPasswordToken(expandedJwt)) {
-				authorizePasswordToken(req, routeScopes, tokenScopes, callback);
+				authorizePasswordToken(req, routeScopes, callback);
 			} else {
 				authorizeApiToken(req, routeScopes, tokenScopes, callback);
 			}
@@ -49,10 +49,9 @@ export default (req, def, routeScopes, callback) => {
  * Authorizes a password token OAUTH flow
  * @param {Request} req
  * @param {String[]} routeScopes
- * @param {String[]} tokenScopes
  * @param {function} callback
  */
-function authorizePasswordToken(req, routeScopes, tokenScopes, callback) {
+function authorizePasswordToken(req, routeScopes, callback) {
 
 	let application = req.app.get('stormpathApplication');
 
@@ -66,12 +65,27 @@ function authorizePasswordToken(req, routeScopes, tokenScopes, callback) {
 			return callback(new UnauthorizedError());
 		}
 
-		handleAuthorizationRequest(req, result, routeScopes, tokenScopes, (err, expandedAccount) => {
-			if (!err) {
-				req.account = expandedAccount;
+		expandAndVerifyAccount(result, (err, expandedAccount) => {
+
+			if (err) {
+				return callback(err);
 			}
 
-			callback(err);
+			accountUtil.getGroupNamesFromMembership(expandedAccount, (err, groups) => {
+
+				if (err) {
+					return callback(new UnauthorizedError('Could not retrieve account scopes'));
+				} else {
+
+					if (routeScopes && routeScopes.length > 0) {
+						if (!_.intersection(routeScopes, groups).length) {
+							return callback(new UnauthorizedError('Account does not have the required scopes'));
+						}
+					}
+
+					req.account = expandedAccount;
+				}
+			});
 		});
 	});
 }
@@ -93,25 +107,30 @@ function authorizeApiToken(req, routeScopes, tokenScopes, callback) {
 			return callback(new UnauthorizedError());
 		}
 
-		handleAuthorizationRequest(req, result, routeScopes, tokenScopes, (err, expandedAccount) => {
-			if (!err) {
-				req.account = expandedAccount;
+		expandAndVerifyAccount(result, (err, expandedAccount) => {
+
+			if (err) {
+				return callback(err);
 			}
 
-			callback(err);
+			checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, expandedAccount, (err) => {
+				if (err) {
+					return callback(new UnauthorizedError('Could not verify scopes for api token'));
+				} else {
+					req.account = expandedAccount;
+					callback();
+				}
+			});
 		});
 	});
 }
 
 /**
- * Check an authorization request
- * @param {Request} request
+ * Expand and verify the account
  * @param {AuthenticationResult} authenticationResult
- * @param {String[]} routeScopes
- * @param {String[]} tokenScopes
  * @param {function} callback
  */
-function handleAuthorizationRequest(req, authenticationResult, routeScopes, tokenScopes, callback) {
+function expandAndVerifyAccount(authenticationResult, callback) {
 
 	let client = req.app.get('stormpathClient');
 
@@ -125,16 +144,7 @@ function handleAuthorizationRequest(req, authenticationResult, routeScopes, toke
 			return callback(new UnauthorizedError('Account is not active'));
 		}
 
-		expandAccount(req.app, account, (err, expandedAccount) => {
-
-			if (err) {
-				return callback(new UnauthorizedError('Could not retrieve account'));
-			}
-
-			checkScopesAgainstRoute(routeScopes, tokenScopes, account, (err) => {
-				callback(err, expandedAccount);
-			});
-		});
+		expandAccount(req.app, account, callback);
 	});
 }
 
@@ -144,15 +154,15 @@ function handleAuthorizationRequest(req, authenticationResult, routeScopes, toke
  * @param tokenScopes
  * @param callback
  */
-function checkScopesAgainstRoute(routeScopes, tokenScopes, account, callback) {
-	checkScopesAgainstAccount(tokenScopes, account, (err, validScopes) => {
+function checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, account, callback) {
+	checkApiTokenScopesAgainstAccount(tokenScopes, account, (err, validScopes) => {
 
 		if (err) {
 			logger.error(err);
 			validScopes = [];
 		}
 
-		logger.info('Scopes', {
+		logger.info('API Token Scopes', {
 			routeScopes: routeScopes,
 			tokenScopes: tokenScopes,
 			validScopes: validScopes
@@ -166,20 +176,20 @@ function checkScopesAgainstRoute(routeScopes, tokenScopes, account, callback) {
 
 		callback();
 	});
-}
 
-/**
- * Verify the token scope list is valid for the account
- * @param {String[]} scopes
- * @param {Account} account
- * @param {function} callback
- */
-function checkScopesAgainstAccount(scopes, account, callback) {
-	accountUtil.getGroupNamesFromMembership(account, (err, groups) => {
-		if (err) {
-			callback(err);
-		} else {
-			callback(null, _.intersection(scopes, groups));
-		}
-	});
+	/**
+	 * Verify the token scope list is valid for the account
+	 * @param {String[]} scopes
+	 * @param {Account} account
+	 * @param {function} callback
+	 */
+	function checkApiTokenScopesAgainstAccount(scopes, account, callback) {
+		accountUtil.getGroupNamesFromMembership(account, (err, groups) => {
+			if (err) {
+				callback(err);
+			} else {
+				callback(null, _.intersection(scopes, groups));
+			}
+		});
+	}
 }
