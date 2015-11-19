@@ -211,7 +211,6 @@ var SecurityService = (function() {
      * @param {string} username - Username or email address
      * @param {string} password - User password
      * @param {string} organization - Organization's href, use it's default directory
-     * @param {string} scope - The scopes to allow
      * 
      */
     SecurityService.prototype.passwordToken = function(parameters) {
@@ -248,10 +247,6 @@ var SecurityService = (function() {
 
         if (parameters['organization'] !== undefined) {
             form['organization'] = parameters['organization'];
-        }
-
-        if (parameters['scope'] !== undefined) {
-            form['scope'] = parameters['scope'];
         }
 
         if (parameters.$queryParameters) {
@@ -307,8 +302,6 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#refreshPasswordToken
      * @param {string} refreshToken - The refresh token without the bearer
-     * @param {string} priorAccessToken - The prior granted access token
-     * @param {string} scope - The scopes to allow
      * 
      */
     SecurityService.prototype.refreshPasswordToken = function(parameters) {
@@ -332,14 +325,6 @@ var SecurityService = (function() {
         if (parameters['refreshToken'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: refreshToken'));
             return deferred.promise;
-        }
-
-        if (parameters['priorAccessToken'] !== undefined) {
-            form['priorAccessToken'] = parameters['priorAccessToken'];
-        }
-
-        if (parameters['scope'] !== undefined) {
-            form['scope'] = parameters['scope'];
         }
 
         if (parameters.$queryParameters) {
