@@ -77,6 +77,11 @@ function authorizePasswordToken(req, routeScopes, callback) {
 					return callback(new UnauthorizedError('Could not retrieve account scopes'));
 				} else {
 
+					logger.info('API Token Scopes', {
+						routeScopes: routeScopes,
+						validScopes: groups
+					});
+
 					if (routeScopes && routeScopes.length > 0) {
 						if (!_.intersection(routeScopes, groups).length) {
 							return callback(new UnauthorizedError('Account does not have the required scopes'));
