@@ -31,7 +31,23 @@ export default (req, def, routeScopes, callback) => {
 	jwt.verify(token.parseTokenFromAuthorization(req.headers.authorization), stormpathConfig.apiKey.secret, (err, expandedJwt) => {
 
 		if (err) {
-			return callback(new UnauthorizedError('Invalid token'));
+
+			if (err.message === 'Jwt is expired') {
+
+				refreshAccessToken(req, (err, token) => {
+
+					if (err) {
+						return callback(new _errors.UnauthorizedError('Invalid token, could not refresh'));
+					}
+
+					req.headers.authorization = 'Bearer ' + token.accessTokenResponse.access_token;
+
+					authorizePasswordToken(req, routeScopes, callback);
+				});
+
+			} else {
+				return callback(new _errors.UnauthorizedError('Invalid token'));
+			}
 		} else {
 
 			let tokenScopes = token.parseScopesFromJwt(expandedJwt);
@@ -44,6 +60,29 @@ export default (req, def, routeScopes, callback) => {
 		}
 	});
 };
+
+/**
+ * Tries to refresh an access token
+ * @param {Request} req
+ * @param {function} callback
+ */
+function refreshAccessToken(req, callback) {
+
+	if (!req.headers['x-refresh-token']) {
+		return callback(new Error('Refresh token not present'));
+	}
+
+	let application = req.app.get('stormpathApplication');
+
+	let authenticator = new stormpath.OAuthAuthenticator(application);
+
+	authenticator.authenticate({
+		body: {
+			grant_type: 'refresh_token',
+			refresh_token: req.headers['x-refresh-token']
+		}
+	}, callback);
+}
 
 /**
  * Authorizes a password token OAUTH flow
