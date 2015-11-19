@@ -156,9 +156,9 @@ function expandAndVerifyAccount(req, authenticationResult, callback) {
 
 /**
  * Verify an accounts scopes against the route scopes
- * @param routeScopes
- * @param tokenScopes
- * @param callback
+ * @param {String[]} routeScopes
+ * @param {String[]} tokenScopes
+ * @param {function} callback
  */
 function checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, account, callback) {
 	checkApiTokenScopesAgainstAccount(tokenScopes, account, (err, validScopes) => {
