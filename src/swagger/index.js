@@ -1,7 +1,8 @@
 'use strict';
 
 import oauthSecurityHandler from './oauthSecurityHandler';
+import compileSwaggerFile from 'compileSwaggerFile';
 
-export {oauthSecurityHandler};
+export {oauthSecurityHandler, compileSwaggerFile};
 
-export default {oauthSecurityHandler};
+export default {oauthSecurityHandler, compileSwaggerFile};
