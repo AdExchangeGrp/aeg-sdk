@@ -7,8 +7,6 @@ import config from 'config';
 import Unauthorized from '../errors/unauthorizedError';
 import async from 'async';
 
-let stormpathConfig = config.get('stormpath');
-
 /**
  * Express route to login a user using security service
  * @param {Request} req
@@ -16,6 +14,8 @@ let stormpathConfig = config.get('stormpath');
  * @param {string} loginUri - redirect on failed login
  */
 export default (req, res, loginUri) => {
+
+	let stormpathConfig = config.get('stormpath');
 
 	let client = req.app.get('stormpathClient');
 
