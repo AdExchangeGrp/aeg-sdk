@@ -254,9 +254,13 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
+	});
+
+	describe('#revokeRefreshToken', () => {
+
 		it('should revoke the password refresh token', (done) => {
 			securityApi.setToken(refreshToken);
-			securityApi.revokePasswordToken()
+			securityApi.revokeRefreshToken()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
