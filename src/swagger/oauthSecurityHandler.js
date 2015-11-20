@@ -10,7 +10,10 @@ import { token } from '../stormpath';
 import { expandAccount } from 'express-stormpath/lib/helpers';
 import { accountUtil } from '../stormpath';
 
-let stormpathConfig = config.get('stormpath');
+const stormpathConfig = config.get('stormpath');
+const invalidToken = 'Invalid token';
+const expiredToken = 'Expired token';
+const permissionDenied = 'Permission denied';
 
 /**
  * Authenticates API requests using OAUTH JWT tokens
@@ -26,7 +29,7 @@ export default (req, def, routeScopes, callback) => {
 
 	//check for the Authorization header
 	if (!req.headers.authorization) {
-		return callback(new UnauthorizedError('Invalid token'));
+		return callback(new UnauthorizedError(invalidToken));
 	}
 
 	//check to see if the JWT it valid and extract any scopes
@@ -35,21 +38,11 @@ export default (req, def, routeScopes, callback) => {
 		if (err) {
 
 			if (err.message === 'Jwt is expired') {
-
-				refreshAccessToken(req, (err, token) => {
-
-					if (err) {
-						return callback(new UnauthorizedError('Invalid token, could not refresh'));
-					}
-
-					req.headers.authorization = 'Bearer ' + token.accessTokenResponse.access_token;
-
-					authorizePasswordToken(req, routeScopes, callback);
-				});
-
+				return callback(new UnauthorizedError(expiredToken));
 			} else {
-				return callback(new UnauthorizedError('Invalid token'));
+				return callback(new UnauthorizedError(invalidToken));
 			}
+
 		} else {
 
 			let tokenScopes = token.parseScopesFromJwt(expandedJwt);
@@ -62,29 +55,6 @@ export default (req, def, routeScopes, callback) => {
 		}
 	});
 };
-
-/**
- * Tries to refresh an access token
- * @param {Request} req
- * @param {function} callback
- */
-function refreshAccessToken(req, callback) {
-
-	if (!req.headers['x-refresh-token']) {
-		return callback(new Error('Refresh token not present'));
-	}
-
-	let application = req.app.get('stormpathApplication');
-
-	let authenticator = new stormpath.OAuthAuthenticator(application);
-
-	authenticator.authenticate({
-		body: {
-			grant_type: 'refresh_token',
-			refresh_token: req.headers['x-refresh-token']
-		}
-	}, callback);
-}
 
 /**
  * Authorizes a password token OAUTH flow
@@ -115,7 +85,7 @@ function authorizePasswordToken(req, routeScopes, callback) {
 			accountUtil.getGroupNamesFromMembership(expandedAccount, (err, groups) => {
 
 				if (err) {
-					return callback(new UnauthorizedError('Could not retrieve account scopes'));
+					return callback(new UnauthorizedError(permissionDenied));
 				} else {
 
 					logger.debug('API Token Scopes', {
@@ -125,7 +95,7 @@ function authorizePasswordToken(req, routeScopes, callback) {
 
 					if (routeScopes && routeScopes.length > 0) {
 						if (!_.intersection(routeScopes, groups).length) {
-							return callback(new UnauthorizedError('Account does not have the required scopes'));
+							return callback(new UnauthorizedError(permissionDenied));
 						}
 					}
 
@@ -162,7 +132,7 @@ function authorizeApiToken(req, routeScopes, tokenScopes, callback) {
 
 			checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, expandedAccount, (err) => {
 				if (err) {
-					return callback(new UnauthorizedError('Could not verify scopes for api token'));
+					return callback(new UnauthorizedError(permissionDenied));
 				} else {
 					req.account = expandedAccount;
 					callback();
@@ -217,7 +187,7 @@ function checkApiTokenScopesAgainstRoute(routeScopes, tokenScopes, account, call
 
 		if (routeScopes && routeScopes.length > 0) {
 			if (!_.intersection(routeScopes, validScopes).length) {
-				return callback(new UnauthorizedError('Account does not have the required scopes'));
+				return callback(new UnauthorizedError(permissionDenied));
 			}
 		}
 
