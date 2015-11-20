@@ -40,7 +40,6 @@ var SecurityService = (function() {
      * Creates an api key for an account
      * @method
      * @name SecurityService#createApiKey
-     * @param {string} xRefreshToken - Refresh token
      * 
      */
     SecurityService.prototype.createApiKey = function(parameters) {
@@ -64,10 +63,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters.$queryParameters) {
@@ -538,7 +533,6 @@ var SecurityService = (function() {
      * Get the current account
      * @method
      * @name SecurityService#getAccount
-     * @param {string} xRefreshToken - Refresh token
      * 
      */
     SecurityService.prototype.getAccount = function(parameters) {
@@ -562,10 +556,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters.$queryParameters) {
@@ -620,7 +610,6 @@ var SecurityService = (function() {
      * Revoke an account
      * @method
      * @name SecurityService#revokeAccount
-     * @param {string} xRefreshToken - Refresh token
      * 
      */
     SecurityService.prototype.revokeAccount = function(parameters) {
@@ -644,10 +633,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters.$queryParameters) {
@@ -702,7 +687,6 @@ var SecurityService = (function() {
      * Register's a new account
      * @method
      * @name SecurityService#registerAccount
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} organization - Href of the organization to add to
      * @param {string} email - Email address
      * @param {string} password - Password
@@ -733,10 +717,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['organization'] !== undefined) {
@@ -839,7 +819,6 @@ var SecurityService = (function() {
      * Update an account
      * @method
      * @name SecurityService#updateAccount
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} email - Email address
      * @param {string} password - Password
      * @param {string} givenName - Given / first name
@@ -868,10 +847,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['email'] !== undefined) {
@@ -946,7 +921,6 @@ var SecurityService = (function() {
      * Gets an organization
      * @method
      * @name SecurityService#getOrganization
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} organization - The organization to get
      * 
      */
@@ -971,10 +945,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['organization'] !== undefined) {
@@ -1038,7 +1008,6 @@ var SecurityService = (function() {
      * Create an organization
      * @method
      * @name SecurityService#createOrganization
-     * @param {string} xRefreshToken - Refresh token
 
      * @param {string} name - The organization name
      * @param {string} parentOrganization - The resource href of the parent organization
@@ -1066,10 +1035,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         form['type'] = 'affiliate';
@@ -1148,7 +1113,6 @@ var SecurityService = (function() {
      * Delete an organization
      * @method
      * @name SecurityService#deleteOrganization
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} organization - The resource href of the organization
      * 
      */
@@ -1173,10 +1137,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['organization'] !== undefined) {
@@ -1240,7 +1200,6 @@ var SecurityService = (function() {
      * Approves an organization
      * @method
      * @name SecurityService#approveOrganization
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} organization - The resource href of the organization
      * 
      */
@@ -1265,10 +1224,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['organization'] !== undefined) {
@@ -1405,7 +1360,6 @@ var SecurityService = (function() {
      * Returns 'Hello' to the caller
      * @method
      * @name SecurityService#testScopeProtected
-     * @param {string} xRefreshToken - Refresh token
      * @param {string} name - The name of the person to whom to say hello
      * 
      */
@@ -1430,10 +1384,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['xRefreshToken'] !== undefined) {
-            headers['X-Refresh-Token'] = parameters['xRefreshToken'];
         }
 
         if (parameters['name'] !== undefined) {
