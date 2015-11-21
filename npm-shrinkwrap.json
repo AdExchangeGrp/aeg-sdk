@@ -1,6 +1,6 @@
 {
   "name": "@adexchange/aeg-sdk",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "dependencies": {
     "@adexchange/aeg-logger": {
       "version": "0.0.24",
