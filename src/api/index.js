@@ -1,7 +1,8 @@
 'use strict';
 
 import securityApi from './securityApi';
+import ApiError from './apiError';
 
-export {securityApi};
+export {securityApi, ApiError};
 
-export default {securityApi};
+export default {securityApi, ApiError};
