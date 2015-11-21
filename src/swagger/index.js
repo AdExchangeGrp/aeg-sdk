@@ -2,7 +2,8 @@
 
 import oauthSecurityHandler from './oauthSecurityHandler';
 import compileSwaggerFile from './compileSwaggerFile';
+import errorResponse from './errorResponse';
 
-export {oauthSecurityHandler, compileSwaggerFile};
+export {oauthSecurityHandler, errorResponse, compileSwaggerFile};
 
-export default {oauthSecurityHandler, compileSwaggerFile};
+export default {oauthSecurityHandler, errorResponse, compileSwaggerFile};
