@@ -211,6 +211,7 @@ var SecurityService = (function() {
      * @param {string} username - Username or email address
      * @param {string} password - User password
      * @param {string} organization - Organization's href, use it's default directory
+     * @param {boolean} fetchAccount - Return the account in the response
      * 
      */
     SecurityService.prototype.passwordToken = function(parameters) {
@@ -247,6 +248,10 @@ var SecurityService = (function() {
 
         if (parameters['organization'] !== undefined) {
             form['organization'] = parameters['organization'];
+        }
+
+        if (parameters['fetchAccount'] !== undefined) {
+            form['fetchAccount'] = parameters['fetchAccount'];
         }
 
         if (parameters.$queryParameters) {
