@@ -3,14 +3,12 @@
 import logger from '@adexchange/aeg-logger';
 import _ from 'underscore';
 import config from 'config';
-import { UnauthorizedError } from '../errors';
 import stormpath from 'stormpath';
 import jwt from 'njwt';
 import { token } from '../stormpath';
-import { expandAccount } from 'express-stormpath/lib/helpers';
 import { accountUtil } from '../stormpath';
+import UnauthorizedError from './unauthorizedError';
 
-const stormpathConfig = config.get('stormpath');
 const invalidToken = 'Invalid token';
 const expiredToken = 'Expired token';
 const permissionDenied = 'Permission denied';
@@ -26,6 +24,8 @@ const permissionDenied = 'Permission denied';
 export default (req, def, routeScopes, callback) => {
 
 	logger.debug(`Authorizing ${req.swagger.apiPath}`);
+
+	const stormpathConfig = config.get('stormpath');
 
 	//check for the Authorization header
 	if (!req.headers.authorization) {
@@ -161,7 +161,7 @@ function expandAndVerifyAccount(req, authenticationResult, callback) {
 			return callback(new UnauthorizedError('Account is not active'));
 		}
 
-		expandAccount(req.app, account, callback);
+		accountUtil.expand(req.app, account, callback);
 	});
 }
 
