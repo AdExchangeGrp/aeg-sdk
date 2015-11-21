@@ -18,8 +18,8 @@ export default {
 			}
 
 			memberships.filter(
-				(membership, cb) => {
-					cb(membership.group.status === 'ENABLED');
+				(membership, callback) => {
+					callback(membership.group.status === 'ENABLED');
 				},
 				function (enabledMemberships) {
 					var groups = _.map(enabledMemberships, function (membership) {
@@ -39,9 +39,9 @@ export default {
 	expand: function (expand, account, accountCallback) {
 
 		async.parallel([
-			function (cb) {
+			function (callback) {
 				if (!expand.apiKeys) {
-					return cb();
+					return callback();
 				}
 
 				account.getApiKeys(function (err, apiKeys) {
@@ -51,12 +51,12 @@ export default {
 					}
 
 					account.apiKeys = apiKeys;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.customData) {
-					return cb();
+					return callback();
 				}
 
 				account.getCustomData(function (err, customData) {
@@ -66,12 +66,12 @@ export default {
 					}
 
 					account.customData = customData;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.directory) {
-					return cb();
+					return callback();
 				}
 
 				account.getDirectory(function (err, directory) {
@@ -81,12 +81,12 @@ export default {
 					}
 
 					account.directory = directory;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.groups) {
-					return cb();
+					return callback();
 				}
 
 				account.getGroups(function (err, groups) {
@@ -96,12 +96,12 @@ export default {
 					}
 
 					account.groups = groups;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.groupMemberships) {
-					return cb();
+					return callback();
 				}
 
 				account.getGroupMemberships(function (err, groupMemberships) {
@@ -111,12 +111,12 @@ export default {
 					}
 
 					account.groupMemberships = groupMemberships;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.providerData) {
-					return cb();
+					return callback();
 				}
 
 				account.getProviderData(function (err, providerData) {
@@ -126,12 +126,12 @@ export default {
 					}
 
 					account.providerData = providerData;
-					cb();
+					callback();
 				});
 			},
-			function (cb) {
+			function (callback) {
 				if (!expand.tenant) {
-					return cb();
+					return callback();
 				}
 
 				account.getTenant(function (err, tenant) {
@@ -141,7 +141,7 @@ export default {
 					}
 
 					account.tenant = tenant;
-					cb();
+					callback();
 				});
 			}
 		], function (err) {
