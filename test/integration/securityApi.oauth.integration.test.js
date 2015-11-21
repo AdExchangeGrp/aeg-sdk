@@ -1,6 +1,7 @@
 'use strict';
 
 import securityApi from '../../src/api/securityApi.js';
+import _ from 'underscore';
 
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {
@@ -15,10 +16,14 @@ describe('securityApi - OAuth', () => {
 
 	describe('#passwordToken()', () => {
 
-		it('should return password token without error', (done) => {
-			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd'})
+		it('should return password token without error with account', (done) => {
+			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
 				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
+					(_.isObject(result.body.account)).should.be.ok;
+					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
+					result.body.account.href.should.be.a.String;
+					result.body.account.href.length.should.be.greaterThan(0);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					passwordAuthorization = result.body.accessToken;
@@ -179,6 +184,7 @@ describe('securityApi - OAuth', () => {
 				})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.should.not.have.properties(['account']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					refreshPasswordAuthorization = result.body.accessToken;

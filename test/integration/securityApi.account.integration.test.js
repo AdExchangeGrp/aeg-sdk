@@ -2,6 +2,7 @@
 
 import securityApi from '../../src/api/securityApi.js';
 import uuid from 'node-uuid';
+import _ from 'underscore';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
@@ -46,6 +47,7 @@ describe('securityApi - Account', () => {
 				})
 				.then((result) => {
 					result.body.should.have.properties(['account']);
+					(_.isObject(result.body.account)).should.be.ok;
 					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
 					result.body.account.href.should.be.a.String;
 					result.body.account.href.length.should.be.greaterThan(0);
@@ -108,6 +110,7 @@ describe('securityApi - Account', () => {
 			securityApi.getAccount()
 				.then((result) => {
 					result.body.should.have.properties(['account']);
+					(_.isObject(result.body.account)).should.be.ok;
 					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
 					result.body.account.href.should.be.a.String;
 					result.body.account.href.length.should.be.greaterThan(0);
