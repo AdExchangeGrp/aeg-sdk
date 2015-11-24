@@ -7,7 +7,7 @@ let securityService = null;
 
 if (config.has('securityService')) {
 	let securityServiceConfig = config.get('securityService');
-	securityService = new SecurityService(securityServiceConfig.host + securityServiceConfig.baseUrl);
+	securityService = new SecurityService(securityServiceConfig.host);
 }
 
 export default securityService;

@@ -6,8 +6,7 @@ logger:
       level: debug
       filename: logs/aeg-sdk.log
 securityService:
-  host: http://localhost:3000
-  baseUrl: /v1
+  host: http://localhost:3000/v1/
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ
