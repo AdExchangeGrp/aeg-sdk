@@ -612,10 +612,10 @@ var SecurityService = (function() {
         return deferred.promise;
     };
     /**
-     * Authorize a resource
+     * Authorize a resource by checking if any one of the scopes match an account's scopes
      * @method
      * @name SecurityService#authorize
-     * @param {string} scope - Scope to authorize
+     * @param {array} scopes - Scopes to check authorization
      * 
      */
     SecurityService.prototype.authorize = function(parameters) {
@@ -641,8 +641,8 @@ var SecurityService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        if (parameters['scope'] !== undefined) {
-            form['scope'] = parameters['scope'];
+        if (parameters['scopes'] !== undefined) {
+            form['scopes'] = parameters['scopes'];
         }
 
         if (parameters.$queryParameters) {
