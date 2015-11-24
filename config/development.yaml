@@ -7,6 +7,7 @@ logger:
       filename: logs/aeg-sdk.log
 securityService:
   host: http://localhost:3000/v1/
+  swagger: http://localhost:3000/swagger
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ

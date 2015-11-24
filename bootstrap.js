@@ -29,7 +29,7 @@ if (command === 'swaggerCodeGen') {
 
 	if (service === 'security') {
 
-		getSwaggerSpec(securityServiceConfig.host, (err, result) => {
+		getSwaggerSpec(securityServiceConfig.swagger, (err, result) => {
 			if (err) {
 				throw err;
 			}
@@ -48,6 +48,6 @@ if (command === 'swaggerCodeGen') {
 	}
 }
 
-function getSwaggerSpec(host, callback) {
-	request(host + '/swagger', {method: 'GET', json: true}, callback);
+function getSwaggerSpec(swagger, callback) {
+	request(swagger, {method: 'GET', json: true}, callback);
 }
