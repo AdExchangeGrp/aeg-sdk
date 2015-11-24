@@ -38,9 +38,11 @@ export default {
 	 */
 	expand: function (expand, account, accountCallback) {
 
+		let localExpand = expand ? expand : {};
+
 		async.parallel([
 			function (callback) {
-				if (!expand.apiKeys) {
+				if (!localExpand.apiKeys) {
 					return callback();
 				}
 
@@ -55,7 +57,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.customData) {
+				if (!localExpand.customData) {
 					return callback();
 				}
 
@@ -70,7 +72,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.directory) {
+				if (!localExpand.directory) {
 					return callback();
 				}
 
@@ -85,7 +87,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.groups) {
+				if (!localExpand.groups) {
 					return callback();
 				}
 
@@ -100,7 +102,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.groupMemberships) {
+				if (!localExpand.groupMemberships) {
 					return callback();
 				}
 
@@ -115,7 +117,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.providerData) {
+				if (!localExpand.providerData) {
 					return callback();
 				}
 
@@ -130,7 +132,7 @@ export default {
 				});
 			},
 			function (callback) {
-				if (!expand.tenant) {
+				if (!localExpand.tenant) {
 					return callback();
 				}
 

@@ -150,6 +150,7 @@ function authorizeApiToken(req, routeScopes, tokenScopes, callback) {
 function expandAndVerifyAccount(req, authenticationResult, callback) {
 
 	let client = req.app.get('stormpathClient');
+	let config = req.app.get('stormpathConfig');
 
 	client.getAccount(authenticationResult.account.href, (err, account) => {
 
@@ -161,7 +162,7 @@ function expandAndVerifyAccount(req, authenticationResult, callback) {
 			return callback(new UnauthorizedError('Account is not active'));
 		}
 
-		accountUtil.expand(req.app, account, callback);
+		accountUtil.expand(config.expand, account, callback);
 	});
 }
 
