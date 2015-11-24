@@ -6,7 +6,7 @@ logger:
       level: debug
       filename: logs/aeg-sdk.log
 securityService:
-  host: https://api.aegcamp.com/v1/security/
+  host: https://api.aegcamp.com/v1/security
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ
