@@ -209,6 +209,71 @@ describe('securityApi - OAuth', () => {
 
 	});
 
+	describe('#authorize', () => {
+
+		it('should authorize without scopes', (done) => {
+			securityApi.setToken(apiTokenAuthorizationNotScoped);
+			securityApi.authorize({scopes: ''})
+				.then((result) => {
+					result.body.should.be.eql({message: 'success'});
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should authorize with scopes', (done) => {
+			securityApi.setToken(apiTokenAuthorizationScoped);
+			securityApi.authorize({scopes: 'test'})
+				.then((result) => {
+					result.body.should.be.eql({message: 'success'});
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should authorize with multiple scopes', (done) => {
+			securityApi.setToken(apiTokenAuthorizationScoped);
+			securityApi.authorize({scopes: 'test,test2,test3'})
+				.then((result) => {
+					result.body.should.be.eql({message: 'success'});
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should not authorize with one scope', (done) => {
+			securityApi.setToken(apiTokenAuthorizationScoped);
+			securityApi.authorize({scopes: 'test3'})
+				.then((result) => {
+					done(new Error('Should not have authorized'));
+				})
+				.fail((err) => {
+					console.log(err.response);
+					err.response.statusCode.should.be.equal(401);
+					done();
+				});
+		});
+
+		it('should not authorize with multiple scopes', (done) => {
+			securityApi.setToken(apiTokenAuthorizationScoped);
+			securityApi.authorize({scopes: 'test3,test4'})
+				.then((result) => {
+					done(new Error('Should not have authorized'));
+				})
+				.fail((err) => {
+					err.response.statusCode.should.be.equal(401);
+					done();
+				});
+		});
+
+	});
+
 	describe('#revokePasswordToken', () => {
 
 		it('should revoke the password access token', (done) => {

@@ -10,7 +10,7 @@ function Unauthorized(message) {
 	temp.name = this.name = 'Unauthorized';
 	this.stack = temp.stack;
 	this.message = message ? message : 'You are not authorized to access this resource';
-	this.status = 401;
+	this.statusCode = 401;
 }
 
 Unauthorized.prototype = Object.create(Error.prototype, {

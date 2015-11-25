@@ -6,9 +6,9 @@ import logger from '@adexchange/aeg-logger';
 
 /**
  * Middleware to populate the account details to the request
- * @param req
- * @param res
- * @param next
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
  */
 export default (req, res, next) => {
 	if (req.headers.authorization) {
