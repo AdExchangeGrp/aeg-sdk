@@ -16,7 +16,7 @@ branches:
     - master
 
 # install dependencies
-before_install:Clea
+before_install:
   - shippable_retry npm install
 
 # running the tests and jshint
