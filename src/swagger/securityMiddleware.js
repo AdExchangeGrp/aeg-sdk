@@ -1,6 +1,7 @@
 'use strict';
 
 import securityApi from '../api/securityApi';
+import { token } from '../stormpath';
 import logger from '@adexchange/aeg-logger';
 
 /**
@@ -11,6 +12,7 @@ import logger from '@adexchange/aeg-logger';
  */
 export default (req, res, next) => {
 	if (req.headers.authorization) {
+		securityApi.setToken(token.parseTokenFromAuthorization(req.headers.authorization));
 		securityApi.getAccount()
 			.then((result) => {
 				req.account = result.body.account;
