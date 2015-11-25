@@ -1,7 +1,5 @@
-# language setting
 language: node_js
 
-# environment
 cache: true
 
 env:
@@ -10,20 +8,16 @@ env:
     - XUNIT_FILE=shippable/testresults/result.xml
     - PROJECT=aeg-sdk
 
-# include
 branches:
   only:
     - master
 
-# install dependencies
 before_install:
   - shippable_retry npm install
 
-# running the tests and jshint
 script:
   - npm run build
 
-# Tell istanbul to generate a coverage report
 after_script:
   - ./node_modules/.bin/istanbul cover --dir  shippable/codecoverage/ _mocha -- --recursive test/unit/
   - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/
