@@ -6,7 +6,7 @@
   "author": "Ad Exchange Group",
   "repository": {
     "type": "git",
-    "url": "git://git@bitbucket.org:AdExchangeGrp/aeg-sdk.git"
+    "url": "https://github.com/AdExchangeGrp/aeg-sdk.git"
   },
   "license": "UNLICENSED",
   "scripts": {
@@ -30,7 +30,7 @@
     "xunit-file": "0.0.6"
   },
   "dependencies": {
-    "@adexchange/aeg-logger": "0.0.24",
+    "@adexchange/aeg-logger": "0.0.25",
     "async": "^1.5.0",
     "babel-core": "^6.1.21",
     "babel-preset-es2015": "^6.1.18",
