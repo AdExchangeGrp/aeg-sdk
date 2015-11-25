@@ -254,7 +254,6 @@ describe('securityApi - OAuth', () => {
 					done(new Error('Should not have authorized'));
 				})
 				.fail((err) => {
-					console.log(err.response);
 					err.response.statusCode.should.be.equal(401);
 					done();
 				});
