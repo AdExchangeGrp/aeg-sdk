@@ -5,8 +5,13 @@ logger:
     - type: file
       level: debug
       filename: logs/aeg-sdk.log
+
 securityService:
   host: https://api.aegcamp.com/v1/security
+
+affiliateService:
+  host: https://api.aegcamp.com/v1/affiliate
+
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ

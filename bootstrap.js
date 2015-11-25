@@ -6,7 +6,8 @@ import request from 'request';
 import config from 'config';
 import path from 'path';
 
-let securityServiceConfig = config.get('securityService');
+const securityServiceConfig = config.get('securityService');
+const affiliateServiceConfig = config.get('affiliateService');
 
 let argv = require('yargs')
 	.usage('Usage: {0} <command> [options]')
@@ -19,6 +20,7 @@ let argv = require('yargs')
 		});
 	})
 	.example('swaggerCodeGen -s security')
+	.example('swaggerCodeGen -s affiliate')
 	.demand(1)
 	.argv;
 
@@ -28,24 +30,42 @@ if (command === 'swaggerCodeGen') {
 	let service = argv.s;
 
 	if (service === 'security') {
-
-		getSwaggerSpec(securityServiceConfig.swagger, (err, result) => {
+		generate('SecurityService', 'securityService.js', securityServiceConfig.swagger, (err) => {
 			if (err) {
 				throw err;
 			}
-			let client = CodeGen.getCustomCode({
-				className: 'SecurityService',
-				swagger: result.body,
-				template: {
-					class: fs.readFileSync('src/swagger/templates/node-class.mustache', 'utf-8'),
-					method: fs.readFileSync('src/swagger/templates/method.mustache', 'utf-8'),
-					request: fs.readFileSync('src/swagger/templates/node-request.mustache', 'utf-8')
-				}
-			});
-			fs.writeFileSync(path.join(__dirname, 'src', 'api', 'securityService.js'), client);
+		});
+	} else if (service === 'affiliate') {
+		generate('AffiliateService', 'affiliateService.js', affiliateServiceConfig.swagger, (err) => {
+			if (err) {
+				throw err;
+			}
+		});
+	}
+}
+
+function generate(className, fileName, swagger, callback) {
+	getSwaggerSpec(swagger, (err, result) => {
+
+		if (err) {
+			return callback(err);
+		}
+
+		let client = CodeGen.getCustomCode({
+			className: className,
+			swagger: result.body,
+			template: {
+				class: fs.readFileSync('src/swagger/templates/node-class.mustache', 'utf-8'),
+				method: fs.readFileSync('src/swagger/templates/method.mustache', 'utf-8'),
+				request: fs.readFileSync('src/swagger/templates/node-request.mustache', 'utf-8')
+			}
 		});
 
-	}
+		fs.writeFileSync(path.join(__dirname, 'src', 'api', fileName), client);
+
+		callback();
+	});
+
 }
 
 function getSwaggerSpec(swagger, callback) {

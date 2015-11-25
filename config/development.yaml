@@ -5,9 +5,15 @@ logger:
     - type: file
       level: debug
       filename: logs/aeg-sdk.log
+
 securityService:
   host: http://localhost:3000/v1
   swagger: http://localhost:3000/swagger
+
+affiliateService:
+  host: http://localhost:3002/v1
+  swagger: http://localhost:3002/swagger
+
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ
