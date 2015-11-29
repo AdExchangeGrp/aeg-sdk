@@ -5,7 +5,7 @@ import config from 'config';
 
 let affiliateService = null;
 
-if (config.has('securityService')) {
+if (config.has('affiliateService')) {
 	let affiliateServiceConfig = config.get('affiliateService');
 	affiliateService = new AffiliateService(affiliateServiceConfig.host);
 }
