@@ -1,6 +1,6 @@
 'use strict';
 
-import securityApi from '../../src/api/securityApi.js';
+import securityApi from '../../src/api/securityApi';
 import _ from 'underscore';
 
 /** @namespace result.body.should.have */
