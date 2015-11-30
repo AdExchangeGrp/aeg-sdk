@@ -36,7 +36,7 @@ describe('affiliateApi - Application', () => {
 
 		it('should create an application', (done) => {
 
-			affiliateApi.apply({
+			affiliateApi.applicationApply({
 					contactEmail: 'test-apply@test.com',
 					contactPassword: 'Pa$$w0rd',
 					contactGivenName: 'test-apply-given',
@@ -53,7 +53,7 @@ describe('affiliateApi - Application', () => {
 					contactCountry: 'test-apply-country',
 					company: 'test-apply-company',
 					companyTaxId: 'test-apply-tax-id',
-					companyTaxClass: 'llc',
+					companyTaxClass: 'llc23',
 					companyPayableTo: 'contact',
 					companyPayBy: 'check',
 					companyAddress: 'test-apply-company-address',

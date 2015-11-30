@@ -39,7 +39,7 @@ var AffiliateService = (function() {
     /**
      * Apply to be an affiliate
      * @method
-     * @name AffiliateService#apply
+     * @name AffiliateService#applicationApply
      * @param {string} contactEmail - Contact email address and primary user name
      * @param {string} contactPassword - Contact account password
      * @param {string} contactGivenName - Contact given name
@@ -73,7 +73,7 @@ var AffiliateService = (function() {
      * @param {string} marketingHowMarketed - How does the affiliate market
      * 
      */
-    AffiliateService.prototype.apply = function(parameters) {
+    AffiliateService.prototype.applicationApply = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
@@ -377,18 +377,18 @@ var AffiliateService = (function() {
     /**
      * Performance data
      * @method
-     * @name AffiliateService#performance
+     * @name AffiliateService#reportsPerformance
      * @param {string} intervalType - The time interval to use (weekly, daily, etc...)
      * 
      */
-    AffiliateService.prototype.performance = function(parameters) {
+    AffiliateService.prototype.reportsPerformance = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/dashboard/performance/{intervalType}';
+        var path = '/reports/performance/{intervalType}';
 
         var body;
         var queryParameters = {};

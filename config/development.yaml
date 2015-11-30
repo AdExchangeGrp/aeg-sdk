@@ -12,7 +12,7 @@ securityService:
 
 affiliateService:
   host: http://localhost:3002/v1
-  swagger: http://localhost:3002/swagger
+  swagger: http://localhost:3002/v1/swagger
 
 stormpath:
   apiKey:
