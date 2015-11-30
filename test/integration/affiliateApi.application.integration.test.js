@@ -36,7 +36,7 @@ describe('affiliateApi - Application', () => {
 
 		it('should create an application', (done) => {
 
-			affiliateApi.apply({
+			affiliateApi.applicationApply({
 					contactEmail: 'test-apply@test.com',
 					contactPassword: 'Pa$$w0rd',
 					contactGivenName: 'test-apply-given',
@@ -44,23 +44,23 @@ describe('affiliateApi - Application', () => {
 					contactTitle: 'test-apply-title',
 					contactPhone: '123-123-1234',
 					contactImScreenName: 'test-apply-screen-name',
-					contactImScreenService: 'test-apply-im-service',
+					contactImScreenService: 'aim',
 					contactAddress: 'test-apply-address',
 					contactSuite: 'test-apply-suite',
 					contactCity: 'test-apply-city',
 					contactState: 'test-apply-state',
-					contactPostalCode: 'test-apply-postal',
+					contactPostalCode: '12345',
 					contactCountry: 'test-apply-country',
 					company: 'test-apply-company',
 					companyTaxId: 'test-apply-tax-id',
-					companyTaxClass: 'llc',
+					companyTaxClass: 'llc23',
 					companyPayableTo: 'contact',
 					companyPayBy: 'check',
 					companyAddress: 'test-apply-company-address',
 					companySuite: 'test-apply-company-suite',
 					companyCity: 'test-apply-company-city',
 					companyState: 'test-apply-company-state',
-					companyPostalCode: 'test-apply-company-postal',
+					companyPostalCode: '67890',
 					companyCountry: 'test-apply-company-country',
 					marketingUrl: 'http://test',
 					marketingSiteCategory: 'test-apply-marketing-category',
