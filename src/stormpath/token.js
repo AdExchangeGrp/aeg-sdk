@@ -11,9 +11,9 @@ export default {
 
 	/**
 	 * Will this token expire soon
-	 * @param token
-	 * @param milliseconds
-	 * @param callback
+	 * @param {string} token
+	 * @param {number} seconds
+	 * @param {function} callback
 	 */
 	willExpire: function (token, seconds, callback) {
 		let stormpathConfig = config.get('stormpath');
