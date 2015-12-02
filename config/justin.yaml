@@ -20,8 +20,3 @@ stormpath:
     secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww
   application:
     href: https://api.stormpath.com/v1/applications/6x9i1BvcTdaUTjbWhYhNbx
-
-app:
-  apiKey:
-    id: 6OHHA7BHY6HJRKKJ68WBIEZ28
-    secret: PiRMuZ1CL4WxjSdxF71CP/6ce33xNzV07xEVTEoSBf8
