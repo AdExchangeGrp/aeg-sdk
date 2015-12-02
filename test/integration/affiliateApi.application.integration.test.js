@@ -83,6 +83,31 @@ describe('affiliateApi - Application', () => {
 
 	describe('#teardown', () => {
 
+		let newUserToken;
+
+		it('should return token for new account', (done) => {
+			securityApi.passwordToken({username: 'test-apply@test.com', password: 'Pa$$w0rd'})
+				.then((result) => {
+					newUserToken = result.body.accessToken;
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should revoke user', (done) => {
+			securityApi.setToken(newUserToken);
+			securityApi.revokeAccount()
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.setToken(adminRefreshToken);
 			securityApi.revokePasswordToken()
