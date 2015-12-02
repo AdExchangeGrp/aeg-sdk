@@ -1,10 +1,34 @@
 'use strict';
 
+import njwt from 'njwt';
+import config from 'config';
+
 /**
  * Manages tokens
  * @type {{}}
  */
 export default {
+
+	/**
+	 * Will this token expire soon
+	 * @param token
+	 * @param milliseconds
+	 * @param callback
+	 */
+	willExpire: function (token, seconds, callback) {
+		let stormpathConfig = config.get('stormpath');
+		njwt.verify(token, stormpathConfig.apiKey.secret, (err, result) => {
+			if (err) {
+				callback(err);
+			} else {
+				if (new Date((result.body.exp * 1000) - seconds) > new Date()) {
+					callback(new Error('Token will expire'));
+				} else {
+					callback();
+				}
+			}
+		});
+	},
 
 	/**
 	 * Parses the token from the authorization header
