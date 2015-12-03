@@ -7,7 +7,7 @@ logger:
       filename: logs/aeg-sdk.log
 
 securityService:
-  host:  https://api.aegcamp.com/v1/security
+  host:  http://localhost:3000/v1
   swagger: http://localhost:3000/v1/swagger
 
 affiliateService:

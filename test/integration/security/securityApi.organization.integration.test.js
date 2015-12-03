@@ -1,6 +1,6 @@
 'use strict';
 
-import securityApi from '../../src/api/securityApi';
+import securityApi from '../../../src/api/securityApi';
 import _ from 'underscore';
 import should from 'should';
 
@@ -317,8 +317,7 @@ function createOrg(name, parentOrg, callback) {
 	let req = {
 		type: 'affiliate',
 		name: name,
-		createDirectory: true,
-		parentOrganization: parentOrg
+		createDirectory: true
 	};
 
 	if (parentOrg) {
