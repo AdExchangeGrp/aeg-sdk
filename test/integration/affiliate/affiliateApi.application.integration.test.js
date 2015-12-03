@@ -2,7 +2,7 @@
 
 import affiliateApi from '../../../src/api/affiliateApi';
 import securityApi from '../../../src/api/securityApi';
-//import _ from 'underscore';
+import should from 'should';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
@@ -70,7 +70,10 @@ describe('affiliateApi - Application', () => {
 					marketingHowMarketed: 'test-apply-merketing-how'
 				})
 				.then((result) => {
-					result.body.should.be.eql({message: 'success'});
+					should.exist(result.body.application);
+					result.body.application.should.have.properties(['href']);
+					result.body.application.href.should.be.a.String;
+					result.body.application.href.length.should.be.greaterThan(0);
 					done();
 				})
 				.fail((err) => {
