@@ -317,8 +317,7 @@ function createOrg(name, parentOrg, callback) {
 	let req = {
 		type: 'affiliate',
 		name: name,
-		createDirectory: true,
-		parentOrganization: parentOrg
+		createDirectory: true
 	};
 
 	if (parentOrg) {
