@@ -163,7 +163,7 @@ describe('securityApi - Account', () => {
 						_.isArray(result.body.account.scopes).should.be.ok;
 						result.body.account.scopes.length.should.be.greaterThan(0);
 						let test = _.find(result.body.account.scopes, (scope) => {
-							return scope === 'test';
+							return scope.name === 'test';
 						});
 						should.exist(test);
 						done();
@@ -198,7 +198,7 @@ describe('securityApi - Account', () => {
 					.then((result) => {
 						_.isArray(result.body.account.scopes).should.be.ok;
 						let test = _.find(result.body.account.scopes, (scope) => {
-							return scope === 'test';
+							return scope.name === 'test';
 						});
 						should.not.exist(test);
 						done();
@@ -236,7 +236,7 @@ describe('securityApi - Account', () => {
 				securityApi.getAccount()
 						.then((result) => {
 							let test = _.find(result.body.account.scopes, (scope) => {
-								return scope === 'test';
+								return scope.name === 'test';
 							});
 							should.exist(test);
 							done();
@@ -270,7 +270,7 @@ describe('securityApi - Account', () => {
 				securityApi.getAccount()
 						.then((result) => {
 							let test = _.find(result.body.account.scopes, (scope) => {
-								return scope === 'test';
+								return scope.name === 'test';
 							});
 							should.not.exist(test);
 							done();
