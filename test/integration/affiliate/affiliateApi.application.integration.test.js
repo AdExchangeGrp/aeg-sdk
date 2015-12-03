@@ -1,8 +1,8 @@
 'use strict';
 
-import affiliateApi from '../../src/api/affiliateApi';
-import securityApi from '../../src/api/securityApi';
-//import _ from 'underscore';
+import affiliateApi from '../../../src/api/affiliateApi';
+import securityApi from '../../../src/api/securityApi';
+import should from 'should';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
@@ -42,7 +42,7 @@ describe('affiliateApi - Application', () => {
 					contactGivenName: 'test-apply-given',
 					contactSurname: 'test-apply-sur',
 					contactTitle: 'test-apply-title',
-					contactPhone: '123-123-1234',
+					contactPhone: '410-349-6457',
 					contactImScreenName: 'test-apply-screen-name',
 					contactImScreenService: 'aim',
 					contactAddress: 'test-apply-address',
@@ -53,7 +53,7 @@ describe('affiliateApi - Application', () => {
 					contactCountry: 'test-apply-country',
 					company: 'test-apply-company',
 					companyTaxId: 'test-apply-tax-id',
-					companyTaxClass: 'llc23',
+					companyTaxClass: 'llc',
 					companyPayableTo: 'contact',
 					companyPayBy: 'check',
 					companyAddress: 'test-apply-company-address',
@@ -70,7 +70,10 @@ describe('affiliateApi - Application', () => {
 					marketingHowMarketed: 'test-apply-merketing-how'
 				})
 				.then((result) => {
-					result.body.should.be.eql({message: 'success'});
+					should.exist(result.body.application);
+					result.body.application.should.have.properties(['href']);
+					result.body.application.href.should.be.a.String;
+					result.body.application.href.length.should.be.greaterThan(0);
 					done();
 				})
 				.fail((err) => {
@@ -82,6 +85,31 @@ describe('affiliateApi - Application', () => {
 	});
 
 	describe('#teardown', () => {
+
+		let newUserToken;
+
+		it('should return token for new account', (done) => {
+			securityApi.passwordToken({username: 'test-apply@test.com', password: 'Pa$$w0rd'})
+				.then((result) => {
+					newUserToken = result.body.accessToken;
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should revoke user', (done) => {
+			securityApi.setToken(newUserToken);
+			securityApi.revokeAccount()
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
 
 		it('should revoke the refresh token for the admin', (done) => {
 			securityApi.setToken(adminRefreshToken);

@@ -1,14 +1,16 @@
 'use strict';
 
-import securityApi from '../../src/api/securityApi';
+import securityApi from '../../../src/api/securityApi';
 import uuid from 'node-uuid';
 import _ from 'underscore';
+import should from 'should';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let registeredAccountHref;
 	let registeredPasswordToken;
 	let registeredRefreshToken;
 
@@ -51,6 +53,9 @@ describe('securityApi - Account', () => {
 					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
 					result.body.account.href.should.be.a.String;
 					result.body.account.href.length.should.be.greaterThan(0);
+
+					registeredAccountHref = result.body.account.href;
+
 					result.body.account.status.should.be.a.String;
 					result.body.account.status.length.should.be.greaterThan(0);
 					result.body.account.status.toLowerCase().should.be.equal('enabled');
@@ -132,9 +137,157 @@ describe('securityApi - Account', () => {
 
 	});
 
+	describe('#addRemoveScopesByHref', () => {
+
+		describe('#addScopeToAccount', () => {
+
+			it('should add scope to account', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.addScopeToAccount({
+						account: registeredAccountHref,
+						scope: 'https://api.stormpath.com/v1/groups/48GbYIkAPquYtceM7SXJmn'
+					})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should get the account and its test scope', (done) => {
+				securityApi.setToken(registeredPasswordToken);
+				securityApi.getAccount()
+					.then((result) => {
+						_.isArray(result.body.account.scopes).should.be.ok;
+						result.body.account.scopes.length.should.be.greaterThan(0);
+						let test = _.find(result.body.account.scopes, (scope) => {
+							return scope.name === 'test';
+						});
+						should.exist(test);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('#removeScopeFromAccount', () => {
+
+			it('should remove a scope from an account', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.removeScopeFromAccount({
+						account: registeredAccountHref,
+						scope: 'https://api.stormpath.com/v1/groups/48GbYIkAPquYtceM7SXJmn'
+					})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should get the account without its account scope', (done) => {
+				securityApi.setToken(registeredPasswordToken);
+				securityApi.getAccount()
+					.then((result) => {
+						_.isArray(result.body.account.scopes).should.be.ok;
+						let test = _.find(result.body.account.scopes, (scope) => {
+							return scope.name === 'test';
+						});
+						should.not.exist(test);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+	});
+
+	describe('#addRemoveScopesByName', () => {
+
+		describe('#addScopeToAccount', () => {
+
+			it('should add scope to account', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.addScopeToAccount({
+							account: registeredAccountHref,
+							scope: 'test'
+						})
+						.then((result) => {
+							result.body.message.should.be.equal('success');
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
+			});
+
+			it('should get the account and its test scope', (done) => {
+				securityApi.setToken(registeredPasswordToken);
+				securityApi.getAccount()
+						.then((result) => {
+							let test = _.find(result.body.account.scopes, (scope) => {
+								return scope.name === 'test';
+							});
+							should.exist(test);
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
+			});
+
+		});
+
+		describe('#removeScopeFromAccount', () => {
+
+			it('should remove a scope from an account', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.removeScopeFromAccount({
+							account: registeredAccountHref,
+							scope: 'test'
+						})
+						.then((result) => {
+							result.body.message.should.be.equal('success');
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
+			});
+
+			it('should get the account without its account scope', (done) => {
+				securityApi.setToken(registeredPasswordToken);
+				securityApi.getAccount()
+						.then((result) => {
+							let test = _.find(result.body.account.scopes, (scope) => {
+								return scope.name === 'test';
+							});
+							should.not.exist(test);
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
+			});
+
+		});
+
+	});
+
 	describe('#revokeAccount', () => {
 
 		it('should revoke user', (done) => {
+			securityApi.setToken(registeredPasswordToken);
 			securityApi.revokeAccount()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
