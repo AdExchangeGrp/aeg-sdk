@@ -1091,7 +1091,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#addScopeToAccount
      * @param {string} account - The account href to add to
-     * @param {string} scope - The scope href to add
+     * @param {string} scope - The scope href or name to add
      * 
      */
     SecurityService.prototype.addScopeToAccount = function(parameters) {
@@ -1188,7 +1188,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#removeScopeFromAccount
      * @param {string} account - The account href to remove from
-     * @param {string} scope - The scope href to remove
+     * @param {string} scope - The scope href or name to remove
      * 
      */
     SecurityService.prototype.removeScopeFromAccount = function(parameters) {
@@ -1564,6 +1564,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#approveOrganization
      * @param {string} organization - The resource href of the organization
+     * @param {string} rename - The organizations new name & sub-domain
      * 
      */
     SecurityService.prototype.approveOrganization = function(parameters) {
@@ -1596,6 +1597,10 @@ var SecurityService = (function() {
         if (parameters['organization'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: organization'));
             return deferred.promise;
+        }
+
+        if (parameters['rename'] !== undefined) {
+            form['rename'] = parameters['rename'];
         }
 
         if (parameters.$queryParameters) {
