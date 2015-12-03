@@ -1,7 +1,7 @@
 'use strict';
 
-import affiliateApi from '../../src/api/affiliateApi';
-import securityApi from '../../src/api/securityApi';
+import affiliateApi from '../../../src/api/affiliateApi';
+import securityApi from '../../../src/api/securityApi';
 //import _ from 'underscore';
 
 /** @namespace result.body.should.have */
