@@ -160,6 +160,8 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(registeredPasswordToken);
 				securityApi.getAccount()
 					.then((result) => {
+						_.isArray(result.body.account.scopes).should.be.ok;
+						result.body.account.scopes.length.should.be.greaterThan(0);
 						let test = _.find(result.body.account.scopes, (scope) => {
 							return scope === 'test';
 						});
@@ -194,6 +196,7 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(registeredPasswordToken);
 				securityApi.getAccount()
 					.then((result) => {
+						_.isArray(result.body.account.scopes).should.be.ok;
 						let test = _.find(result.body.account.scopes, (scope) => {
 							return scope === 'test';
 						});

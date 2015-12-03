@@ -21,9 +21,11 @@ describe('securityApi - OAuth', () => {
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
 					(_.isObject(result.body.account)).should.be.ok;
-					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
+					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'scopes', 'customData']);
 					result.body.account.href.should.be.a.String;
 					result.body.account.href.length.should.be.greaterThan(0);
+					_.isArray(result.body.account.scopes).should.be.ok;
+					result.body.account.scopes.length.should.be.greaterThan(0);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					passwordAuthorization = result.body.accessToken;
