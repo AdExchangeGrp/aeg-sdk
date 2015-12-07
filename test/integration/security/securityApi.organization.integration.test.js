@@ -46,7 +46,7 @@ describe('securityApi - Organization', () => {
 
 					parentOrg = href;
 
-					securityApi.getOrganization({organization: href})
+					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization', 'directory']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -81,7 +81,7 @@ describe('securityApi - Organization', () => {
 					childOrg = href;
 
 					//child
-					securityApi.getOrganization({organization: href})
+					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -92,7 +92,7 @@ describe('securityApi - Organization', () => {
 							result.body.organization.status.toLowerCase().should.be.equal('disabled');
 
 							//parent
-							securityApi.getOrganization({organization: parentOrg})
+							securityApi.getOrganization({id: parentOrg})
 								.then((result) => {
 									result.body.should.have.properties(['organization']);
 									result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -118,7 +118,7 @@ describe('securityApi - Organization', () => {
 		describe('#approveOrganization', () => {
 
 			it('should approve an organization', (done) => {
-				securityApi.approveOrganization({organization: parentOrg, rename:'Test Affiliate Rename'})
+				securityApi.approveOrganization({id: parentOrg, rename:'Test Affiliate Rename'})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
@@ -130,7 +130,7 @@ describe('securityApi - Organization', () => {
 			});
 
 			it('should get an approved organization', (done) => {
-				securityApi.getOrganization({organization: parentOrg})
+				securityApi.getOrganization({id: parentOrg})
 					.then((result) => {
 						result.body.should.have.properties(['organization', 'directory']);
 						result.body.organization.should.have.properties(['status']);
@@ -151,13 +151,13 @@ describe('securityApi - Organization', () => {
 		describe('#deleteOrganization', () => {
 
 			it('should delete an organization', (done) => {
-				securityApi.deleteOrganization({organization: parentOrg})
+				securityApi.deleteOrganization({id: parentOrg})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
 
 						//child
-						securityApi.getOrganization({organization: childOrg})
+						securityApi.getOrganization({id: childOrg})
 							.then((result) => {
 								result.body.should.have.properties(['organization']);
 								result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -178,7 +178,7 @@ describe('securityApi - Organization', () => {
 
 
 			it('should delete an organization', (done) => {
-				securityApi.deleteOrganization({organization: childOrg})
+				securityApi.deleteOrganization({id: childOrg})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
@@ -205,7 +205,7 @@ describe('securityApi - Organization', () => {
 					parentOrg = href;
 
 					//parent
-					securityApi.getOrganization({organization: href})
+					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -226,7 +226,7 @@ describe('securityApi - Organization', () => {
 					childOrg = href;
 
 					//parent
-					securityApi.getOrganization({organization: href})
+					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
 							result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -243,13 +243,13 @@ describe('securityApi - Organization', () => {
 		describe('#deleteOrganization', () => {
 
 			it('should delete an organization', (done) => {
-				securityApi.deleteOrganization({organization: childOrg})
+				securityApi.deleteOrganization({id: childOrg})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
 
 						//parent
-						securityApi.getOrganization({organization: parentOrg})
+						securityApi.getOrganization({id: parentOrg})
 							.then((result) => {
 								result.body.should.have.properties(['organization']);
 								result.body.organization.should.have.properties(['href', 'name', 'customData']);
@@ -269,7 +269,7 @@ describe('securityApi - Organization', () => {
 			});
 
 			it('should delete an organization', (done) => {
-				securityApi.deleteOrganization({organization: parentOrg})
+				securityApi.deleteOrganization({id: parentOrg})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');

@@ -44,7 +44,7 @@ describe('affiliateApi - Application', () => {
 					contactTitle: 'test-apply-title',
 					contactPhone: '410-349-6457',
 					contactImScreenName: 'test-apply-screen-name',
-					contactImScreenService: 'aim',
+					contactImService: 'aim',
 					contactAddress: 'test-apply-address',
 					contactSuite: 'test-apply-suite',
 					contactCity: 'test-apply-city',

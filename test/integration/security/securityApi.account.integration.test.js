@@ -101,7 +101,7 @@ describe('securityApi - Account', () => {
 		let givenName = uuid.v4();
 
 		it('should update account', (done) => {
-			securityApi.updateAccount({givenName: givenName})
+			securityApi.updateAccountProfile({givenName: givenName})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
