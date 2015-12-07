@@ -88,9 +88,10 @@ describe('affiliateApi - Application', () => {
 
 	});
 
-	describe('#apply()', () => {
+	describe('#applicationApprove()', () => {
 
 		it('should approve an application', (done) => {
+			affiliateApi.setToken(adminPasswordToken);
 			affiliateApi.applicationApprove({id: applicationId, affiliateName: 'Test Approved Affiliate'})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
