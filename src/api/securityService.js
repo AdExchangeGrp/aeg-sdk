@@ -49,7 +49,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/createApiKey';
+        var path = '/oauth/apiKey';
 
         var body;
         var queryParameters = {};
@@ -74,7 +74,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -82,6 +82,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -173,6 +175,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -271,6 +275,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -349,6 +355,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -426,6 +434,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -503,6 +513,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -580,6 +592,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -662,6 +676,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -739,6 +755,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -816,6 +834,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -953,6 +973,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1055,6 +1077,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1152,6 +1176,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1249,6 +1275,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1336,6 +1364,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1441,6 +1471,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1528,6 +1560,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1620,6 +1654,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1693,6 +1729,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1775,6 +1813,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
