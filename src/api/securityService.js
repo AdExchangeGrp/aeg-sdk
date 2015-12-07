@@ -783,7 +783,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/revoke';
+        var path = '/account';
 
         var body;
         var queryParameters = {};
@@ -808,7 +808,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'DELETE',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -868,7 +868,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/register';
+        var path = '/account';
 
         var body;
         var queryParameters = {};
