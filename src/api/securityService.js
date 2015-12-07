@@ -49,7 +49,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/createApiKey';
+        var path = '/oauth/apiKey';
 
         var body;
         var queryParameters = {};
@@ -74,7 +74,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -82,6 +82,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -173,6 +175,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -271,6 +275,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -349,6 +355,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -418,7 +426,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -426,6 +434,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -495,7 +505,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -503,6 +513,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -572,7 +584,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -580,6 +592,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -662,6 +676,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -739,6 +755,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -783,7 +801,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/revoke';
+        var path = '/account';
 
         var body;
         var queryParameters = {};
@@ -808,7 +826,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'DELETE',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -816,6 +834,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -868,7 +888,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/register';
+        var path = '/account';
 
         var body;
         var queryParameters = {};
@@ -953,6 +973,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -987,7 +1009,7 @@ var SecurityService = (function() {
     /**
      * Update an account
      * @method
-     * @name SecurityService#updateAccount
+     * @name SecurityService#updateAccountProfile
      * @param {string} email - Email address
      * @param {string} password - Password
      * @param {string} givenName - Given / first name
@@ -995,14 +1017,14 @@ var SecurityService = (function() {
      * @param {string} username - Arbitrary username
      * 
      */
-    SecurityService.prototype.updateAccount = function(parameters) {
+    SecurityService.prototype.updateAccountProfile = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/update';
+        var path = '/account/updateProfile';
 
         var body;
         var queryParameters = {};
@@ -1055,6 +1077,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1152,6 +1176,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1249,6 +1275,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1284,7 +1312,7 @@ var SecurityService = (function() {
      * Gets an organization
      * @method
      * @name SecurityService#getOrganization
-     * @param {string} organization - The organization to get
+     * @param {string} id - The organization to get
      * 
      */
     SecurityService.prototype.getOrganization = function(parameters) {
@@ -1310,12 +1338,12 @@ var SecurityService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        if (parameters['organization'] !== undefined) {
-            form['organization'] = parameters['organization'];
+        if (parameters['id'] !== undefined) {
+            queryParameters['id'] = parameters['id'];
         }
 
-        if (parameters['organization'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: organization'));
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
         }
 
@@ -1328,7 +1356,97 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'POST',
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        console.log(req);
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Delete an organization
+     * @method
+     * @name SecurityService#deleteOrganization
+     * @param {string} id - The resource href of the organization
+     * 
+     */
+    SecurityService.prototype.deleteOrganization = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/organization';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['id'] !== undefined) {
+            queryParameters['id'] = parameters['id'];
+        }
+
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'DELETE',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -1336,6 +1454,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1384,7 +1504,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organization/create';
+        var path = '/organization';
 
         var body;
         var queryParameters = {};
@@ -1441,93 +1561,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
-        }
-        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
-            req.json = true;
-        }
-        request(req, function(error, response, body) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (e) {
-
-                    }
-                }
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    deferred.resolve({
-                        response: response,
-                        body: body
-                    });
-                } else {
-                    deferred.reject({
-                        response: response,
-                        body: body
-                    });
-                }
-            }
-        });
-
-        return deferred.promise;
-    };
-    /**
-     * Delete an organization
-     * @method
-     * @name SecurityService#deleteOrganization
-     * @param {string} organization - The resource href of the organization
-     * 
-     */
-    SecurityService.prototype.deleteOrganization = function(parameters) {
-        if (parameters === undefined) {
-            parameters = {};
-        }
-        var deferred = Q.defer();
-
-        var domain = this.domain;
-        var path = '/organization/delete';
-
-        var body;
-        var queryParameters = {};
-        var headers = {};
-        var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
         } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['organization'] !== undefined) {
-            form['organization'] = parameters['organization'];
-        }
-
-        if (parameters['organization'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: organization'));
-            return deferred.promise;
-        }
-
-        if (parameters.$queryParameters) {
-            Object.keys(parameters.$queryParameters)
-                .forEach(function(parameterName) {
-                    var parameter = parameters.$queryParameters[parameterName];
-                    queryParameters[parameterName] = parameter;
-                });
-        }
-
-        var req = {
-            method: 'POST',
-            uri: domain + path,
-            qs: queryParameters,
-            headers: headers,
-            body: body
-        };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1563,7 +1598,7 @@ var SecurityService = (function() {
      * Approves an organization
      * @method
      * @name SecurityService#approveOrganization
-     * @param {string} organization - The resource href of the organization
+     * @param {string} id - The resource href of the organization
      * @param {string} rename - The organizations new name & sub-domain
      * 
      */
@@ -1590,12 +1625,12 @@ var SecurityService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        if (parameters['organization'] !== undefined) {
-            form['organization'] = parameters['organization'];
+        if (parameters['id'] !== undefined) {
+            form['id'] = parameters['id'];
         }
 
-        if (parameters['organization'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: organization'));
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
         }
 
@@ -1620,6 +1655,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1693,6 +1730,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -1775,6 +1814,8 @@ var SecurityService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;

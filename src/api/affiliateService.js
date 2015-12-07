@@ -122,6 +122,91 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Delete an affiliate application
+     * @method
+     * @name AffiliateService#applicationDelete
+     * @param {string} id - Application id
+     * 
+     */
+    AffiliateService.prototype.applicationDelete = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/application/{id}';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{id}', parameters['id']);
+
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'DELETE',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Apply to be an affiliate
      * @method
      * @name AffiliateService#applicationApply
@@ -132,8 +217,8 @@ var AffiliateService = (function() {
      * @param {string} contactTitle - Contact title
      * @param {string} contactPhone - Contact phone
      * @param {string} contactImScreenName - Contact instant messinger screen name
-     * @param {string} contactImScreenService - Contact instant messinger service type
-     * @param {string} contactAddress - Contact address
+     * @param {string} contactImService - Contact instant messinger service type
+     * @param {string} contactAddress - Contact street address
      * @param {string} contactSuite - Contact suite
      * @param {string} contactCity - Contact city
      * @param {string} contactState - Contact state
@@ -165,7 +250,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/apply/';
+        var path = '/application';
 
         var body;
         var queryParameters = {};
@@ -225,8 +310,8 @@ var AffiliateService = (function() {
             form['contactImScreenName'] = parameters['contactImScreenName'];
         }
 
-        if (parameters['contactImScreenService'] !== undefined) {
-            form['contactImScreenService'] = parameters['contactImScreenService'];
+        if (parameters['contactImService'] !== undefined) {
+            form['contactImService'] = parameters['contactImService'];
         }
 
         if (parameters['contactAddress'] !== undefined) {
@@ -420,7 +505,7 @@ var AffiliateService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -517,7 +602,7 @@ var AffiliateService = (function() {
         }
 
         var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
@@ -557,20 +642,20 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Disapprove an affiliate application
+     * Deny an affiliate application
      * @method
-     * @name AffiliateService#applicationDisapprove
+     * @name AffiliateService#applicationDeny
      * @param {string} href - Application href
      * 
      */
-    AffiliateService.prototype.applicationDisapprove = function(parameters) {
+    AffiliateService.prototype.applicationDeny = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/disapprove/';
+        var path = '/application/deny/';
 
         var body;
         var queryParameters = {};
@@ -604,94 +689,7 @@ var AffiliateService = (function() {
         }
 
         var req = {
-            method: 'GET',
-            uri: domain + path,
-            qs: queryParameters,
-            headers: headers,
-            body: body
-        };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        }
-        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
-            req.json = true;
-        }
-        request(req, function(error, response, body) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (e) {
-
-                    }
-                }
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    deferred.resolve({
-                        response: response,
-                        body: body
-                    });
-                } else {
-                    deferred.reject({
-                        response: response,
-                        body: body
-                    });
-                }
-            }
-        });
-
-        return deferred.promise;
-    };
-    /**
-     * Delete an affiliate application
-     * @method
-     * @name AffiliateService#applicationDelete
-     * @param {string} href - Application href
-     * 
-     */
-    AffiliateService.prototype.applicationDelete = function(parameters) {
-        if (parameters === undefined) {
-            parameters = {};
-        }
-        var deferred = Q.defer();
-
-        var domain = this.domain;
-        var path = '/application/delete/';
-
-        var body;
-        var queryParameters = {};
-        var headers = {};
-        var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['href'] !== undefined) {
-            form['href'] = parameters['href'];
-        }
-
-        if (parameters['href'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: href'));
-            return deferred.promise;
-        }
-
-        if (parameters.$queryParameters) {
-            Object.keys(parameters.$queryParameters)
-                .forEach(function(parameterName) {
-                    var parameter = parameters.$queryParameters[parameterName];
-                    queryParameters[parameterName] = parameter;
-                });
-        }
-
-        var req = {
-            method: 'GET',
+            method: 'POST',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,
