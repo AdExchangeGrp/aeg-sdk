@@ -987,7 +987,7 @@ var SecurityService = (function() {
     /**
      * Update an account
      * @method
-     * @name SecurityService#updateAccount
+     * @name SecurityService#updateAccountProfile
      * @param {string} email - Email address
      * @param {string} password - Password
      * @param {string} givenName - Given / first name
@@ -995,14 +995,14 @@ var SecurityService = (function() {
      * @param {string} username - Arbitrary username
      * 
      */
-    SecurityService.prototype.updateAccount = function(parameters) {
+    SecurityService.prototype.updateAccountProfile = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/update';
+        var path = '/account/updateProfile';
 
         var body;
         var queryParameters = {};
