@@ -328,11 +328,11 @@ describe('securityApi - OAuth', () => {
 
 	});
 
-	describe('#revokeRefreshToken', () => {
+	describe('#revokePasswordToken', () => {
 
 		it('should revoke the password refresh token', (done) => {
 			securityApi.setToken(refreshToken);
-			securityApi.revokeRefreshToken()
+			securityApi.revokePasswordToken()
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
