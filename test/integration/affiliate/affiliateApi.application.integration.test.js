@@ -9,6 +9,7 @@ describe('affiliateApi - Application', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let applicationId;
 
 	describe('#setup()', () => {
 
@@ -74,12 +75,30 @@ describe('affiliateApi - Application', () => {
 					result.body.application.should.have.properties(['href']);
 					result.body.application.href.should.be.a.String;
 					result.body.application.href.length.should.be.greaterThan(0);
+
+					applicationId = result.body.application.id;
+
 					done();
 				})
 				.fail((err) => {
 					done(err);
 				});
 
+		});
+
+	});
+
+	describe('#apply()', () => {
+
+		it('should approve an application', (done) => {
+			affiliateApi.applicationApprove({id: applicationId, affiliateName: 'Test Approved Affiliate'})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
 		});
 
 	});
