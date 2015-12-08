@@ -137,6 +137,7 @@ describe('affiliateApi - Application', () => {
 						should.exist(result);
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
+						done();
 					})
 					.fail((err) => {
 						done(err);
@@ -240,6 +241,7 @@ describe('affiliateApi - Application', () => {
 						should.exist(result);
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
+						done();
 					})
 					.fail((err) => {
 						done(err);
