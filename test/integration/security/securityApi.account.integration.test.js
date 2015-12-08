@@ -219,31 +219,31 @@ describe('securityApi - Account', () => {
 			it('should add scope to account', (done) => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.addScopeToAccount({
-							account: registeredAccountHref,
-							scope: 'test'
-						})
-						.then((result) => {
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
+						account: registeredAccountHref,
+						scope: 'test'
+					})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 			it('should get the account and its test scope', (done) => {
 				securityApi.setToken(registeredPasswordToken);
 				securityApi.getAccount()
-						.then((result) => {
-							let test = _.find(result.body.account.scopes, (scope) => {
-								return scope.name === 'test';
-							});
-							should.exist(test);
-							done();
-						})
-						.fail((err) => {
-							done(err);
+					.then((result) => {
+						let test = _.find(result.body.account.scopes, (scope) => {
+							return scope.name === 'test';
 						});
+						should.exist(test);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
@@ -253,31 +253,31 @@ describe('securityApi - Account', () => {
 			it('should remove a scope from an account', (done) => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.removeScopeFromAccount({
-							account: registeredAccountHref,
-							scope: 'test'
-						})
-						.then((result) => {
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
+						account: registeredAccountHref,
+						scope: 'test'
+					})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 			it('should get the account without its account scope', (done) => {
 				securityApi.setToken(registeredPasswordToken);
 				securityApi.getAccount()
-						.then((result) => {
-							let test = _.find(result.body.account.scopes, (scope) => {
-								return scope.name === 'test';
-							});
-							should.not.exist(test);
-							done();
-						})
-						.fail((err) => {
-							done(err);
+					.then((result) => {
+						let test = _.find(result.body.account.scopes, (scope) => {
+							return scope.name === 'test';
 						});
+						should.not.exist(test);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
@@ -312,21 +312,9 @@ describe('securityApi - Account', () => {
 
 	describe('#teardown', () => {
 
-		it('should revoke the refresh token for the admin', (done) => {
-			securityApi.setToken(adminRefreshToken);
-			securityApi.revokePasswordToken()
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
-		});
-
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken()
+			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();

@@ -118,7 +118,7 @@ describe('securityApi - Organization', () => {
 		describe('#approveOrganization', () => {
 
 			it('should approve an organization', (done) => {
-				securityApi.approveOrganization({id: parentOrg, rename:'Test Affiliate Rename'})
+				securityApi.approveOrganization({id: parentOrg, rename: 'Test Affiliate Rename'})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
 						result.body.message.should.be.equal('success');
@@ -286,21 +286,9 @@ describe('securityApi - Organization', () => {
 
 	describe('#teardown', () => {
 
-		it('should revoke the refresh token for the admin', (done) => {
-			securityApi.setToken(adminRefreshToken);
-			securityApi.revokePasswordToken()
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
-		});
-
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken()
+			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();

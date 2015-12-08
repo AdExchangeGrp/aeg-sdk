@@ -277,9 +277,9 @@ describe('securityApi - OAuth', () => {
 
 	describe('#revokePasswordToken', () => {
 
-		it('should revoke the password access token', (done) => {
+		it('should revoke the password access token and refresh token', (done) => {
 			securityApi.setToken(passwordAuthorization);
-			securityApi.revokePasswordToken()
+			securityApi.revokePasswordToken({refreshToken: refreshToken})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -323,22 +323,6 @@ describe('securityApi - OAuth', () => {
 				.fail((err) => {
 					err.response.statusCode.should.be.equal(401);
 					done();
-				});
-		});
-
-	});
-
-	describe('#revokePasswordToken', () => {
-
-		it('should revoke the password refresh token', (done) => {
-			securityApi.setToken(refreshToken);
-			securityApi.revokePasswordToken()
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
 				});
 		});
 
