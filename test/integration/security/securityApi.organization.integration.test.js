@@ -335,7 +335,7 @@ function createOrg(name, parentOrg, callback) {
 			result.body.organization.href.length.should.be.greaterThan(0);
 			result.body.directory.should.have.properties(['name', 'href', 'status']);
 			result.body.directory.name.should.be.equal(name);
-			result.body.directory.status.toLowerCase().should.be.equal('disabled');
+			result.body.directory.status.toLowerCase().should.be.equal('enabled');
 			result.body.directory.href.length.should.be.greaterThan(0);
 
 			_.isArray(result.body.scopes).should.be.ok;
