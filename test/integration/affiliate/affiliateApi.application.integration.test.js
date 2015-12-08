@@ -91,6 +91,16 @@ describe('affiliateApi - Application', () => {
 
 			});
 
+			it('should return token for new account', (done) => {
+				securityApi.passwordToken({username: 'test-apply-approve@test.com', password: 'Pa$$w0rd'})
+					.then((result) => {
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
 		});
 
 		describe('#applicationApprove()', () => {
@@ -120,29 +130,17 @@ describe('affiliateApi - Application', () => {
 
 		describe('cleanup', () => {
 
-			let newUserTokenApproved;
-
-			it('should return token for new account', (done) => {
-				securityApi.passwordToken({username: 'test-apply-approve@test.com', password: 'Pa$$w0rd'})
-						.then((result) => {
-							newUserTokenApproved = result.body.accessToken;
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
-			});
-
-			it('should revoke user', (done) => {
-				securityApi.setToken(newUserTokenApproved);
-				securityApi.revokeAccount()
-						.then((result) => {
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
+			it('should delete an application', (done) => {
+				console.log(applicationIdApprove);
+				affiliateApi.applicationDelete({id: applicationIdApprove})
+					.then((result) => {
+						should.exist(result);
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
@@ -211,7 +209,7 @@ describe('affiliateApi - Application', () => {
 
 		describe('#applicationDeny()', () => {
 
-			it('should approve an application', (done) => {
+			it('should deny an application', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
 				affiliateApi.applicationDeny({id: applicationIdDeny})
 					.then((result) => {
@@ -236,29 +234,16 @@ describe('affiliateApi - Application', () => {
 
 		describe('cleanup', () => {
 
-			let newUserTokenDenied;
-
-			it('should return token for new account', (done) => {
-				securityApi.passwordToken({username: 'test-apply-deny@test.com', password: 'Pa$$w0rd'})
-						.then((result) => {
-							newUserTokenDenied = result.body.accessToken;
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
-			});
-
-			it('should revoke user', (done) => {
-				securityApi.setToken(newUserTokenDenied);
-				securityApi.revokeAccount()
-						.then((result) => {
-							result.body.message.should.be.equal('success');
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
+			it('should delete an application', (done) => {
+				affiliateApi.applicationDelete({id: applicationIdDeny})
+					.then((result) => {
+						should.exist(result);
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
