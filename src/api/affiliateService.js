@@ -219,14 +219,14 @@ var AffiliateService = (function() {
      * @param {string} contactGivenName - Contact given name
      * @param {string} contactSurname - Contact surname
      * @param {string} contactTitle - Contact title
-     * @param {string} contactPhone - Contact phone
+     * @param {string} contactPhone - Contact phone XXX-XXX-XXXX
      * @param {string} contactImScreenName - Contact instant messinger screen name
      * @param {string} contactImService - Contact instant messinger service type
      * @param {string} contactAddress - Contact street address
      * @param {string} contactSuite - Contact suite
      * @param {string} contactCity - Contact city
      * @param {string} contactState - Contact state
-     * @param {string} contactPostalCode - Contact postal code
+     * @param {string} contactPostalCode - Contact postal code XXXXX or XXXXX-XXXX
      * @param {string} contactCountry - Contact country
      * @param {string} company - Company name
      * @param {string} companyTaxId - Company tax id
@@ -237,7 +237,7 @@ var AffiliateService = (function() {
      * @param {string} companySuite - Company suite
      * @param {string} companyCity - Company city
      * @param {string} companyState - Company state
-     * @param {string} companyPostalCode - Company postal code
+     * @param {string} companyPostalCode - Company postal code XXXXX or XXXXX-XXXX
      * @param {string} companyCountry - Company country
      * @param {string} marketingUrl - Marketing site url
      * @param {string} marketingSiteCategory - Marketing site category
@@ -565,7 +565,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/approve/{id}';
+        var path = '/application/{id}/approve';
 
         var body;
         var queryParameters = {};
@@ -661,7 +661,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/deny/{id}';
+        var path = '/application/{id}/deny';
 
         var body;
         var queryParameters = {};
