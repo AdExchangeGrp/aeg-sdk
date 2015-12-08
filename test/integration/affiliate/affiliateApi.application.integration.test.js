@@ -131,21 +131,9 @@ describe('affiliateApi - Application', () => {
 				});
 		});
 
-		it('should revoke the refresh token for the admin', (done) => {
-			securityApi.setToken(adminRefreshToken);
-			securityApi.revokePasswordToken()
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
-		});
-
 		it('should revoke the password access token for the admin', (done) => {
 			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken()
+			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
