@@ -391,6 +391,7 @@ var SecurityService = (function() {
      * Revoke a password token
      * @method
      * @name SecurityService#revokePasswordToken
+     * @param {string} refreshToken - Optional refresh token to revoke
      * 
      */
     SecurityService.prototype.revokePasswordToken = function(parameters) {
@@ -414,6 +415,10 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['refreshToken'] !== undefined) {
+            queryParameters['refreshToken'] = parameters['refreshToken'];
         }
 
         if (parameters.$queryParameters) {
