@@ -1,8 +1,16 @@
 'use strict';
 
-import securityApi from '../api/securityApi';
 import { UnauthorizedError } from './';
 import { token } from '../stormpath';
+import njwt from 'njwt';
+import _ from 'underscore';
+import config from 'config';
+import logger from '@adexchange/aeg-logger';
+
+const stormpathConfig = config.get('stormpath');
+const invalidToken = 'Invalid token';
+const expiredToken = 'Expired token';
+const permissionDenied = 'Permission denied';
 
 /**
  * Authorize requests against the security service
@@ -13,18 +21,44 @@ import { token } from '../stormpath';
  */
 export default (req, def, routeScopes, callback) => {
 
-	var scopes = '';
+	logger.debug(`Authorizing ${req.swagger.apiPath}`);
+
+	let scopes = '';
 
 	if (routeScopes && routeScopes.length) {
 		scopes = routeScopes.join(',');
 	}
 
-	securityApi.setToken(token.parseTokenFromAuthorization(req.headers.authorization));
-	securityApi.authorize({scopes: scopes})
-		.then((result) => {
-			callback();
-		})
-		.fail((err) => {
-			callback(new UnauthorizedError(err.message));
+	njwt.verify(
+		token.parseTokenFromAuthorization(req.headers.authorization),
+		stormpathConfig.apiKey.secret,
+		(err, expandedJwt) => {
+			if (err) {
+
+				if (err.message === 'Jwt is expired') {
+					callback(new UnauthorizedError(expiredToken));
+				} else {
+					callback(new UnauthorizedError(invalidToken));
+				}
+
+			} else {
+
+				let authorizedScopes = expandedJwt.body.scope.split(',');
+
+				logger.debug('API Token Scopes', {
+					routeScopes: routeScopes,
+					validScopes: authorizedScopes
+				});
+
+				if (routeScopes && routeScopes.length) {
+					if (_.intersection(routeScopes, authorizedScopes).length) {
+						callback();
+					} else {
+						callback(new UnauthorizedError(permissionDenied));
+					}
+				} else {
+					callback();
+				}
+			}
 		});
 };

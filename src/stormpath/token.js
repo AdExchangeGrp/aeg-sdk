@@ -21,7 +21,7 @@ export default {
 			if (err) {
 				callback(err);
 			} else {
-				if (new Date((result.body.exp * 1000) - seconds) > new Date()) {
+				if (new Date((result.body.exp * 1000) - seconds) <= new Date()) {
 					callback(new Error('Token will expire'));
 				} else {
 					callback();

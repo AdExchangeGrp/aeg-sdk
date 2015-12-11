@@ -90,6 +90,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -175,6 +177,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -215,14 +219,14 @@ var AffiliateService = (function() {
      * @param {string} contactGivenName - Contact given name
      * @param {string} contactSurname - Contact surname
      * @param {string} contactTitle - Contact title
-     * @param {string} contactPhone - Contact phone
+     * @param {string} contactPhone - Contact phone XXX-XXX-XXXX
      * @param {string} contactImScreenName - Contact instant messinger screen name
      * @param {string} contactImService - Contact instant messinger service type
      * @param {string} contactAddress - Contact street address
      * @param {string} contactSuite - Contact suite
      * @param {string} contactCity - Contact city
      * @param {string} contactState - Contact state
-     * @param {string} contactPostalCode - Contact postal code
+     * @param {string} contactPostalCode - Contact postal code XXXXX or XXXXX-XXXX
      * @param {string} contactCountry - Contact country
      * @param {string} company - Company name
      * @param {string} companyTaxId - Company tax id
@@ -233,7 +237,7 @@ var AffiliateService = (function() {
      * @param {string} companySuite - Company suite
      * @param {string} companyCity - Company city
      * @param {string} companyState - Company state
-     * @param {string} companyPostalCode - Company postal code
+     * @param {string} companyPostalCode - Company postal code XXXXX or XXXXX-XXXX
      * @param {string} companyCountry - Company country
      * @param {string} marketingUrl - Marketing site url
      * @param {string} marketingSiteCategory - Marketing site category
@@ -513,6 +517,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -548,7 +554,7 @@ var AffiliateService = (function() {
      * Approve an affiliate application
      * @method
      * @name AffiliateService#applicationApprove
-     * @param {string} href - Application href
+     * @param {string} id - Application id
      * @param {string} affiliateName - The new affiliate name and sub-domain
      * 
      */
@@ -559,7 +565,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/approve/';
+        var path = '/application/{id}/approve';
 
         var body;
         var queryParameters = {};
@@ -575,12 +581,10 @@ var AffiliateService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        if (parameters['href'] !== undefined) {
-            form['href'] = parameters['href'];
-        }
+        path = path.replace('{id}', parameters['id']);
 
-        if (parameters['href'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: href'));
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
         }
 
@@ -610,6 +614,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -645,7 +651,7 @@ var AffiliateService = (function() {
      * Deny an affiliate application
      * @method
      * @name AffiliateService#applicationDeny
-     * @param {string} href - Application href
+     * @param {string} id - Application id
      * 
      */
     AffiliateService.prototype.applicationDeny = function(parameters) {
@@ -655,7 +661,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/deny/';
+        var path = '/application/{id}/deny';
 
         var body;
         var queryParameters = {};
@@ -671,12 +677,10 @@ var AffiliateService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        if (parameters['href'] !== undefined) {
-            form['href'] = parameters['href'];
-        }
+        path = path.replace('{id}', parameters['id']);
 
-        if (parameters['href'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: href'));
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
         }
 
@@ -697,6 +701,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -782,6 +788,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
@@ -859,6 +867,8 @@ var AffiliateService = (function() {
         };
         if (Object.keys(form).length > 0) {
             req.form = form;
+        } else {
+            req.form = {};
         }
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
