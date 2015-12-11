@@ -5,6 +5,7 @@ import { token } from '../stormpath';
 import njwt from 'njwt';
 import _ from 'underscore';
 import config from 'config';
+import logger from '@adexchange/aeg-logger';
 
 const stormpathConfig = config.get('stormpath');
 const invalidToken = 'Invalid token';
@@ -19,6 +20,8 @@ const permissionDenied = 'Permission denied';
  * @param {function} callback
  */
 export default (req, def, routeScopes, callback) => {
+
+	logger.debug(`Authorizing ${req.swagger.apiPath}`);
 
 	let scopes = '';
 
@@ -41,6 +44,11 @@ export default (req, def, routeScopes, callback) => {
 			} else {
 
 				let authorizedScopes = expandedJwt.body.scope.split(',');
+
+				logger.debug('API Token Scopes', {
+					routeScopes: routeScopes,
+					validScopes: authorizedScopes
+				});
 
 				if (routeScopes && routeScopes.length) {
 					if (_.intersection(routeScopes, authorizedScopes).length) {
