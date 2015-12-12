@@ -556,6 +556,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#authorize
      * @param {array} scopes - Scopes to check authorization
+     * @param {boolean} strict - Authorize token source
      * 
      */
     SecurityService.prototype.authorize = function(parameters) {
@@ -583,6 +584,15 @@ var SecurityService = (function() {
 
         if (parameters['scopes'] !== undefined) {
             form['scopes'] = parameters['scopes'];
+        }
+
+        if (parameters['strict'] !== undefined) {
+            form['strict'] = parameters['strict'];
+        }
+
+        if (parameters['strict'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: strict'));
+            return deferred.promise;
         }
 
         if (parameters.$queryParameters) {
