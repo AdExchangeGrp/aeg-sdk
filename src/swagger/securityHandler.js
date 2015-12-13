@@ -1,6 +1,6 @@
 'use strict';
 
-import { UnauthorizedError } from './';
+import { UnauthorizedError, PermissionDeniedError } from './';
 import { token } from '../stormpath';
 import njwt from 'njwt';
 import _ from 'underscore';
@@ -54,7 +54,7 @@ export default (req, def, routeScopes, callback) => {
 					if (_.intersection(routeScopes, authorizedScopes).length) {
 						callback();
 					} else {
-						callback(new UnauthorizedError(permissionDenied));
+						callback(new PermissionDeniedError(permissionDenied));
 					}
 				} else {
 					callback();
