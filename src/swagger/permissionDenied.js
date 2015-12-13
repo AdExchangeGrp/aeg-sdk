@@ -9,7 +9,7 @@ function PermissionDenied(message) {
 	let temp = Error.apply(this, arguments);
 	temp.name = this.name = 'PermissionDenied';
 	this.stack = temp.stack;
-	this.message = message ? message : 'You are not authorized to access this resource';
+	this.message = message ? message : 'Permission denied';
 	this.statusCode = 403;
 }
 

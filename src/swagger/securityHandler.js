@@ -10,7 +10,6 @@ import logger from '@adexchange/aeg-logger';
 const stormpathConfig = config.get('stormpath');
 const invalidToken = 'Invalid token';
 const expiredToken = 'Expired token';
-const permissionDenied = 'Permission denied';
 
 /**
  * Authorize requests against the security service
@@ -54,7 +53,7 @@ export default (req, def, routeScopes, callback) => {
 					if (_.intersection(routeScopes, authorizedScopes).length) {
 						callback();
 					} else {
-						callback(new PermissionDeniedError(permissionDenied));
+						callback(new PermissionDeniedError());
 					}
 				} else {
 					callback();
