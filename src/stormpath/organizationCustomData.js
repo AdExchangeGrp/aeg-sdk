@@ -10,7 +10,7 @@ class OrganizationCustomData {
 
 		this._data.type = type;
 
-		if (options.id) {
+		if (options && options.id) {
 			this._data.type = options.id;
 		}
 
