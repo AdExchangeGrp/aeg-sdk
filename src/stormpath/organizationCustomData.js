@@ -4,11 +4,15 @@ import _  from 'underscore';
 
 class OrganizationCustomData {
 
-	constructor(type, customData) {
+	constructor(type, options, customData) {
 
 		this._data = customData;
 
 		this._data.type = type;
+
+		if (options.id) {
+			this._data.type = options.id;
+		}
 
 		if (!this._data.parent) {
 			this._data.parent = null;
@@ -21,6 +25,10 @@ class OrganizationCustomData {
 
 	getCustomData() {
 		return this._data;
+	}
+
+	getId() {
+		return this._data.id;
 	}
 
 	getType() {
