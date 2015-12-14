@@ -45,7 +45,10 @@ describe('securityApi - Account', () => {
 					givenName: 'test',
 					surname: 'test',
 					username: 'test',
-					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c',
+					customData: JSON.stringify({
+						test: 'test'
+					})
 				})
 				.then((result) => {
 					result.body.should.have.properties(['account']);
@@ -128,6 +131,8 @@ describe('securityApi - Account', () => {
 					result.body.account.surname.length.should.be.greaterThan(0);
 					result.body.account.customData.should.be.an.Object;
 					result.body.account.givenName.should.be.equal(givenName);
+					result.body.account.customData.should.have.properties(['test']);
+					result.body.account.customData.test.should.be.equal('test');
 					done();
 				})
 				.fail((err) => {

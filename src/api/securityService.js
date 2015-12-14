@@ -1534,6 +1534,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#approveOrganization
      * @param {string} id - The resource href of the organization
+     * @param {string} internalId - Secondary internal identifier
      * @param {string} rename - The organizations new name & sub-domain
      * 
      */
@@ -1567,6 +1568,10 @@ var SecurityService = (function() {
         if (parameters['id'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
+        }
+
+        if (parameters['internalId'] !== undefined) {
+            form['internalId'] = parameters['internalId'];
         }
 
         if (parameters['rename'] !== undefined) {
