@@ -939,16 +939,116 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Top 10 EPC data
+     * Top 10 EPC data by network
      * @method
-     * @name AffiliateService#reportsTop10Epc
+     * @name AffiliateService#reportsTop10EpcNetwork
+     * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} timezone - The timezone string ex. America/New_York
+     * @param {string} filter - Mobile or desktop
+     * 
+     */
+    AffiliateService.prototype.reportsTop10EpcNetwork = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/reports/top-10-epc/{interval}/{filter}';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{interval}', parameters['interval']);
+
+        if (parameters['interval'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: interval'));
+            return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        path = path.replace('{filter}', parameters['filter']);
+
+        if (parameters['filter'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Top 10 EPC data by affiliate
+     * @method
+     * @name AffiliateService#reportsTop10EpcAffiliate
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {string} filter - Mobile or desktop
      * 
      */
-    AffiliateService.prototype.reportsTop10Epc = function(parameters) {
+    AffiliateService.prototype.reportsTop10EpcAffiliate = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
