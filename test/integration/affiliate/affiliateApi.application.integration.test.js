@@ -81,6 +81,8 @@ describe('affiliateApi - Application', () => {
 						result.body.application.href.length.should.be.greaterThan(0);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
+						//default timezone
+						result.body.application.contact.timezone.should.be.equal('America/New_York');
 						applicationIdApprove = result.body.application.id;
 
 						done();
@@ -210,6 +212,7 @@ describe('affiliateApi - Application', () => {
 						contactState: 'test-apply-state',
 						contactPostalCode: '12345',
 						contactCountry: 'test-apply-country',
+						contactTimezone: 'America/Los_Angeles',
 						company: 'test-apply-company',
 						companyTaxId: 'test-apply-tax-id',
 						companyTaxClass: 'llc',
@@ -235,6 +238,7 @@ describe('affiliateApi - Application', () => {
 						result.body.application.href.length.should.be.greaterThan(0);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
+						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
 
 						applicationIdDeny = result.body.application.id;
 
@@ -278,17 +282,17 @@ describe('affiliateApi - Application', () => {
 			it('should get the application', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
 				affiliateApi.application({id: applicationIdDeny})
-						.then((result) => {
-							should.exist(result);
-							should.exist(result.body);
-							result.body.should.have.properties(['application']);
-							result.body.application.should.have.properties(['id']);
-							result.body.application.id.should.be.equal(applicationIdDeny);
-							done();
-						})
-						.fail((err) => {
-							done(err);
-						});
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['application']);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.id.should.be.equal(applicationIdDeny);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
