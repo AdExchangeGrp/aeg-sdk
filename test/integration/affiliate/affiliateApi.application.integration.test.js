@@ -273,6 +273,26 @@ describe('affiliateApi - Application', () => {
 
 		});
 
+		describe('get application', () => {
+
+			it('should get the application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.application({id: applicationIdDeny})
+						.then((result) => {
+							should.exist(result);
+							should.exist(result.body);
+							result.body.should.have.properties(['application']);
+							result.body.application.should.have.properties(['id']);
+							result.body.application.id.should.be.equal(applicationIdDeny);
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
+			});
+
+		});
+
 		describe('cleanup', () => {
 
 			it('should delete an application', (done) => {
