@@ -11,7 +11,7 @@ class OrganizationCustomData {
 		this._data.type = type;
 
 		if (options && options.id) {
-			this._data.type = options.id;
+			this._data.id = options.id;
 		}
 
 		if (!this._data.parent) {
