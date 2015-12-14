@@ -10,6 +10,7 @@ describe('affiliateApi - Application', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let newUserToken;
 	let applicationIdApprove;
 	let applicationIdDeny;
 
@@ -81,6 +82,8 @@ describe('affiliateApi - Application', () => {
 						result.body.application.href.length.should.be.greaterThan(0);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
+						//default timezone
+						result.body.application.contact.timezone.should.be.equal('America/New_York');
 						applicationIdApprove = result.body.application.id;
 
 						done();
@@ -94,6 +97,19 @@ describe('affiliateApi - Application', () => {
 			it('should return token for new account', (done) => {
 				securityApi.passwordToken({username: 'test-apply-approve@test.com', password: 'Pa$$w0rd'})
 					.then((result) => {
+						newUserToken = result.body.accessToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should return account with custom data', (done) => {
+				securityApi.setToken(newUserToken);
+				securityApi.getAccount()
+					.then((result) => {
+						result.body.account.customData.title.should.be.equal('test-apply-title');
 						done();
 					})
 					.fail((err) => {
@@ -128,10 +144,49 @@ describe('affiliateApi - Application', () => {
 
 		});
 
+		describe('get application', () => {
+
+			it('should get the application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.application({id: applicationIdApprove})
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['application']);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.id.should.be.equal(applicationIdApprove);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('get applications', () => {
+
+			it('should get the application list', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applications()
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['applications']);
+						_.isArray(result.body.applications).should.be.ok;
+						result.body.applications.length.should.be.greaterThan(0);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
 		describe('cleanup', () => {
 
 			it('should delete an application', (done) => {
-				console.log(applicationIdApprove);
 				affiliateApi.applicationDelete({id: applicationIdApprove})
 					.then((result) => {
 						should.exist(result);
@@ -170,6 +225,7 @@ describe('affiliateApi - Application', () => {
 						contactState: 'test-apply-state',
 						contactPostalCode: '12345',
 						contactCountry: 'test-apply-country',
+						contactTimezone: 'America/Los_Angeles',
 						company: 'test-apply-company',
 						companyTaxId: 'test-apply-tax-id',
 						companyTaxClass: 'llc',
@@ -195,6 +251,7 @@ describe('affiliateApi - Application', () => {
 						result.body.application.href.length.should.be.greaterThan(0);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
+						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
 
 						applicationIdDeny = result.body.application.id;
 
@@ -224,6 +281,26 @@ describe('affiliateApi - Application', () => {
 						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/6JNeqPfCOnCibnCI0rr9eS');
 						result.body.application.approver.givenName.should.not.be.empty;
 						result.body.application.approver.surname.should.not.be.empty;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('get application', () => {
+
+			it('should get the application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.application({id: applicationIdDeny})
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['application']);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.id.should.be.equal(applicationIdDeny);
 						done();
 					})
 					.fail((err) => {

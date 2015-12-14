@@ -4,9 +4,9 @@ import OrganizationCustomData from './organizationCustomData';
 
 class AffiliateCustomData extends OrganizationCustomData {
 
-	constructor(customData) {
+	constructor(options, customData) {
 
-		super('affiliate', customData);
+		super('affiliate', options, customData);
 
 	}
 

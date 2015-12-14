@@ -228,6 +228,7 @@ var AffiliateService = (function() {
      * @param {string} contactState - Contact state
      * @param {string} contactPostalCode - Contact postal code XXXXX or XXXXX-XXXX
      * @param {string} contactCountry - Contact country
+     * @param {string} contactTimezone - Preferred timezone, default's to EST
      * @param {string} company - Company name
      * @param {string} companyTaxId - Company tax id
      * @param {string} companyTaxClass - Company tax class
@@ -365,6 +366,10 @@ var AffiliateService = (function() {
         if (parameters['contactCountry'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: contactCountry'));
             return deferred.promise;
+        }
+
+        if (parameters['contactTimezone'] !== undefined) {
+            form['contactTimezone'] = parameters['contactTimezone'];
         }
 
         if (parameters['company'] !== undefined) {
@@ -818,7 +823,8 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsPerformance
      * @param {string} affiliateId - The affiliate id
-     * @param {string} intervalType - The time interval to use (weekly, daily, etc...)
+     * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} timezone - The timezone string ex. America/New_York
      * @param {string} sort - The sort to apply
      * @param {string} sortDirection - The sort direction to apply
      * 
@@ -830,7 +836,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/performance/{intervalType}';
+        var path = '/{affiliateId}/reports/performance/{interval}';
 
         var body;
         var queryParameters = {};
@@ -853,11 +859,15 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{intervalType}', parameters['intervalType']);
+        path = path.replace('{interval}', parameters['interval']);
 
-        if (parameters['intervalType'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: intervalType'));
+        if (parameters['interval'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: interval'));
             return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
         }
 
         if (parameters['sort'] !== undefined) {
@@ -933,7 +943,8 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsTop10Epc
      * @param {string} affiliateId - The affiliate id
-     * @param {string} intervalType - The time interval to use (weekly, daily, etc...)
+     * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} timezone - The timezone string ex. America/New_York
      * @param {string} filter - Mobile or desktop
      * 
      */
@@ -944,7 +955,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/top-10-epc/{intervalType}/{filter}';
+        var path = '/{affiliateId}/reports/top-10-epc/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -967,11 +978,15 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{intervalType}', parameters['intervalType']);
+        path = path.replace('{interval}', parameters['interval']);
 
-        if (parameters['intervalType'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: intervalType'));
+        if (parameters['interval'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: interval'));
             return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
         }
 
         path = path.replace('{filter}', parameters['filter']);
