@@ -128,6 +128,46 @@ describe('affiliateApi - Application', () => {
 
 		});
 
+		describe('get application', () => {
+
+			it('should get the application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.application({id: applicationIdApprove})
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['application']);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.id.should.be.equal(applicationIdApprove);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('get applications', () => {
+
+			it('should get the application list', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applications()
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['applications']);
+						_.isArray(result.body.applications).should.be.ok;
+						result.body.applications.length.should.be.greaterThan(0);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
 		describe('cleanup', () => {
 
 			it('should delete an application', (done) => {
