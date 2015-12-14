@@ -551,11 +551,90 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Returns applications
+     * @method
+     * @name AffiliateService#applications
+     * 
+     */
+    AffiliateService.prototype.applications = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/applications';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Approve an affiliate application
      * @method
      * @name AffiliateService#applicationApprove
      * @param {string} id - Application id
-     * @param {string} affiliateName - The new affiliate name and sub-domain
+     * @param {string} affiliateId - The new affiliate id and sub-domain
      * 
      */
     AffiliateService.prototype.applicationApprove = function(parameters) {
@@ -588,12 +667,12 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['affiliateName'] !== undefined) {
-            form['affiliateName'] = parameters['affiliateName'];
+        if (parameters['affiliateId'] !== undefined) {
+            form['affiliateId'] = parameters['affiliateId'];
         }
 
-        if (parameters['affiliateName'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: affiliateName'));
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
             return deferred.promise;
         }
 
@@ -738,7 +817,10 @@ var AffiliateService = (function() {
      * Performance data
      * @method
      * @name AffiliateService#reportsPerformance
+     * @param {string} affiliateId - The affiliate id
      * @param {string} intervalType - The time interval to use (weekly, daily, etc...)
+     * @param {string} sort - The sort to apply
+     * @param {string} sortDirection - The sort direction to apply
      * 
      */
     AffiliateService.prototype.reportsPerformance = function(parameters) {
@@ -748,7 +830,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/reports/performance/{intervalType}';
+        var path = '/{affiliateId}/reports/performance/{intervalType}';
 
         var body;
         var queryParameters = {};
@@ -764,10 +846,35 @@ var AffiliateService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
         path = path.replace('{intervalType}', parameters['intervalType']);
 
         if (parameters['intervalType'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: intervalType'));
+            return deferred.promise;
+        }
+
+        if (parameters['sort'] !== undefined) {
+            queryParameters['sort'] = parameters['sort'];
+        }
+
+        if (parameters['sort'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: sort'));
+            return deferred.promise;
+        }
+
+        if (parameters['sortDirection'] !== undefined) {
+            queryParameters['sortDirection'] = parameters['sortDirection'];
+        }
+
+        if (parameters['sortDirection'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: sortDirection'));
             return deferred.promise;
         }
 
@@ -825,6 +932,9 @@ var AffiliateService = (function() {
      * Top 10 EPC data
      * @method
      * @name AffiliateService#reportsTop10Epc
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} intervalType - The time interval to use (weekly, daily, etc...)
+     * @param {string} filter - Mobile or desktop
      * 
      */
     AffiliateService.prototype.reportsTop10Epc = function(parameters) {
@@ -834,7 +944,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/reports/top-10-epc/';
+        var path = '/{affiliateId}/reports/top-10-epc/{intervalType}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -848,6 +958,27 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{intervalType}', parameters['intervalType']);
+
+        if (parameters['intervalType'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: intervalType'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{filter}', parameters['filter']);
+
+        if (parameters['filter'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
         }
 
         if (parameters.$queryParameters) {

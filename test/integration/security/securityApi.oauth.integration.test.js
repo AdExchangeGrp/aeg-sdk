@@ -140,14 +140,14 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return with 401 with an api token not scoped', (done) => {
+		it('should return with 403 with an api token not scoped', (done) => {
 			securityApi.setToken(apiTokenAuthorizationNotScoped, 'Basic');
 			securityApi.testScopeProtected({name: 'Justin'})
 				.then(() => {
 					done(new Error('Call should have failed unauthorized'));
 				})
 				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
+					err.response.statusCode.should.be.equal(403);
 					return done();
 				});
 		});
@@ -256,7 +256,7 @@ describe('securityApi - OAuth', () => {
 					done(new Error('Should not have authorized'));
 				})
 				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
+					err.response.statusCode.should.be.equal(403);
 					done();
 				});
 		});
@@ -268,7 +268,7 @@ describe('securityApi - OAuth', () => {
 					done(new Error('Should not have authorized'));
 				})
 				.fail((err) => {
-					err.response.statusCode.should.be.equal(401);
+					err.response.statusCode.should.be.equal(403);
 					done();
 				});
 		});

@@ -107,7 +107,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should approve an application', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateName: 'Test Approved Affiliate'})
+				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateId: 'Test Approved Affiliate'})
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id', 'href', 'approver']);
