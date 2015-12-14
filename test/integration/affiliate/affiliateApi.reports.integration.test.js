@@ -3,7 +3,7 @@
 //import affiliateApi from '../../../src/api/affiliateApi';
 import securityApi from '../../../src/api/securityApi';
 //import should from 'should';
-import _ from 'underscore';
+//import _ from 'underscore';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
