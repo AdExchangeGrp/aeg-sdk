@@ -10,6 +10,7 @@ describe('affiliateApi - Application', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let newUserToken;
 	let applicationIdApprove;
 	let applicationIdDeny;
 
@@ -96,6 +97,19 @@ describe('affiliateApi - Application', () => {
 			it('should return token for new account', (done) => {
 				securityApi.passwordToken({username: 'test-apply-approve@test.com', password: 'Pa$$w0rd'})
 					.then((result) => {
+						newUserToken = result.body.accessToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should return account with custom data', (done) => {
+				securityApi.setToken(newUserToken);
+				securityApi.getAccount()
+					.then((result) => {
+						result.body.account.customData.title.should.be.equal('test-apply-title');
 						done();
 					})
 					.fail((err) => {
@@ -173,7 +187,6 @@ describe('affiliateApi - Application', () => {
 		describe('cleanup', () => {
 
 			it('should delete an application', (done) => {
-				console.log(applicationIdApprove);
 				affiliateApi.applicationDelete({id: applicationIdApprove})
 					.then((result) => {
 						should.exist(result);
