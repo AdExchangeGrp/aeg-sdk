@@ -4,12 +4,17 @@ import OrganizationCustomData from './organizationCustomData';
 
 class AffiliateCustomData extends OrganizationCustomData {
 
-	constructor(options, customData) {
-
-		super('affiliate', options, customData);
-
+	constructor(customData) {
+		super('affiliate', customData);
 	}
 
+	getId() {
+		return this._data.id;
+	}
+
+	setId(id) {
+		this._data.id = id;
+	}
 }
 
 export default AffiliateCustomData;

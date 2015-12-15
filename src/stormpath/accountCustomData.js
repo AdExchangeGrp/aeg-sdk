@@ -1,27 +1,86 @@
 'use strict';
 
-class AccountCustomData {
+import CustomData from './customData';
+import _ from 'underscore';
 
-	constructor(options, customData) {
+class AccountCustomData extends CustomData {
 
-		this._data = customData;
+	constructor(customData) {
+		super(customData);
+	}
 
-		if (options && options.timezone) {
-			this._data.timezone = options.timezone;
+	getOrganizationHref() {
+		if (this._data.organization) {
+			return this._data.organization.href;
 		}
 	}
 
-	getCustomData() {
-		return this._data;
+	getOrganizationId() {
+		if (this._data.organization) {
+			return this._data.organization.id;
+		}
+	}
+
+	getTitle() {
+		return this._data.title;
+	}
+
+	getPhone() {
+		return this._data.phone;
+	}
+
+	getImScreenName() {
+		if (this._data.im) {
+			return this._data.im.screenName;
+		}
+	}
+
+	getImService() {
+		if (this._data.im) {
+			return this._data.im.service;
+		}
+	}
+
+	getAddress() {
+		if (this._data.address) {
+			return this._data.address.address;
+		}
+	}
+
+	getSuite() {
+		if (this._data.address) {
+			return this._data.address.suite;
+		}
+	}
+
+	getCity() {
+		if (this._data.address) {
+			return this._data.address.city;
+		}
+	}
+
+	getState() {
+		if (this._data.address) {
+			return this._data.address.state;
+		}
+	}
+
+	getPostalCode() {
+		if (this._data.address) {
+			return this._data.address.postalCode;
+		}
+	}
+
+	getCountry() {
+		if (this._data.address) {
+			return this._data.address.country;
+		}
 	}
 
 	getTimezone() {
 		return this._data.timezone;
 	}
 
-	save(callback) {
-		this._data.save(callback);
-	}
 }
 
 export default AccountCustomData;
