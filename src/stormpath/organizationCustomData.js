@@ -1,18 +1,15 @@
 'use strict';
 
+import CustomData from './customData';
 import _  from 'underscore';
 
-class OrganizationCustomData {
+class OrganizationCustomData extends CustomData {
 
-	constructor(type, options, customData) {
+	constructor(type, customData) {
 
-		this._data = customData;
+		super(customData);
 
 		this._data.type = type;
-
-		if (options && options.id) {
-			this._data.id = options.id;
-		}
 
 		if (!this._data.parent) {
 			this._data.parent = null;
@@ -21,14 +18,6 @@ class OrganizationCustomData {
 		if (!this._data.children) {
 			this._data.children = [];
 		}
-	}
-
-	getCustomData() {
-		return this._data;
-	}
-
-	getId() {
-		return this._data.id;
 	}
 
 	getType() {
@@ -55,9 +44,6 @@ class OrganizationCustomData {
 		this._data.parent = parent;
 	}
 
-	save(callback) {
-		this._data.save(callback);
-	}
 }
 
 export default OrganizationCustomData;
