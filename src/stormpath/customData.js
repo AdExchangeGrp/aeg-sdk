@@ -31,6 +31,10 @@ class CustomData {
 		callback();
 	}
 
+	stringify() {
+		return JSON.stringify(this._data);
+	}
+
 	save(callback) {
 		this._data.save(callback);
 	}
