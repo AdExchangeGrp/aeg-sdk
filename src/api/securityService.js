@@ -943,9 +943,10 @@ var SecurityService = (function() {
         return deferred.promise;
     };
     /**
-     * Update an account
+     * Update an account as the account owner or with an admin scope
      * @method
      * @name SecurityService#updateAccountProfile
+     * @param {string} id - Account href
      * @param {string} email - Email address
      * @param {string} password - Password
      * @param {string} givenName - Given / first name
@@ -974,6 +975,15 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['id'] !== undefined) {
+            form['id'] = parameters['id'];
+        }
+
+        if (parameters['id'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: id'));
+            return deferred.promise;
         }
 
         if (parameters['email'] !== undefined) {
