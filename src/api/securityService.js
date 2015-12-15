@@ -952,6 +952,7 @@ var SecurityService = (function() {
      * @param {string} givenName - Given / first name
      * @param {string} surname - Family / last name
      * @param {string} username - Arbitrary username
+     * @param {string} customData - Custom data
      * 
      */
     SecurityService.prototype.updateAccountProfile = function(parameters) {
@@ -1004,6 +1005,10 @@ var SecurityService = (function() {
 
         if (parameters['username'] !== undefined) {
             form['username'] = parameters['username'];
+        }
+
+        if (parameters['customData'] !== undefined) {
+            form['customData'] = parameters['customData'];
         }
 
         if (parameters.$queryParameters) {

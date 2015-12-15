@@ -104,7 +104,11 @@ describe('securityApi - Account', () => {
 		let givenName = uuid.v4();
 
 		it('should update account', (done) => {
-			securityApi.updateAccountProfile({givenName: givenName, id: registeredAccountHref})
+			securityApi.updateAccountProfile({
+					givenName: givenName,
+					id: registeredAccountHref,
+					customData: JSON.stringify({testUpdate: 'test-me'})
+				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
 					done();
@@ -131,8 +135,9 @@ describe('securityApi - Account', () => {
 					result.body.account.surname.length.should.be.greaterThan(0);
 					result.body.account.customData.should.be.an.Object;
 					result.body.account.givenName.should.be.equal(givenName);
-					result.body.account.customData.should.have.properties(['test']);
+					result.body.account.customData.should.have.properties(['test', 'testUpdate']);
 					result.body.account.customData.test.should.be.equal('test');
+					result.body.account.customData.testUpdate.should.be.equal('test-me');
 					done();
 				})
 				.fail((err) => {
