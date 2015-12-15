@@ -1,6 +1,6 @@
 'use strict';
 
-import _ from 'underscore';
+import _ from 'lodash';
 
 class CustomData {
 
@@ -26,7 +26,7 @@ class CustomData {
 			mergeData = json;
 		}
 
-		_.extend(this._data, mergeData);
+		_.merge(this._data, mergeData);
 
 		callback();
 	}

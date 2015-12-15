@@ -1,7 +1,7 @@
 'use strict';
 
 import securityApi from '../../../src/api/securityApi';
-import _ from 'underscore';
+import _ from 'lodash';
 import should from 'should';
 
 /** @namespace result.body.should.have */

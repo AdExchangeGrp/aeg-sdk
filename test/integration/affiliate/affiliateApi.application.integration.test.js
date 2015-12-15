@@ -3,7 +3,7 @@
 import affiliateApi from '../../../src/api/affiliateApi';
 import securityApi from '../../../src/api/securityApi';
 import should from 'should';
-import _ from 'underscore';
+import _ from 'lodash';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
@@ -109,7 +109,9 @@ describe('affiliateApi - Application', () => {
 				securityApi.setToken(newUserToken);
 				securityApi.getAccount()
 					.then((result) => {
+						console.log(result.body.account.customData);
 						result.body.account.customData.title.should.be.equal('test-apply-title');
+						result.body.account.customData.organization.href.should.not.be.empty;
 						done();
 					})
 					.fail((err) => {
@@ -140,6 +142,22 @@ describe('affiliateApi - Application', () => {
 					.fail((err) => {
 						done(err);
 					});
+			});
+
+			it('should return account with custom data', (done) => {
+				securityApi.setToken(newUserToken);
+				securityApi.getAccount()
+						.then((result) => {
+							result.body.account.customData.title.should.be.equal('test-apply-title');
+							console.log(result.body.account.customData);
+							result.body.account.customData.organization.should.have.properties(['href', 'id']);
+							result.body.account.customData.organization.href.should.not.be.empty;
+							result.body.account.customData.organization.id.should.be.equal('Test Approved Affiliate');
+							done();
+						})
+						.fail((err) => {
+							done(err);
+						});
 			});
 
 		});

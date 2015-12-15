@@ -1,7 +1,7 @@
 'use strict';
 
 import CustomData from './customData';
-import _  from 'underscore';
+import _  from 'lodash';
 
 class OrganizationCustomData extends CustomData {
 
