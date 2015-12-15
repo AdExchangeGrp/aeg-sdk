@@ -1,7 +1,6 @@
 'use strict';
 
 import CustomData from './customData';
-import _ from 'underscore';
 
 class AccountCustomData extends CustomData {
 

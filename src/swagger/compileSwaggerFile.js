@@ -4,7 +4,6 @@ import Mustache from 'mustache';
 import fs from 'fs';
 import path from 'path';
 import config from 'config';
-import _ from 'underscore';
 
 export default (swaggerPath) => {
 
