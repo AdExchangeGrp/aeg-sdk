@@ -6,7 +6,7 @@ import should from 'should';
 import _ from 'underscore';
 
 /** @namespace result.body.should.have */
-describe('affiliateApi - Application', () => {
+describe('affiliateApi - Reports', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
