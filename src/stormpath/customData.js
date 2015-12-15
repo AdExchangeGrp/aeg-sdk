@@ -5,7 +5,7 @@ import _ from 'underscore';
 class CustomData {
 
 	constructor(customData) {
-		this._data = customData;
+		this._data = customData ? customData : {};
 	}
 
 	getCustomData() {
