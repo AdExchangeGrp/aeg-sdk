@@ -960,7 +960,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/updateProfile';
+        var path = '/account/profile';
 
         var body;
         var queryParameters = {};
@@ -1061,7 +1061,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/scope/add';
+        var path = '/account/scope';
 
         var body;
         var queryParameters = {};
@@ -1160,7 +1160,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/scope/remove';
+        var path = '/account/scope';
 
         var body;
         var queryParameters = {};
@@ -1203,7 +1203,7 @@ var SecurityService = (function() {
         }
 
         var req = {
-            method: 'POST',
+            method: 'DELETE',
             uri: domain + path,
             qs: queryParameters,
             headers: headers,

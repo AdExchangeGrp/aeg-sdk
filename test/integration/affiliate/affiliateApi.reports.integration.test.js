@@ -6,7 +6,7 @@ import should from 'should';
 import _ from 'underscore';
 
 /** @namespace result.body.should.have */
-describe('affiliateApi - Application', () => {
+describe('affiliateApi - Reports', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
@@ -36,19 +36,23 @@ describe('affiliateApi - Application', () => {
 	describe('#reportsPerformance', () => {
 
 		it('should return performance report daily', (done) => {
-			testPerformaceReport('daily', done);
+			testPerformaceReport({interval: 'daily', sort: 'clicks'}, done);
 		});
 
 		it('should return performance report weekly', (done) => {
-			testPerformaceReport('weekly', done);
+			testPerformaceReport({interval: 'weekly', sort: 'sales'}, done);
 		});
 
 		it('should return performance report monthly', (done) => {
-			testPerformaceReport('monthly', done);
+			testPerformaceReport({interval: 'monthly', sort: 'cr'}, done);
 		});
 
 		it('should return performance report yearly', (done) => {
-			testPerformaceReport('yearly', done);
+			testPerformaceReport({interval: 'yearly', sort: 'cr', sortDirection: 'desc'}, done);
+		});
+
+		it('should return performance report daily with timezone', (done) => {
+			testPerformaceReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
 	});
@@ -56,19 +60,19 @@ describe('affiliateApi - Application', () => {
 	describe('#reportsTop10EpcAffiliate', () => {
 
 		it('should return performance report daily', (done) => {
-			testTop10EpcAffiliateReport('daily', done);
+			testTop10EpcAffiliateReport({interval: 'daily'}, done);
 		});
 
 		it('should return performance report weekly', (done) => {
-			testTop10EpcAffiliateReport('weekly', done);
+			testTop10EpcAffiliateReport({interval: 'weekly'}, done);
 		});
 
 		it('should return performance report monthly', (done) => {
-			testTop10EpcAffiliateReport('monthly', done);
+			testTop10EpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, done);
 		});
 
 		it('should return performance report yearly', (done) => {
-			testTop10EpcAffiliateReport('yearly', done);
+			testTop10EpcAffiliateReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
 	});
@@ -76,19 +80,19 @@ describe('affiliateApi - Application', () => {
 	describe('#reportsTop10EpcNetwork', () => {
 
 		it('should return performance report daily', (done) => {
-			testTop10EpcNetworkReport('daily', done);
+			testTop10EpcNetworkReport({interval: 'daily'}, done);
 		});
 
 		it('should return performance report weekly', (done) => {
-			testTop10EpcNetworkReport('weekly', done);
+			testTop10EpcNetworkReport({interval: 'weekly'}, done);
 		});
 
 		it('should return performance report monthly', (done) => {
-			testTop10EpcNetworkReport('monthly', done);
+			testTop10EpcNetworkReport({interval: 'monthly', filter: 'mobile'}, done);
 		});
 
 		it('should return performance report yearly', (done) => {
-			testTop10EpcNetworkReport('yearly', done);
+			testTop10EpcNetworkReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
 	});
@@ -109,16 +113,23 @@ describe('affiliateApi - Application', () => {
 
 	});
 
-	function testPerformaceReport(interval, callback) {
+	function testPerformaceReport(options, callback) {
 		affiliateApi.setToken(adminPasswordToken);
-		affiliateApi.reportsPerformance({
-				affiliateId: 170001,
-				interval: interval,
-				sort: 'clicks',
-				sortDirection: 'asc'
-			})
+
+		var args = {
+			affiliateId: options.affiliateId ? options.affiliateId : 170001,
+			interval: options.interval ? options.interval : 'daily',
+			sort: options.sort ? options.sort : 'clicks',
+			sortDirection: options.sortDirection ? options.sortDirection : 'asc'
+		};
+
+		if (options.timezone) {
+			args.timezone = options.timezone;
+		}
+
+		affiliateApi.reportsPerformance(args)
 			.then((result) => {
-				validatePerformanceReport(result);
+				validatePerformanceReport(result, args.sort, args.sortDirection);
 				callback();
 			})
 			.fail((err) => {
@@ -126,23 +137,63 @@ describe('affiliateApi - Application', () => {
 			});
 	}
 
-	function validatePerformanceReport(result) {
+	function validatePerformanceReport(result, sort, sortDirection) {
 		should.exist(result);
 		should.exist(result.body);
 		should.exist(result.body.data);
 		result.body.data.should.have.properties(['revenue', 'epc', 'sales', 'clicks', 'cr', 'subIds']);
 		_.isArray(result.body.data.subIds).should.be.ok;
-		_.each(result.body.data.subIds, (sub) => {
+
+		var lastVal;
+
+		_.each(result.body.data.subIds, (sub, i) => {
+
 			sub.should.have.properties(['id', 'clicks', 'sales', 'cr']);
+
+			switch (sort) {
+				case 'sales':
+					if (i === 0) {
+						lastVal = sub.sales;
+					}
+					if (sortDirection === 'asc') {
+						(sub.sales >= lastVal).should.be.ok;
+					} else {
+						(sub.sales <= lastVal).should.be.ok;
+					}
+					lastVal = sub.sales;
+					break;
+				case 'clicks':
+					if (i === 0) {
+						lastVal = sub.clicks;
+					}
+					if (sortDirection === 'asc') {
+						(sub.clicks >= lastVal).should.be.ok;
+					} else {
+						(sub.clicks <= lastVal).should.be.ok;
+					}
+					lastVal = sub.clicks;
+					break;
+				case 'cr':
+					if (i === 0) {
+						lastVal = sub.cr;
+					}
+					if (sortDirection === 'asc') {
+						(sub.cr >= lastVal).should.be.ok;
+					} else {
+						(sub.cr <= lastVal).should.be.ok;
+					}
+					lastVal = sub.cr;
+					break;
+			}
 		});
 	}
 
-	function testTop10EpcAffiliateReport(interval, callback) {
+	function testTop10EpcAffiliateReport(options, callback) {
 		affiliateApi.setToken(adminPasswordToken);
 		affiliateApi.reportsTop10EpcAffiliate({
-				affiliateId: 170001,
-				interval: interval,
-				filter: 'all'
+				affiliateId: options.affiliateId ? options.affiliateId : 170001,
+				interval: options.interval ? options.interval : 'daily',
+				filter: options.filter ? options.filter : 'all'
 			})
 			.then((result) => {
 				validateTop10EpcReport(result);
@@ -153,11 +204,11 @@ describe('affiliateApi - Application', () => {
 			});
 	}
 
-	function testTop10EpcNetworkReport(interval, callback) {
+	function testTop10EpcNetworkReport(options, callback) {
 		affiliateApi.setToken(adminPasswordToken);
 		affiliateApi.reportsTop10EpcNetwork({
-				interval: interval,
-				filter: 'all'
+				interval: options.interval ? options.interval : 'daily',
+				filter: options.filter ? options.filter : 'all'
 			})
 			.then((result) => {
 				validateTop10EpcReport(result);
