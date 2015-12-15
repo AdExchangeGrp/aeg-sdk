@@ -47,7 +47,10 @@ describe('securityApi - Account', () => {
 					username: 'test',
 					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c',
 					customData: JSON.stringify({
-						test: 'test'
+						test: 'test',
+						org: {
+							href: 'test'
+						}
 					})
 				})
 				.then((result) => {
@@ -107,7 +110,12 @@ describe('securityApi - Account', () => {
 			securityApi.updateAccountProfile({
 					givenName: givenName,
 					id: registeredAccountHref,
-					customData: JSON.stringify({testUpdate: 'test-me'})
+					customData: JSON.stringify({
+						testUpdate: 'test-me',
+						org: {
+							id: 'test'
+						}
+					})
 				})
 				.then((result) => {
 					result.body.message.should.be.equal('success');
@@ -135,9 +143,11 @@ describe('securityApi - Account', () => {
 					result.body.account.surname.length.should.be.greaterThan(0);
 					result.body.account.customData.should.be.an.Object;
 					result.body.account.givenName.should.be.equal(givenName);
-					result.body.account.customData.should.have.properties(['test', 'testUpdate']);
+					result.body.account.customData.should.have.properties(['test', 'testUpdate', 'org']);
 					result.body.account.customData.test.should.be.equal('test');
 					result.body.account.customData.testUpdate.should.be.equal('test-me');
+					result.body.account.customData.org.should.have.properties(['href', 'id']);
+					result.body.account.customData.org.should.eql({href: 'test', id: 'test'});
 					done();
 				})
 				.fail((err) => {
