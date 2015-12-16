@@ -16,32 +16,203 @@ describe('securityApi - OAuth', () => {
 
 	describe('#passwordToken()', () => {
 
-		it('should return password token without error with account', (done) => {
-			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
-					(_.isObject(result.body.account)).should.be.ok;
-					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'scopes', 'customData']);
-					result.body.account.href.should.be.a.String;
-					result.body.account.href.length.should.be.greaterThan(0);
-					_.isArray(result.body.account.scopes).should.be.ok;
-					result.body.account.scopes.length.should.be.greaterThan(0);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorization = result.body.accessToken;
-					refreshToken = result.body.refreshToken;
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		let tempPasswordAccessToken;
+		let tempPasswordRefreshToken;
+
+		describe('org href search', () => {
+
+			it('should return password token with org href and not return the account object', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: false,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						result.body.should.not.have.properties(['account']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should not return password token with the org href', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
+		});
+
+		describe('org name search', () => {
+
+			it('should return password token with the org name', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'name',
+						searchValue: 'Ad Exchange Group'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should not return password token with the org name', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'name',
+						searchValue: 'Test Affiliate'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
+		});
+
+		describe('org nameKey search', () => {
+
+			it('should return password token with the org nameKey', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'adexchange'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should not return password token with the org nameKey', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'test-affiliate'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
+		});
+
+		describe('no search', () => {
+
+			it('should return password token', (done) => {
+				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
+						(_.isObject(result.body.account)).should.be.ok;
+						result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'scopes', 'customData']);
+						result.body.account.href.should.be.a.String;
+						result.body.account.href.length.should.be.greaterThan(0);
+						_.isArray(result.body.account.scopes).should.be.ok;
+						result.body.account.scopes.length.should.be.greaterThan(0);
+						result.body.accessToken.should.be.a.String;
+						result.body.accessToken.length.should.be.greaterThan(0);
+						passwordAuthorization = result.body.accessToken;
+						refreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should not return password token', (done) => {
+				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd2', fetchAccount: true})
+					.then((result) => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
 		});
 
 	});
 
 	describe('#createApiKey()', () => {
 
-		it('should return scoped api key without error', (done) => {
+		it('should return scoped api key', (done) => {
 			securityApi.setToken(passwordAuthorization);
 			securityApi.createApiKey()
 				.then((result) => {
@@ -58,7 +229,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return non-scoped api key without error', (done) => {
+		it('should return non-scoped api key', (done) => {
 			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
@@ -77,7 +248,7 @@ describe('securityApi - OAuth', () => {
 
 	describe('#apiToken()', () => {
 
-		it('should return scoped api token for api key without error', (done) => {
+		it('should return scoped api token for api key', (done) => {
 			securityApi.apiToken({
 					Authorization: 'Basic ' + apiKeyScoped,
 					grantType: 'client_credentials',
@@ -95,7 +266,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return non-scoped api token for api key without error', (done) => {
+		it('should return non-scoped api token for api key', (done) => {
 			securityApi.apiToken({Authorization: 'Basic ' + apiKeyNotScoped, grantType: 'client_credentials'})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
