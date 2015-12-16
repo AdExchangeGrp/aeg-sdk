@@ -52,6 +52,22 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
+			it('should not return password token with account and org href', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
 		});
 
 		describe('org name search', () => {
@@ -87,6 +103,22 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
+			it('should not return password token with account and org name', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'name',
+						searchValue: 'Test Affiliate'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
 		});
 
 		describe('org nameKey search', () => {
@@ -119,6 +151,22 @@ describe('securityApi - OAuth', () => {
 					})
 					.fail((err) => {
 						done(err);
+					});
+			});
+
+			it('should not return password token with account and org name', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'test-affiliate'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
 					});
 			});
 
