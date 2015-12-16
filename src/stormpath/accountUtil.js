@@ -1,6 +1,6 @@
 'use strict';
 
-import _ from 'underscore';
+import _ from 'lodash';
 import async from 'async';
 import logger from '@adexchange/aeg-logger';
 

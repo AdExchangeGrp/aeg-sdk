@@ -1,7 +1,7 @@
 'use strict';
 
 import securityApi from '../../../src/api/securityApi';
-import _ from 'underscore';
+import _ from 'lodash';
 
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {

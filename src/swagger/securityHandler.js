@@ -3,7 +3,7 @@
 import { UnauthorizedError, PermissionDeniedError } from './';
 import { token } from '../stormpath';
 import njwt from 'njwt';
-import _ from 'underscore';
+import _ from 'lodash';
 import config from 'config';
 import logger from '@adexchange/aeg-logger';
 
