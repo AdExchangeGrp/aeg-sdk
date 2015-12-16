@@ -12,7 +12,7 @@ export default {
 	 * @param {function} callback
 	 */
 	getOrganizationDefaultDirectoryByName: (client, name, callback) => {
-		this._getOrganizationDefaultDirectoryInternal(client, {name: name}, callback);
+		_getOrganizationDefaultDirectoryInternal(client, {name: name}, callback);
 	},
 
 	/**
@@ -22,31 +22,31 @@ export default {
 	 * @param {function} callback
 	 */
 	getOrganizationDefaultDirectoryByNameKey: (client, nameKey, callback) => {
-		this._getOrganizationDefaultDirectoryInternal(client, {nameKey: nameKey}, callback);
-	},
-
-	_getOrganizationDefaultDirectoryInternal: (client, search, callback) => {
-		async.waterfall([
-			(callback) => {
-				client.getCurrentTenant(callback);
-			},
-			(tenant, callback) => {
-				tenant.getOrganizations(search, (err, organizations) => {
-					if (err) {
-						callback(err);
-					} else {
-						if (!organizations.items.length) {
-							callback(new Error('Organization not found'));
-						} else {
-							callback(null, organizations.items[0]);
-						}
-					}
-				});
-			},
-			(organization, callback) => {
-				organizationUtil.getOrganizationDefaultAccountStore(client, organization.href, callback);
-			}
-		], callback);
-	},
+		_getOrganizationDefaultDirectoryInternal(client, {nameKey: nameKey}, callback);
+	}
 
 };
+
+function _getOrganizationDefaultDirectoryInternal(client, search, callback) {
+	async.waterfall([
+		(callback) => {
+			client.getCurrentTenant(callback);
+		},
+		(tenant, callback) => {
+			tenant.getOrganizations(search, (err, organizations) => {
+				if (err) {
+					callback(err);
+				} else {
+					if (!organizations.items.length) {
+						callback(new Error('Organization not found'));
+					} else {
+						callback(null, organizations.items[0]);
+					}
+				}
+			});
+		},
+		(organization, callback) => {
+			organizationUtil.getOrganizationDefaultAccountStore(client, organization.href, callback);
+		}
+	], callback);
+}
