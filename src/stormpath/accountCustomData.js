@@ -8,18 +8,6 @@ class AccountCustomData extends CustomData {
 		super(customData);
 	}
 
-	getOrganizationHref() {
-		if (this._data.organization) {
-			return this._data.organization.href;
-		}
-	}
-
-	getOrganizationId() {
-		if (this._data.organization) {
-			return this._data.organization.id;
-		}
-	}
-
 	getTitle() {
 		return this._data.title;
 	}

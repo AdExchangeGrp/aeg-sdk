@@ -8,13 +8,6 @@ class AffiliateCustomData extends OrganizationCustomData {
 		super('affiliate', customData);
 	}
 
-	getId() {
-		return this._data.id;
-	}
-
-	setId(id) {
-		this._data.id = id;
-	}
 }
 
 export default AffiliateCustomData;

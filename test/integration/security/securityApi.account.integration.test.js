@@ -13,6 +13,7 @@ describe('securityApi - Account', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let adminHref;
 	let registeredAccountHref;
 	let registeredPasswordToken;
 	let registeredRefreshToken;
@@ -20,14 +21,19 @@ describe('securityApi - Account', () => {
 	describe('#setup()', () => {
 
 		it('should return admin scoped password token without error', (done) => {
-			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
+			securityApi.passwordToken({
+					username: 'test-admin@test.com',
+					password: 'Pa$$w0rd',
+					scope: 'platform:admin',
+					fetchAccount: true
+				})
 				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
+					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
 					result.body.accessToken.should.be.a.String;
 					result.body.accessToken.length.should.be.greaterThan(0);
 					adminPasswordToken = result.body.accessToken;
 					adminRefreshToken = result.body.refreshToken;
-
+					adminHref = result.body.account.href;
 					securityApi.setToken(adminPasswordToken);
 
 					done();
@@ -109,7 +115,8 @@ describe('securityApi - Account', () => {
 
 		let givenName = uuid.v4();
 
-		it('should update account', (done) => {
+		it('should update account using own rights', (done) => {
+			securityApi.setToken(registeredPasswordToken);
 			securityApi.updateAccountProfile({
 					givenName: givenName,
 					id: registeredAccountHref,
@@ -158,6 +165,44 @@ describe('securityApi - Account', () => {
 				});
 		});
 
+		it('should not update another account', (done) => {
+			securityApi.updateAccountProfile({
+					givenName: givenName,
+					id: adminHref,
+					customData: JSON.stringify({
+						testUpdate: 'test-me',
+						org: {
+							id: 'test'
+						}
+					})
+				})
+				.then((result) => {
+					done(new Error('Should not have updated account'));
+				})
+				.fail((err) => {
+					done();
+				});
+		});
+
+		it('should update another account using admin rights', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.updateAccountProfile({
+					givenName: givenName,
+					id: registeredAccountHref,
+					customData: JSON.stringify({
+						testUpdate: 'test-me',
+						org: {
+							id: 'test'
+						}
+					})
+				})
+				.then((result) => {
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
 	});
 
 	describe('#addRemoveScopesByHref', () => {

@@ -6,7 +6,6 @@ import UnauthorizedError from './unauthorizedError';
 import PermissionDeniedError from './permissionDenied';
 import securityHandler from './securityHandler';
 import securityMiddleware from './securityMiddleware';
-import isTrue from './isTrue';
 import parseParam from './parseParam';
 
 export {
@@ -16,7 +15,6 @@ export {
 	compileSwaggerFile,
 	securityHandler,
 	securityMiddleware,
-	isTrue,
 	parseParam};
 
 export default {
@@ -26,6 +24,5 @@ export default {
 	compileSwaggerFile,
 	securityHandler,
 	securityMiddleware,
-	isTrue,
 	parseParam
 };
