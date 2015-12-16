@@ -7,17 +7,31 @@ export default {
 
 	/**
 	 * Get an organization by name
-	 * @param {Application} application
+	 * @param {Client} client
 	 * @param {String} organization name
 	 * @param {function} callback
 	 */
 	getOrganizationDefaultDirectoryByName: (client, name, callback) => {
+		this._getOrganizationDefaultDirectoryInternal(client, {name: name}, callback);
+	},
+
+	/**
+	 * Get an organization by name key
+	 * @param {Client} client
+	 * @param {String} organization name key
+	 * @param {function} callback
+	 */
+	getOrganizationDefaultDirectoryByNameKey: (client, nameKey, callback) => {
+		this._getOrganizationDefaultDirectoryInternal(client, {nameKey: nameKey}, callback);
+	},
+
+	_getOrganizationDefaultDirectoryInternal: (client, search, callback) => {
 		async.waterfall([
 			(callback) => {
 				client.getCurrentTenant(callback);
 			},
 			(tenant, callback) => {
-				tenant.getOrganizations({name: name}, (err, organizations) => {
+				tenant.getOrganizations(search, (err, organizations) => {
 					if (err) {
 						callback(err);
 					} else {
@@ -33,6 +47,6 @@ export default {
 				organizationUtil.getOrganizationDefaultAccountStore(client, organization.href, callback);
 			}
 		], callback);
-	}
+	},
 
 };
