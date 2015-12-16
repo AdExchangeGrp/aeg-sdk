@@ -293,7 +293,8 @@ var SecurityService = (function() {
      * @name SecurityService#passwordToken
      * @param {string} username - Username or email address
      * @param {string} password - User password
-     * @param {string} organization - Organization's href, use it's default directory
+     * @param {string} searchTerm - Organization search type
+     * @param {string} searchValue - Organization search value
      * @param {boolean} fetchAccount - Return the account in the response
      * 
      */
@@ -329,8 +330,12 @@ var SecurityService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['organization'] !== undefined) {
-            form['organization'] = parameters['organization'];
+        if (parameters['searchTerm'] !== undefined) {
+            form['searchTerm'] = parameters['searchTerm'];
+        }
+
+        if (parameters['searchValue'] !== undefined) {
+            form['searchValue'] = parameters['searchValue'];
         }
 
         if (parameters['fetchAccount'] !== undefined) {
@@ -1549,7 +1554,6 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#approveOrganization
      * @param {string} id - The resource href of the organization
-     * @param {string} internalId - Secondary internal identifier
      * @param {string} rename - The organizations new name & sub-domain
      * 
      */
@@ -1583,10 +1587,6 @@ var SecurityService = (function() {
         if (parameters['id'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
-        }
-
-        if (parameters['internalId'] !== undefined) {
-            form['internalId'] = parameters['internalId'];
         }
 
         if (parameters['rename'] !== undefined) {
