@@ -16,25 +16,137 @@ describe('securityApi - OAuth', () => {
 
 	describe('#passwordToken()', () => {
 
-		it('should return password token without error with account', (done) => {
-			securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
-					(_.isObject(result.body.account)).should.be.ok;
-					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'scopes', 'customData']);
-					result.body.account.href.should.be.a.String;
-					result.body.account.href.length.should.be.greaterThan(0);
-					_.isArray(result.body.account.scopes).should.be.ok;
-					result.body.account.scopes.length.should.be.greaterThan(0);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					passwordAuthorization = result.body.accessToken;
-					refreshToken = result.body.refreshToken;
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		let tempPasswordAccessToken;
+		let tempPasswordRefreshToken;
+
+		describe('org href search', () => {
+
+			it('should return password token without error with account and org href', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('org name search', () => {
+
+			it('should return password token without error with account and org href', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'name',
+						searchValue: 'Ad Exchange Group'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('org nameKey search', () => {
+
+			it('should return password token without error with account and org href', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'adexchange'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
+		describe('no search', () => {
+
+			it('should return password token without error with account', (done) => {
+				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
+						(_.isObject(result.body.account)).should.be.ok;
+						result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'scopes', 'customData']);
+						result.body.account.href.should.be.a.String;
+						result.body.account.href.length.should.be.greaterThan(0);
+						_.isArray(result.body.account.scopes).should.be.ok;
+						result.body.account.scopes.length.should.be.greaterThan(0);
+						result.body.accessToken.should.be.a.String;
+						result.body.accessToken.length.should.be.greaterThan(0);
+						passwordAuthorization = result.body.accessToken;
+						refreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
 		});
 
 	});
