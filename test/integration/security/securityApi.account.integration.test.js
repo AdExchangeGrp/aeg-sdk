@@ -5,6 +5,9 @@ import uuid from 'node-uuid';
 import _ from 'lodash';
 import should from 'should';
 
+const testEmail = 'test-account13@test.com';
+const testUsername = 'test-account13';
+
 /** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
 
@@ -40,11 +43,11 @@ describe('securityApi - Account', () => {
 
 		it('should register without error', (done) => {
 			securityApi.registerAccount({
-					email: 'test@test.com',
+					email: testEmail,
 					password: 'Pa$$w0rd',
 					givenName: 'test',
 					surname: 'test',
-					username: 'test',
+					username: testUsername,
 					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c',
 					customData: JSON.stringify({
 						test: 'test',
@@ -79,7 +82,7 @@ describe('securityApi - Account', () => {
 
 		it('should return scoped password token without error', (done) => {
 			securityApi.passwordToken({
-					username: 'test@test.com',
+					username: testEmail,
 					password: 'Pa$$w0rd',
 					scope: 'platform:admin',
 					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
@@ -147,8 +150,9 @@ describe('securityApi - Account', () => {
 					result.body.account.customData.test.should.be.equal('test');
 					result.body.account.customData.testUpdate.should.be.equal('test-me');
 					//todo:fix me
-					//result.body.account.customData.org.should.have.properties(['href', 'id']);
-					//result.body.account.customData.org.should.eql({href: 'test', id: 'test'});
+					console.log(result.body.account.customData);
+					result.body.account.customData.org.should.have.properties(['href', 'id']);
+					result.body.account.customData.org.should.eql({href: 'test', id: 'test'});
 					done();
 				})
 				.fail((err) => {
