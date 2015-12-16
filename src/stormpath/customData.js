@@ -27,7 +27,7 @@ class CustomData {
 			mergeData = json;
 		}
 
-		m(this._data, mergeData);
+		m.recursive(this._data, mergeData);
 
 		callback();
 	}
