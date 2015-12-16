@@ -21,16 +21,17 @@ describe('securityApi - OAuth', () => {
 
 		describe('org href search', () => {
 
-			it('should return password token without error with account and org href', (done) => {
+			it('should return password token with org href and not return the account object', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
-						fetchAccount: true,
+						fetchAccount: false,
 						searchTerm: 'href',
 						searchValue: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
 					})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						result.body.should.not.have.properties(['account']);
 						tempPasswordAccessToken = result.body.accessToken;
 						tempPasswordRefreshToken = result.body.refreshToken;
 						done();
@@ -52,7 +53,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with account and org href', (done) => {
+			it('should not return password token with the org href', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -72,7 +73,7 @@ describe('securityApi - OAuth', () => {
 
 		describe('org name search', () => {
 
-			it('should return password token without error with account and org href', (done) => {
+			it('should return password token with the org name', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -103,7 +104,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with account and org name', (done) => {
+			it('should not return password token with the org name', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -123,7 +124,7 @@ describe('securityApi - OAuth', () => {
 
 		describe('org nameKey search', () => {
 
-			it('should return password token without error with account and org href', (done) => {
+			it('should return password token with the org nameKey', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -154,7 +155,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with account and org name', (done) => {
+			it('should not return password token with the org nameKey', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -174,7 +175,7 @@ describe('securityApi - OAuth', () => {
 
 		describe('no search', () => {
 
-			it('should return password token without error with account', (done) => {
+			it('should return password token', (done) => {
 				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
@@ -195,13 +196,23 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
+			it('should not return password token', (done) => {
+				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd2', fetchAccount: true})
+					.then((result) => {
+						done(new Error('Should have failed'));
+					})
+					.fail((err) => {
+						done();
+					});
+			});
+
 		});
 
 	});
 
 	describe('#createApiKey()', () => {
 
-		it('should return scoped api key without error', (done) => {
+		it('should return scoped api key', (done) => {
 			securityApi.setToken(passwordAuthorization);
 			securityApi.createApiKey()
 				.then((result) => {
@@ -218,7 +229,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return non-scoped api key without error', (done) => {
+		it('should return non-scoped api key', (done) => {
 			securityApi.createApiKey()
 				.then((result) => {
 					result.body.should.have.properties(['id', 'secret']);
@@ -237,7 +248,7 @@ describe('securityApi - OAuth', () => {
 
 	describe('#apiToken()', () => {
 
-		it('should return scoped api token for api key without error', (done) => {
+		it('should return scoped api token for api key', (done) => {
 			securityApi.apiToken({
 					Authorization: 'Basic ' + apiKeyScoped,
 					grantType: 'client_credentials',
@@ -255,7 +266,7 @@ describe('securityApi - OAuth', () => {
 				});
 		});
 
-		it('should return non-scoped api token for api key without error', (done) => {
+		it('should return non-scoped api token for api key', (done) => {
 			securityApi.apiToken({Authorization: 'Basic ' + apiKeyNotScoped, grantType: 'client_credentials'})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'tokenType', 'expiresIn', 'scope']);
