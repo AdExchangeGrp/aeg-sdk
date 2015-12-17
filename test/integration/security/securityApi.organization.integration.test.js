@@ -49,7 +49,7 @@ describe('securityApi - Organization', () => {
 					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization', 'directory']);
-							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 							should.not.exist(result.body.organization.customData.parent);
 							result.body.organization.customData.children.should.be.an.Array;
 							result.body.organization.customData.children.length.should.be.equal(0);
@@ -84,7 +84,7 @@ describe('securityApi - Organization', () => {
 					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
-							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 							result.body.organization.customData.parent.should.be.equal(parentOrg);
 							result.body.organization.customData.children.should.be.an.Array;
 							result.body.organization.customData.children.length.should.be.equal(0);
@@ -95,7 +95,7 @@ describe('securityApi - Organization', () => {
 							securityApi.getOrganization({id: parentOrg})
 								.then((result) => {
 									result.body.should.have.properties(['organization']);
-									result.body.organization.should.have.properties(['href', 'name', 'customData']);
+									result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 									should.not.exist(result.body.organization.customData.parent);
 									result.body.organization.customData.children.should.be.an.Array;
 									result.body.organization.customData.children.length.should.be.equal(1);
@@ -163,7 +163,7 @@ describe('securityApi - Organization', () => {
 						securityApi.getOrganization({id: childOrg})
 							.then((result) => {
 								result.body.should.have.properties(['organization']);
-								result.body.organization.should.have.properties(['href', 'name', 'customData']);
+								result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 								should.not.exist(result.body.organization.customData.parent);
 								result.body.organization.customData.children.should.be.an.Array;
 								result.body.organization.customData.children.length.should.be.equal(0);
@@ -211,7 +211,7 @@ describe('securityApi - Organization', () => {
 					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
-							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 							done();
 						})
 						.fail((err) => {
@@ -232,7 +232,7 @@ describe('securityApi - Organization', () => {
 					securityApi.getOrganization({id: href})
 						.then((result) => {
 							result.body.should.have.properties(['organization']);
-							result.body.organization.should.have.properties(['href', 'name', 'customData']);
+							result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 							done();
 						})
 						.fail((err) => {
@@ -255,7 +255,7 @@ describe('securityApi - Organization', () => {
 						securityApi.getOrganization({id: parentOrg})
 							.then((result) => {
 								result.body.should.have.properties(['organization']);
-								result.body.organization.should.have.properties(['href', 'name', 'customData']);
+								result.body.organization.should.have.properties(['href', 'name', 'nameKey', 'customData']);
 								should.not.exist(result.body.organization.customData.parent);
 								result.body.organization.customData.children.should.be.an.Array;
 								result.body.organization.customData.children.length.should.be.equal(0);
@@ -320,7 +320,7 @@ function createOrg(name, parentOrg, callback) {
 	securityApi.createOrganization(req)
 		.then((result) => {
 			result.body.should.have.properties(['organization', 'directory', 'scopes']);
-			result.body.organization.should.have.properties(['name', 'href', 'status']);
+			result.body.organization.should.have.properties(['name', 'href', 'nameKey', 'status']);
 			result.body.organization.name.should.be.equal(name);
 			result.body.organization.status.toLowerCase().should.be.equal('disabled');
 			result.body.organization.href.length.should.be.greaterThan(0);
