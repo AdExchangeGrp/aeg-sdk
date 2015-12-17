@@ -6,12 +6,13 @@ import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
 
-const invalidToken = 'Invalid token';
-const expiredToken = 'Expired token';
-const appConfig = config.get('app');
-const stormpathConfig = config.get('stormpath');
-
 export default () => {
+
+	const invalidToken = 'Invalid token';
+	const expiredToken = 'Expired token';
+	const appConfig = config.get('app');
+	const stormpathConfig = config.get('stormpath');
+
 	return (context, callback) => {
 		const operation = context.request.swagger.operation;
 		if (operation['x-aeg-authorize']) {
