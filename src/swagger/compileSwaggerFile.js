@@ -5,6 +5,10 @@ import fs from 'fs';
 import path from 'path';
 import config from 'config';
 
+/**
+ * Compiles a swagger.yaml file from a mustache template
+ * @param {String} swaggerPath
+ */
 export default (swaggerPath) => {
 
 	let protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';

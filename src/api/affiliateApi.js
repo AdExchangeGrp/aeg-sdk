@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Configurable service proxy
+ */
+
 import { AffiliateService } from './affiliateService.js';
 import config from 'config';
 

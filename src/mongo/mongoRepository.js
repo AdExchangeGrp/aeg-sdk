@@ -5,6 +5,9 @@ import config from 'config';
 import mongoose from 'mongoose';
 import _ from 'lodash';
 
+/**
+ * Mongoose Mongo repository
+ */
 class MongoRepository {
 
 	constructor() {
@@ -12,6 +15,11 @@ class MongoRepository {
 		this._connected = false;
 	}
 
+	/**
+	 * Connect to Mongo
+	 * @param {function} callback
+	 * @returns {*}
+	 */
 	connect(callback) {
 
 		let self = this;
@@ -45,6 +53,11 @@ class MongoRepository {
 		mongoose.connect(connectionString);
 	}
 
+	/**
+	 * Disconnect from Mongo
+	 * @param {function} callback
+	 * @returns {*}
+	 */
 	dispose(callback) {
 
 		let self = this;

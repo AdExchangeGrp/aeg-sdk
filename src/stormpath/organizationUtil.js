@@ -2,6 +2,9 @@
 
 import async from 'async';
 
+/**
+ * Manages organizations
+ */
 export default {
 
 	/**

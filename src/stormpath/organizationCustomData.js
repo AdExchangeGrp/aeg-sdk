@@ -3,6 +3,9 @@
 import CustomData from './customData';
 import _  from 'lodash';
 
+/**
+ * Custom data schema for an organization
+ */
 class OrganizationCustomData extends CustomData {
 
 	constructor(type, customData) {

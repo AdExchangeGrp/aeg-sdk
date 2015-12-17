@@ -4,6 +4,10 @@ import config from 'config';
 import logger from '@adexchange/aeg-logger';
 import cache from 'express-redis-cache';
 
+/**
+ * Swagger bagpipes fitting to cache api method responses
+ * @returns {Function}
+ */
 export default () => {
 
 	const appConfig = config.get('app');

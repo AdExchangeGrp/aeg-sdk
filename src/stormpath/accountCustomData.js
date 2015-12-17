@@ -2,6 +2,9 @@
 
 import CustomData from './customData';
 
+/**
+ * Custom data schema for an account
+ */
 class AccountCustomData extends CustomData {
 
 	constructor(customData) {

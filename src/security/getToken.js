@@ -6,7 +6,8 @@ import config  from 'config';
 import logger from '@adexchange/aeg-logger';
 
 /**
- * Gets a valid security token
+ * Gets a valid security token from the security API
+ * Checks for a current token and tries to refresh it if it expires
  * @param {Application} app
  * @param {function} callback
  */

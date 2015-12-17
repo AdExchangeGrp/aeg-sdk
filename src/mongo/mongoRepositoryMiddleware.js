@@ -2,6 +2,11 @@
 
 import MongoRepository from './mongoRepository';
 
+/**
+ * Express middleware for managing a Mongo repository
+ * @param {Application} app
+ * @returns {Function}
+ */
 export default (app) => {
 
 	let repository = new MongoRepository();

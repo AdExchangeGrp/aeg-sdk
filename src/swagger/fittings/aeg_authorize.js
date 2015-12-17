@@ -6,6 +6,10 @@ import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
 
+/**
+ * Swagger bagpipes fitting to perform granular authorizations
+ * @returns {Function}
+ */
 export default () => {
 
 	const invalidToken = 'Invalid token';
