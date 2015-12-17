@@ -3,6 +3,9 @@
 import _ from 'lodash';
 import m from 'merge';
 
+/**
+ * Custom data schema
+ */
 class CustomData {
 
 	constructor(customData) {

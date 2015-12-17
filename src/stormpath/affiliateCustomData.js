@@ -2,6 +2,9 @@
 
 import OrganizationCustomData from './organizationCustomData';
 
+/**
+ * Custom data schema for an affiliate
+ */
 class AffiliateCustomData extends OrganizationCustomData {
 
 	constructor(customData) {

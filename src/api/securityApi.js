@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Configurable service proxy
+ */
+
 import { SecurityService } from './securityService.js';
 import config from 'config';
 

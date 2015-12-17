@@ -3,6 +3,11 @@
 import stormpath from 'stormpath';
 import config from 'config';
 
+/**
+ * Express middleware for integrating Stormpath
+ * @param {Application} app
+ * @returns {Function}
+ */
 export default (app) => {
 
 	const stormpathConfig = config.get('stormpath');

@@ -5,7 +5,6 @@ import config from 'config';
 
 /**
  * Manages tokens
- * @type {{}}
  */
 export default {
 

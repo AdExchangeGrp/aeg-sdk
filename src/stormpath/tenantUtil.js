@@ -3,6 +3,9 @@
 import async from 'async';
 import organizationUtil from './organizationUtil';
 
+/**
+ * Manages tenants
+ */
 export default {
 
 	/**
@@ -27,6 +30,13 @@ export default {
 
 };
 
+/**
+ * Performs a search for an organization
+ * @param client
+ * @param search
+ * @param callback
+ * @private
+ */
 function _getOrganizationDefaultDirectoryInternal(client, search, callback) {
 	async.waterfall([
 		(callback) => {

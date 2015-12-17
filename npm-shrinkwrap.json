@@ -1,6 +1,6 @@
 {
   "name": "@adexchange/aeg-sdk",
-  "version": "0.0.100",
+  "version": "0.0.105",
   "dependencies": {
     "@adexchange/aeg-logger": {
       "version": "0.0.25",
@@ -519,6 +519,11 @@
       "from": "code-point-at@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.0.0.tgz"
     },
+    "colors": {
+      "version": "1.1.2",
+      "from": "colors@>=1.1.2 <2.0.0",
+      "resolved": "https://registry.npmjs.org/colors/-/colors-1.1.2.tgz"
+    },
     "combined-stream": {
       "version": "1.0.5",
       "from": "combined-stream@>=1.0.5 <1.1.0",
@@ -732,6 +737,11 @@
       "version": "1.8.1",
       "from": "expand-range@>=1.8.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/expand-range/-/expand-range-1.8.1.tgz"
+    },
+    "express-redis-cache": {
+      "version": "0.2.0",
+      "from": "express-redis-cache@*",
+      "resolved": "https://registry.npmjs.org/express-redis-cache/-/express-redis-cache-0.2.0.tgz"
     },
     "extend": {
       "version": "3.0.0",
