@@ -287,6 +287,42 @@ describe('securityApi - Organization', () => {
 
 	});
 
+	describe('#getOrganizations()', () => {
+
+		it('should get all organizations', (done) => {
+			securityApi.getOrganizations()
+				.then((result) => {
+					should.exist(result.body.organizations);
+					_.isArray(result.body.organizations).should.be.ok;
+					result.body.organizations.length.should.be.greaterThan(0);
+
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should get all affilite organizations', (done) => {
+			securityApi.getOrganizations({type: 'affiliate'})
+				.then((result) => {
+					should.exist(result.body.organizations);
+					_.isArray(result.body.organizations).should.be.ok;
+					result.body.organizations.length.should.be.greaterThan(0);
+
+					_.each(result.body.organizations, (organization) => {
+						organization.customData.type.should.be.equal('affiliate');
+					});
+
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+	});
+
 	describe('#teardown', () => {
 
 		it('should revoke the password access token for the admin', (done) => {
