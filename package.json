@@ -38,6 +38,7 @@
     "express-redis-cache": "^0.2.0",
     "lodash": "^3.10.1",
     "merge": "^1.2.0",
+    "mongoose": "^4.3.1",
     "njwt": "^0.2.3",
     "node-uuid": "^1.4.7",
     "q": "^1.4.1",
