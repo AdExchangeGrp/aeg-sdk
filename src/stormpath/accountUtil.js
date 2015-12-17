@@ -4,6 +4,9 @@ import _ from 'lodash';
 import async from 'async';
 import logger from '@adexchange/aeg-logger';
 
+/**
+ * Manages accounts
+ */
 export default {
 	/**
 	 * Returns an array of enabled group names that an account is associated too
