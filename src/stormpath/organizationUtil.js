@@ -19,7 +19,9 @@ export default {
 				client.getOrganization(href, {expand: 'defaultAccountStoreMapping'}, callback);
 			},
 			(organization, callback) => {
-				client.getDirectory(organization.defaultAccountStoreMapping.accountStore.href, callback);
+				client.getDirectory(organization.defaultAccountStoreMapping.accountStore.href, (err, directory) => {
+					callback(err, {organization: organization, directory: directory});
+				});
 			}
 		], callback);
 	}
