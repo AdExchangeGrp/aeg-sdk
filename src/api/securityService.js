@@ -481,6 +481,8 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#refreshPasswordToken
      * @param {string} refreshToken - The refresh token without the bearer
+     * @param {string} searchTerm - Organization search type
+     * @param {string} searchValue - Organization search value
      * 
      */
     SecurityService.prototype.refreshPasswordToken = function(parameters) {
@@ -504,6 +506,14 @@ var SecurityService = (function() {
         if (parameters['refreshToken'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: refreshToken'));
             return deferred.promise;
+        }
+
+        if (parameters['searchTerm'] !== undefined) {
+            form['searchTerm'] = parameters['searchTerm'];
+        }
+
+        if (parameters['searchValue'] !== undefined) {
+            form['searchValue'] = parameters['searchValue'];
         }
 
         if (parameters.$queryParameters) {
