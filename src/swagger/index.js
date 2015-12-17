@@ -7,6 +7,7 @@ import PermissionDeniedError from './permissionDenied';
 import securityHandler from './securityHandler';
 import securityMiddleware from './securityMiddleware';
 import parseParam from './parseParam';
+import fittings from './fittings';
 
 export {
 	errorResponse,
@@ -15,7 +16,8 @@ export {
 	compileSwaggerFile,
 	securityHandler,
 	securityMiddleware,
-	parseParam};
+	parseParam,
+	fittings};
 
 export default {
 	errorResponse,
@@ -24,5 +26,6 @@ export default {
 	compileSwaggerFile,
 	securityHandler,
 	securityMiddleware,
-	parseParam
+	parseParam,
+	fittings
 };
