@@ -55,7 +55,7 @@ export default {
 	 * @param {Object} options
 	 * @param {function} callback
 	 */
-	searchOrganizations: (client, options, callback) => {
+	searchOrganizations: function (client, options, callback) {
 
 		let args = Array.prototype.slice.call(arguments);
 		client = args.shift();
