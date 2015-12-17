@@ -2,13 +2,15 @@
 
 import stormpath from 'stormpath';
 import config from 'config';
+import logger from '@adexchange/aeg-logger';
 
 /**
  * Express middleware for integrating Stormpath
  * @param {Application} app
+ * @param {function} callback
  * @returns {Function}
  */
-export default (app) => {
+export default (app, callback) => {
 
 	const stormpathConfig = config.get('stormpath');
 
@@ -19,12 +21,16 @@ export default (app) => {
 	app.set('stormpathClient', client);
 
 	client.getApplication(stormpathConfig.application.href, (err, application) => {
+
 		if (err) {
-			throw err;
+			return callback(err);
 		}
 
 		app.set('stormpathApplication', application);
-		app.emit('stormpath.ready');
+
+		logger.info('stormpath ready...');
+
+		callback();
 	});
 
 	return (req, res, next) => {
