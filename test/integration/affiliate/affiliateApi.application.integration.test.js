@@ -78,9 +78,7 @@ describe('affiliateApi - Application', () => {
 					})
 					.then((result) => {
 						should.exist(result.body.application);
-						result.body.application.should.have.properties(['id', 'href']);
-						result.body.application.href.should.be.a.String;
-						result.body.application.href.length.should.be.greaterThan(0);
+						result.body.application.should.have.properties(['id']);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
 
@@ -130,7 +128,7 @@ describe('affiliateApi - Application', () => {
 				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateId: 'Test Approved Affiliate'})
 					.then((result) => {
 						should.exist(result.body.application);
-						result.body.application.should.have.properties(['id', 'href', 'approver']);
+						result.body.application.should.have.properties(['id', 'approver']);
 						result.body.application.approved.should.be.ok;
 						should.exist(result.body.application.approvalDate);
 						result.body.application.disapproved.should.not.be.ok;
@@ -275,9 +273,7 @@ describe('affiliateApi - Application', () => {
 					})
 					.then((result) => {
 						should.exist(result.body.application);
-						result.body.application.should.have.properties(['id', 'href']);
-						result.body.application.href.should.be.a.String;
-						result.body.application.href.length.should.be.greaterThan(0);
+						result.body.application.should.have.properties(['id']);
 						result.body.application.approved.should.not.be.ok;
 						result.body.application.disapproved.should.not.be.ok;
 						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
@@ -301,7 +297,7 @@ describe('affiliateApi - Application', () => {
 				affiliateApi.applicationDeny({id: applicationIdDeny})
 					.then((result) => {
 						should.exist(result.body.application);
-						result.body.application.should.have.properties(['id', 'href', 'approver']);
+						result.body.application.should.have.properties(['id', 'approver']);
 						result.body.application.approved.should.not.be.ok;
 						should.exist(result.body.application.approvalDate);
 						result.body.application.disapproved.should.be.ok;
