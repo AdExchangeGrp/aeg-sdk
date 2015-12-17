@@ -12,7 +12,7 @@ export default {
 	/**
 	 * Get an organization by name
 	 * @param {Client} client
-	 * @param {String} organization name
+	 * @param {String} name
 	 * @param {function} callback
 	 */
 	getOrganizationDefaultDirectoryByName: (client, name, callback) => {
@@ -22,7 +22,7 @@ export default {
 	/**
 	 * Get an organization by name key
 	 * @param {Client} client
-	 * @param {String} organization name key
+	 * @param {String} nameKey
 	 * @param {function} callback
 	 */
 	getOrganizationDefaultDirectoryByNameKey: (client, nameKey, callback) => {

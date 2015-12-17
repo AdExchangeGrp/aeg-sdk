@@ -54,7 +54,7 @@ export default () => {
 							}
 						});
 					break;
-				case 'affiliate':
+				case 'adminOrAffiliate':
 
 					let affiliateId = parseParam(context.request, authorize.parameter);
 
