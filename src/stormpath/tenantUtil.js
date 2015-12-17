@@ -56,9 +56,11 @@ export default {
 	 * @param {function} callback
 	 */
 	searchOrganizations: (client, options, callback) => {
-		client = arguments.shift();
-		callback = arguments.pop();
-		arguments.length > 0 ? options = arguments.shift() : options = null;
+
+		let args = Array.prototype.slice.call(arguments);
+		client = args.shift();
+		callback = args.pop();
+		args.length > 0 ? options = args.shift() : options = null;
 
 		async.waterfall([
 			(callback) => {
