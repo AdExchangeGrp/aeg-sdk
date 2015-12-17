@@ -2,7 +2,7 @@
 
 import config from 'config';
 import { parseParam, PermissionDeniedError, UnauthorizedError } from '../';
-import { token } from '../stormpath';
+import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
 
