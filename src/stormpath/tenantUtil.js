@@ -130,9 +130,7 @@ function _getOrganizationDefaultDirectoryInternal(client, search, callback) {
 			_getOrganization(client, search, callback);
 		},
 		(organization, callback) => {
-			organizationUtil.getOrganizationDefaultAccountStore(client, organization.href, (err, directory) => {
-				callback(err, {organization: organization, directory: directory});
-			});
+			organizationUtil.getOrganizationDefaultAccountStore(client, organization.href, callback);
 		}
 	], callback);
 }
