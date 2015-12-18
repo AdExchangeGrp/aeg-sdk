@@ -147,7 +147,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should validate an affiliateId', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationValidateAffiliateId({id: '999999'})
+				affiliateApi.applicationValidateAffiliateId({id: '0000999999'})
 					.then((result) => {
 						result.body.message.should.be.equal('success');
 						done();
