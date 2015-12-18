@@ -121,6 +121,44 @@ describe('affiliateApi - Application', () => {
 
 		});
 
+		describe('#applicationValidateAffiliateId', () => {
+
+			it('should not validate an existing affiliateId', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationValidateAffiliateId({id: applicationIdApprove})
+				.then(() => {
+					done(new Error('Should not validate with an existing name key'));
+				})
+				.fail(() => {
+					done();
+				});
+			});
+
+			it('should not validate an affiliateId with an invalid format', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationValidateAffiliateId({id: '999999asd'})
+					.then(() => {
+						done(new Error('Should not validate with an existing name key'));
+					})
+					.fail(() => {
+						done();
+					});
+			});
+
+			it('should validate an affiliateId', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationValidateAffiliateId({id: '0000999999'})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+		});
+
 		describe('#applicationApprove()', () => {
 
 			it('should approve an application', (done) => {
