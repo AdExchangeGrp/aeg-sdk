@@ -49,7 +49,7 @@ describe('affiliateApi - Application', () => {
 						contactGivenName: 'test-apply-given',
 						contactSurname: 'test-apply-sur',
 						contactTitle: 'test-apply-title',
-						contactPhone: '410-349-6457',
+						contactPhone: '+1-410-349.6457',
 						contactImScreenName: 'test-apply-screen-name',
 						contactImService: 'aim',
 						contactAddress: 'test-apply-address',
