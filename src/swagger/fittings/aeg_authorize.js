@@ -5,6 +5,7 @@ import { parseParam, PermissionDeniedError, UnauthorizedError } from '../';
 import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
+import logger from '@adexchange/aeg-logger';
 
 /**
  * Swagger bagpipes fitting to perform granular authorizations
@@ -26,8 +27,12 @@ export default () => {
 			var authorize = operation['x-aeg-authorize'];
 			let adminScopes = _.pluck(appConfig.authorizations.adminScopes, 'name');
 
+			logger.debug('aeg_authorize:', {type: authorize.type, parameter: authorize.parameter});
+
 			switch (authorize.type) {
 				case 'adminOrOwner':
+
+					logger.debug('aeg_authorize: adminOrOwner');
 
 					jwt.verify(
 						token.parseTokenFromAuthorization(context.request.headers.authorization),
@@ -58,6 +63,8 @@ export default () => {
 
 					let affiliateId = parseParam(context.request, authorize.parameter);
 
+					logger.debug('aeg_authorize: adminOrAffiliate', {affiliateId: affiliateId});
+
 					jwt.verify(
 						token.parseTokenFromAuthorization(context.request.headers.authorization),
 						stormpathConfig.apiKey.secret,
@@ -71,10 +78,18 @@ export default () => {
 							} else {
 								let tokenScopes = token.parseScopesFromJwt(expandedJwt);
 
+								logger.debug('aeg_authorize: adminOrAffiliate', {
+									tokenScopes: tokenScopes,
+									adminScopes: adminScopes
+								});
+
 								if (_.intersection(adminScopes, tokenScopes).length) {
 									callback();
 								} else {
 									if (expandedJwt.body.organization) {
+
+										logger.debug('aeg_authorize: adminOrAffiliate', {organization: expandedJwt.body.organization});
+
 										if (affiliateId === expandedJwt.body.organization.nameKey) {
 											callback();
 										} else {
@@ -88,7 +103,9 @@ export default () => {
 						});
 					break;
 				default:
+					logger.debug('aeg_authorize: type not found');
 					callback(new PermissionDeniedError());
+					break;
 			}
 		} else {
 			callback();
