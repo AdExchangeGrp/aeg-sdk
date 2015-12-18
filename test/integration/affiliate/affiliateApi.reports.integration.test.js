@@ -10,6 +10,8 @@ describe('affiliateApi - Reports', () => {
 
 	let adminPasswordToken;
 	let adminRefreshToken;
+	let passwordToken170001;
+	let refreshToken170001;
 
 	describe('#setup()', () => {
 
@@ -23,6 +25,28 @@ describe('affiliateApi - Reports', () => {
 					adminRefreshToken = result.body.refreshToken;
 
 					securityApi.setToken(adminPasswordToken);
+
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should return password token for affiliate 170001 without error', (done) => {
+			securityApi.passwordToken({
+					username: 'test-affiliate-170001@test.com',
+					password: 'Pa$$w0rd',
+					fetchAccount: false,
+					searchTerm: 'href',
+					searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+				})
+				.then((result) => {
+					result.body.should.have.properties(['accessToken', 'refreshToken']);
+					result.body.should.not.have.properties(['account']);
+
+					passwordToken170001 = result.body.accessToken;
+					refreshToken170001 = result.body.refreshToken;
 
 					done();
 				})
@@ -55,6 +79,29 @@ describe('affiliateApi - Reports', () => {
 			testPerformaceReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
+		it('should return performance report yearly with timezone for account 170001', (done) => {
+			testPerformaceReport({
+				interval: 'yearly',
+				timezone: 'America/Los_Angeles',
+				token: passwordToken170001
+			}, done);
+		});
+
+		it('should not return performance report yearly with timezone for account 170001', (done) => {
+			testPerformaceReport({
+				affiliateId: 170002,
+				interval: 'yearly',
+				timezone: 'America/Los_Angeles',
+				token: passwordToken170001
+			}, (err) => {
+				if (err) {
+					done();
+				} else {
+					done(new Error('Should not have returned report'));
+				}
+			});
+		});
+
 	});
 
 	describe('#reportsTop10EpcAffiliate', () => {
@@ -73,6 +120,29 @@ describe('affiliateApi - Reports', () => {
 
 		it('should return performance report yearly', (done) => {
 			testTop10EpcAffiliateReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
+		});
+
+		it('should return performance report yearly for account 170001', (done) => {
+			testTop10EpcAffiliateReport({
+				interval: 'yearly',
+				timezone: 'America/Los_Angeles',
+				token: passwordToken170001
+			}, done);
+		});
+
+		it('should not return performance report yearly for account 170001', (done) => {
+			testTop10EpcAffiliateReport({
+				affiliateId: 170002,
+				interval: 'yearly',
+				timezone: 'America/Los_Angeles',
+				token: passwordToken170001
+			}, (err) => {
+				if (err) {
+					done();
+				} else {
+					done(new Error('Should not have returned report'));
+				}
+			});
 		});
 
 	});
@@ -111,10 +181,22 @@ describe('affiliateApi - Reports', () => {
 				});
 		});
 
+		it('should revoke the password access token for the affiliate scope', (done) => {
+			securityApi.setToken(passwordToken170001);
+			securityApi.revokePasswordToken({refreshToken: refreshToken170001})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
 	});
 
 	function testPerformaceReport(options, callback) {
-		affiliateApi.setToken(adminPasswordToken);
+		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
 
 		var args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
@@ -189,7 +271,7 @@ describe('affiliateApi - Reports', () => {
 	}
 
 	function testTop10EpcAffiliateReport(options, callback) {
-		affiliateApi.setToken(adminPasswordToken);
+		affiliateApi.setToken(options.token? options.token : adminPasswordToken);
 		affiliateApi.reportsTop10EpcAffiliate({
 				affiliateId: options.affiliateId ? options.affiliateId : 170001,
 				interval: options.interval ? options.interval : 'daily',
