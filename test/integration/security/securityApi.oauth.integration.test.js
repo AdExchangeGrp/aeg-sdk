@@ -2,6 +2,9 @@
 
 import securityApi from '../../../src/api/securityApi';
 import _ from 'lodash';
+import jwt from 'njwt';
+import config from 'config';
+import should from 'should';
 
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {
@@ -64,7 +67,7 @@ describe('securityApi - OAuth', () => {
 					.then(() => {
 						done(new Error('Should have failed'));
 					})
-					.fail((err) => {
+					.fail(() => {
 						done();
 					});
 			});
@@ -115,7 +118,7 @@ describe('securityApi - OAuth', () => {
 					.then(() => {
 						done(new Error('Should have failed'));
 					})
-					.fail((err) => {
+					.fail(() => {
 						done();
 					});
 			});
@@ -166,7 +169,7 @@ describe('securityApi - OAuth', () => {
 					.then(() => {
 						done(new Error('Should have failed'));
 					})
-					.fail((err) => {
+					.fail(() => {
 						done();
 					});
 			});
@@ -198,11 +201,95 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token', (done) => {
 				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd2', fetchAccount: true})
-					.then((result) => {
+					.then(() => {
 						done(new Error('Should have failed'));
 					})
-					.fail((err) => {
+					.fail(() => {
 						done();
+					});
+			});
+
+		});
+
+		describe('#passwordToken() againist an organization', () => {
+
+			let accessToken, refreshToken;
+
+			const stormpathConfig = config.get('stormpath');
+
+			it('should get a password token for an organization account', (done) => {
+				securityApi.passwordToken({
+						username: 'test-affiliate-170001@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: false,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						result.body.should.not.have.properties(['account']);
+
+						accessToken = result.body.accessToken;
+						refreshToken = result.body.refreshToken;
+
+						jwt.verify(accessToken, stormpathConfig.apiKey.secret, (err, expanded) => {
+							if (err) {
+								return done(err);
+							} else {
+								should.exist(expanded.body.organization);
+								expanded.body.organization.should.have.properties(['href','nameKey']);
+								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
+								expanded.body.organization.nameKey.should.be.equal('170001');
+								done();
+							}
+						});
+
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should refresh a token for an organization account', (done) => {
+				securityApi.refreshPasswordToken({
+						refreshToken: refreshToken,
+						searchTerm: 'href',
+						searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						result.body.should.not.have.properties(['account']);
+
+						accessToken = result.body.accessToken;
+						refreshToken = result.body.refreshToken;
+
+						jwt.verify(accessToken, stormpathConfig.apiKey.secret, (err, expanded) => {
+							if (err) {
+								return done(err);
+							} else {
+								should.exist(expanded.body.organization);
+								expanded.body.organization.should.have.properties(['href','nameKey']);
+								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
+								expanded.body.organization.nameKey.should.be.equal('170001');
+								done();
+							}
+						});
+
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(accessToken);
+				securityApi.revokePasswordToken({refreshToken: refreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
 					});
 			});
 
@@ -423,7 +510,7 @@ describe('securityApi - OAuth', () => {
 		it('should not authorize with one scope', (done) => {
 			securityApi.setToken(apiTokenAuthorizationScoped);
 			securityApi.authorize({scopes: 'test3', strict: false})
-				.then((result) => {
+				.then(() => {
 					done(new Error('Should not have authorized'));
 				})
 				.fail((err) => {
@@ -435,7 +522,7 @@ describe('securityApi - OAuth', () => {
 		it('should not authorize with multiple scopes', (done) => {
 			securityApi.setToken(apiTokenAuthorizationScoped);
 			securityApi.authorize({scopes: 'test3,test4', strict: false})
-				.then((result) => {
+				.then(() => {
 					done(new Error('Should not have authorized'));
 				})
 				.fail((err) => {
