@@ -13,15 +13,18 @@ export default (app, callback) => {
 
 	let repository = new MongoRepository();
 
+	logger.info('mongoRepositoryMiddleware: connecting...');
+
 	repository.connect((err) => {
 
 		if (err) {
+			logger.error('mongoRepositoryMiddleware: failed to connect');
 			return callback(err);
 		}
 
 		app.set('mongoRepository', repository);
 
-		logger.info('mongodb ready...');
+		logger.info('mongoRepositoryMiddleware: connected...');
 
 		callback();
 	});
