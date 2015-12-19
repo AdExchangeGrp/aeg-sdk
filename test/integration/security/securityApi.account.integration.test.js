@@ -4,6 +4,7 @@ import securityApi from '../../../src/api/securityApi';
 import uuid from 'node-uuid';
 import _ from 'lodash';
 import should from 'should';
+import setup from '../setup';
 
 const testEmail = 'test-account13@test.com';
 const testUsername = 'test-account13';
@@ -18,29 +19,22 @@ describe('securityApi - Account', () => {
 	let registeredPasswordToken;
 	let registeredRefreshToken;
 
-	describe('#setup()', () => {
+	describe('setup', () => {
 
-		it('should return admin scoped password token without error', (done) => {
-			securityApi.passwordToken({
-					username: 'test-admin@test.com',
-					password: 'Pa$$w0rd',
-					scope: 'platform:admin',
-					fetchAccount: true
-				})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = result.body.accessToken;
-					adminRefreshToken = result.body.refreshToken;
-					adminHref = result.body.account.href;
-					securityApi.setToken(adminPasswordToken);
+		it('should setup', (done) => {
 
-					done();
-				})
-				.fail((err) => {
+			setup.getAdminPasswordToken((err, result) => {
+				if (err) {
 					done(err);
-				});
+				} else {
+					adminPasswordToken = result.accessToken;
+					adminRefreshToken = result.refreshToken;
+					adminHref = result.account.href;
+					securityApi.setToken(adminPasswordToken);
+					done();
+				}
+			});
+
 		});
 
 	});
@@ -378,18 +372,12 @@ describe('securityApi - Account', () => {
 
 	});
 
-	describe('#teardown', () => {
+	describe('teardown', () => {
 
-		it('should revoke the password access token for the admin', (done) => {
-			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should teardown', (done) => {
+
+			setup.revokePasswordToken(adminPasswordToken, adminRefreshToken, done);
+
 		});
 
 	});

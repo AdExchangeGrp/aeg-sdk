@@ -5,7 +5,10 @@ import securityApi from '../../src/api/securityApi';
 export default  {
 
 	getAdminPasswordToken: function (callback) {
-		this.getPasswordToken('test-admin@test.com', 'Pa$$w0rd', {scopes: ['platform:admin']}, callback);
+		this.getPasswordToken('test-admin@test.com', 'Pa$$w0rd', {
+			scopes: ['platform:admin'],
+			fetchAccount: true
+		}, callback);
 	},
 
 	getPasswordToken: function (username, password, options, callback) {
@@ -32,7 +35,11 @@ export default  {
 
 		securityApi.passwordToken(req)
 			.then((result) => {
-				callback(null, {accessToken: result.body.accessToken, refreshToken: result.body.refreshToken});
+				callback(null, {
+					accessToken: result.body.accessToken,
+					refreshToken: result.body.refreshToken,
+					account: result.body.account
+				});
 			})
 			.fail((err) => {
 				callback(err);
