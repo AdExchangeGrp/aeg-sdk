@@ -17,7 +17,7 @@
     "dev": "parallelshell \"npm run jshint:watch\"",
     "build": "npm run jshint && mocha --recursive --reporter mocha-junit-reporter --compilers js:babel-core/register test/unit/",
     "compile": "babel -d ./lib/ ./src/",
-    "prepublish": "npm run compile",
+    "prepublish": "git reset --hard && npm run compile",
     "postversion": "git push && git push --tags && npm publish ."
   },
   "devDependencies": {
