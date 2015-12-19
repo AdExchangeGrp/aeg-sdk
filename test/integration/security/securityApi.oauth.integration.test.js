@@ -85,7 +85,7 @@ describe('securityApi - OAuth', () => {
 						searchValue: 'Ad Exchange Group'
 					})
 					.then((result) => {
-						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						result.body.should.have.properties(['accessToken', 'refreshToken', 'scope', 'expiresIn', 'tokenType', 'account']);
 						tempPasswordAccessToken = result.body.accessToken;
 						tempPasswordRefreshToken = result.body.refreshToken;
 						done();
@@ -237,7 +237,7 @@ describe('securityApi - OAuth', () => {
 								return done(err);
 							} else {
 								should.exist(expanded.body.organization);
-								expanded.body.organization.should.have.properties(['href','nameKey']);
+								expanded.body.organization.should.have.properties(['href', 'nameKey']);
 								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
 								expanded.body.organization.nameKey.should.be.equal('170001');
 								done();
@@ -268,7 +268,7 @@ describe('securityApi - OAuth', () => {
 								return done(err);
 							} else {
 								should.exist(expanded.body.organization);
-								expanded.body.organization.should.have.properties(['href','nameKey']);
+								expanded.body.organization.should.have.properties(['href', 'nameKey']);
 								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
 								expanded.body.organization.nameKey.should.be.equal('170001');
 								done();
