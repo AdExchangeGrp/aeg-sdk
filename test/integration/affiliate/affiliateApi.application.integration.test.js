@@ -4,6 +4,7 @@ import affiliateApi from '../../../src/api/affiliateApi';
 import securityApi from '../../../src/api/securityApi';
 import should from 'should';
 import _ from 'lodash';
+import setup from '../setup';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
@@ -15,24 +16,19 @@ describe('affiliateApi - Application', () => {
 	let applicationIdDeny;
 	let organizationHref;
 
-	describe('#setup()', () => {
 
-		it('should return admin scoped password token without error', (done) => {
-			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = result.body.accessToken;
-					adminRefreshToken = result.body.refreshToken;
+	describe('setup', () => {
 
-					securityApi.setToken(adminPasswordToken);
-
-					done();
-				})
-				.fail((err) => {
+		it('should setup', (done) => {
+			setup.getAdminPasswordToken((err, result) => {
+				if (err) {
 					done(err);
-				});
+				} else {
+					adminPasswordToken = result.accessToken;
+					adminRefreshToken = result.refreshToken;
+					done();
+				}
+			});
 		});
 
 	});
@@ -126,12 +122,12 @@ describe('affiliateApi - Application', () => {
 			it('should not validate an existing affiliateId', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
 				affiliateApi.applicationValidateAffiliateId({id: applicationIdApprove})
-				.then(() => {
-					done(new Error('Should not validate with an existing name key'));
-				})
-				.fail(() => {
-					done();
-				});
+					.then(() => {
+						done(new Error('Should not validate with an existing name key'));
+					})
+					.fail(() => {
+						done();
+					});
 			});
 
 			it('should not validate an affiliateId with an invalid format', (done) => {
@@ -392,18 +388,12 @@ describe('affiliateApi - Application', () => {
 
 	});
 
-	describe('#teardown', () => {
+	describe('teardown', () => {
 
-		it('should revoke the password access token for the admin', (done) => {
-			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should teardown', (done) => {
+
+			setup.revokePasswordToken(adminPasswordToken, adminRefreshToken, done);
+
 		});
 
 	});

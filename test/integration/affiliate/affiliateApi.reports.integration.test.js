@@ -1,9 +1,9 @@
 'use strict';
 
 import affiliateApi from '../../../src/api/affiliateApi';
-import securityApi from '../../../src/api/securityApi';
 import should from 'should';
 import _ from 'lodash';
+import setup from '../setup';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Reports', () => {
@@ -13,46 +13,38 @@ describe('affiliateApi - Reports', () => {
 	let passwordToken170001;
 	let refreshToken170001;
 
-	describe('#setup()', () => {
+	describe('setup', () => {
 
-		it('should return admin scoped password token without error', (done) => {
-			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = result.body.accessToken;
-					adminRefreshToken = result.body.refreshToken;
+		it('should setup', (done) => {
 
-					securityApi.setToken(adminPasswordToken);
-
-					done();
-				})
-				.fail((err) => {
+			setup.getAdminPasswordToken((err, result) => {
+				if (err) {
 					done(err);
-				});
+				} else {
+					adminPasswordToken = result.accessToken;
+					adminRefreshToken = result.refreshToken;
+					done();
+				}
+			});
+
 		});
 
-		it('should return password token for affiliate 170001 without error', (done) => {
-			securityApi.passwordToken({
-					username: 'test-affiliate-170001@test.com',
-					password: 'Pa$$w0rd',
-					fetchAccount: false,
-					searchTerm: 'href',
-					searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
-				})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken']);
-					result.body.should.not.have.properties(['account']);
+		it('should setup', (done) => {
 
-					passwordToken170001 = result.body.accessToken;
-					refreshToken170001 = result.body.refreshToken;
-
-					done();
-				})
-				.fail((err) => {
+			setup.getPasswordToken('test-affiliate-170001@test.com', 'Pa$$w0rd', {
+				fetchAccount: false,
+				searchTerm: 'href',
+				searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+			}, (err, result) => {
+				if (err) {
 					done(err);
-				});
+				} else {
+					passwordToken170001 = result.accessToken;
+					refreshToken170001 = result.refreshToken;
+					done();
+				}
+			});
+
 		});
 
 	});
@@ -167,30 +159,18 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
-	describe('#teardown', () => {
+	describe('teardown', () => {
 
-		it('should revoke the password access token for the admin', (done) => {
-			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should teardown', (done) => {
+
+			setup.revokePasswordToken(adminPasswordToken, adminRefreshToken, done);
+
 		});
 
-		it('should revoke the password access token for the affiliate scope', (done) => {
-			securityApi.setToken(passwordToken170001);
-			securityApi.revokePasswordToken({refreshToken: refreshToken170001})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should teardown', (done) => {
+
+			setup.revokePasswordToken(passwordToken170001, refreshToken170001, done);
+
 		});
 
 	});
@@ -271,7 +251,7 @@ describe('affiliateApi - Reports', () => {
 	}
 
 	function testTop10EpcAffiliateReport(options, callback) {
-		affiliateApi.setToken(options.token? options.token : adminPasswordToken);
+		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
 		affiliateApi.reportsTop10EpcAffiliate({
 				affiliateId: options.affiliateId ? options.affiliateId : 170001,
 				interval: options.interval ? options.interval : 'daily',
