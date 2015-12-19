@@ -19,7 +19,10 @@ export default () => {
 	return (context, callback) => {
 		const operation = context.request.swagger.operation;
 		if (operation['x-cache']) {
-			logger.debug('cache hit', {operation: operation.operationId, description: operation.description});
+			logger.debug('aeg_cache: cache hit', {
+				operation: operation.operationId,
+				description: operation.description
+			});
 			client.route({expire: operation['x-cache']})(context.request, context.response, callback);
 		} else {
 			callback();
