@@ -15,18 +15,12 @@ const expiredToken = 'Expired token';
  * Authorize requests against the security service
  * @param {Request} req
  * @param def
- * @param {String[]]} routeScopes
+ * @param {String[]} routeScopes
  * @param {function} callback
  */
 export default (req, def, routeScopes, callback) => {
 
 	logger.debug(`Authorizing ${req.swagger.apiPath}`);
-
-	let scopes = '';
-
-	if (routeScopes && routeScopes.length) {
-		scopes = routeScopes.join(',');
-	}
 
 	njwt.verify(
 		token.parseTokenFromAuthorization(req.headers.authorization),

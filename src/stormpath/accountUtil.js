@@ -36,8 +36,8 @@ export default {
 	/**
 	 * Expands an account
 	 * @param {Object} expand - Properties to expand
-	 * @param {Account) account
-	 * @param {function} callback
+	 * @param {Account} account
+     * @param {function} accountCallback
 	 */
 	expand: function (expand, account, accountCallback) {
 
@@ -51,7 +51,7 @@ export default {
 
 				account.getApiKeys(function (err, apiKeys) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s api keys.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s api keys.');
 						return accountCallback(err);
 					}
 
@@ -66,7 +66,7 @@ export default {
 
 				account.getCustomData(function (err, customData) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s custom data.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s custom data.');
 						return accountCallback(err);
 					}
 
@@ -81,7 +81,7 @@ export default {
 
 				account.getDirectory(function (err, directory) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s directory.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s directory.');
 						return accountCallback(err);
 					}
 
@@ -96,7 +96,7 @@ export default {
 
 				account.getGroups(function (err, groups) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s groups.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s groups.');
 						return accountCallback(err);
 					}
 
@@ -111,7 +111,7 @@ export default {
 
 				account.getGroupMemberships(function (err, groupMemberships) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s group memberships.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s group memberships.');
 						return accountCallback(err);
 					}
 
@@ -126,7 +126,7 @@ export default {
 
 				account.getProviderData(function (err, providerData) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s provider data.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s provider data.');
 						return accountCallback(err);
 					}
 
@@ -141,7 +141,7 @@ export default {
 
 				account.getTenant(function (err, tenant) {
 					if (err) {
-						logger.info('Couldn\'t expand ' + account.email + '\'s tenant.');
+						logger.info('accountUtil: couldn\'t expand ' + account.email + '\'s tenant.');
 						return accountCallback(err);
 					}
 
@@ -150,8 +150,10 @@ export default {
 				});
 			}
 		], function (err) {
+
 			if (err) {
-				logger.info(err);
+				logger.error('accountUtil: error');
+				logger.error(err);
 			}
 
 			accountCallback(null, account);

@@ -12,6 +12,8 @@ import logger from '@adexchange/aeg-logger';
  */
 export default (app, callback) => {
 
+	logger.info('stormpathMiddleware: connecting...');
+
 	const stormpathConfig = config.get('stormpath');
 
 	app.set('stormpathConfig', stormpathConfig);
@@ -23,12 +25,13 @@ export default (app, callback) => {
 	client.getApplication(stormpathConfig.application.href, (err, application) => {
 
 		if (err) {
+			logger.error('stormpathMiddleware: failed to connect');
 			return callback(err);
 		}
 
 		app.set('stormpathApplication', application);
 
-		logger.info('stormpath ready...');
+		logger.info('stormpathMiddleware: connected...');
 
 		callback();
 	});

@@ -22,7 +22,7 @@ export default (app, callback) => {
 			.then(() => {
 				token.willExpire(accessToken, 30, (err) => {
 					if (err) {
-						logger.info('Service level api token will expire');
+						logger.info('getToken: service level api token will expire');
 						refreshToken(callback);
 					} else {
 						callback(null, accessToken);
@@ -30,18 +30,18 @@ export default (app, callback) => {
 				});
 			})
 			.fail(() => {
-				logger.info('Service level api token has expired');
+				logger.info('getToken: service level api token has expired');
 				refreshToken(callback);
 			});
 
 	} else {
-		logger.info('Service level api token not found');
+		logger.info('getToken: service level api token not found');
 		refreshToken(callback);
 	}
 
 	function refreshToken(callback) {
 
-		logger.info('Refresh service level api token');
+		logger.info('getToken: refresh service level api token');
 
 		securityApi.apiToken({
 				Authorization: 'Basic ' + new Buffer(appConfig.apiKey.id + ':' + appConfig.apiKey.secret).toString('base64'),
@@ -53,6 +53,8 @@ export default (app, callback) => {
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
+				logger.error('getToken: failed to refresh service level api token');
+				logger.error(err);
 				callback(err);
 			});
 	}

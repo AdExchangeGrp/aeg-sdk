@@ -119,9 +119,9 @@ function _getOrganization(client, search, callback) {
 
 /**
  * Performs a search for an organization
- * @param client
- * @param search
- * @param callback
+ * @param {Client} client
+ * @param {Object} search
+ * @param {function} callback
  * @private
  */
 function _getOrganizationDefaultDirectoryInternal(client, search, callback) {
