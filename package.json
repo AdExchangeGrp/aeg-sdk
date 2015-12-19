@@ -37,6 +37,7 @@
     "babel-preset-es2015": "^6.1.18",
     "config": "^1.16.0",
     "express-redis-cache": "^0.2.0",
+    "kerberos": "0.0.17",
     "lodash": "^3.10.1",
     "merge": "^1.2.0",
     "mongoose": "^4.3.1",
