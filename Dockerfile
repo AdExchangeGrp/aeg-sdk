@@ -1,4 +1,4 @@
-FROM adexchangegrp/node
+FROM adexchangegrp/node:latest
 
 ENV NODE_ENV development
 
