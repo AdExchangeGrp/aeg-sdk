@@ -17,7 +17,7 @@
     "dev": "parallelshell \"npm run jshint:watch\"",
     "build": "npm run jshint && mocha --recursive --reporter mocha-junit-reporter --compilers js:babel-core/register test/unit/",
     "compile": "babel -d ./lib/ ./src/",
-    "patch": "git reset --hard HEAD && git clean -fd && npm run compile && npm version patch && git push && git push --tags && npm publish"
+    "patch": "git reset --hard HEAD && git clean -fd && npm run compile && npm version patch -m \"[ci skip] %s\" && git push origin master && git push origin master --tags && npm publish"
   },
   "devDependencies": {
     "babel-cli": "^6.1.18",
