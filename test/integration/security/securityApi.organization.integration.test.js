@@ -3,6 +3,7 @@
 import securityApi from '../../../src/api/securityApi';
 import _ from 'lodash';
 import should from 'should';
+import setup from '../setup';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Organization', () => {
@@ -12,26 +13,22 @@ describe('securityApi - Organization', () => {
 	let parentOrg;
 	let childOrg;
 
-	describe('#setup()', () => {
+	describe('setup', () => {
 
-		it('should return admin scoped password token without error', (done) => {
-			securityApi.passwordToken({username: 'test-admin@test.com', password: 'Pa$$w0rd', scope: 'platform:admin'})
-				.then((result) => {
-					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
-					result.body.accessToken.should.be.a.String;
-					result.body.accessToken.length.should.be.greaterThan(0);
-					adminPasswordToken = result.body.accessToken;
-					adminRefreshToken = result.body.refreshToken;
+		it('should setup', (done) => {
 
-					securityApi.setToken(adminPasswordToken);
-
-					done();
-				})
-				.fail((err) => {
+			setup.getAdminPasswordToken((err, result) => {
+				if (err) {
 					done(err);
-				});
-		});
+				} else {
+					adminPasswordToken = result.accessToken;
+					adminRefreshToken = result.refreshToken;
+					securityApi.setToken(adminPasswordToken);
+					done();
+				}
+			});
 
+		});
 	});
 
 	describe('#Delete the parent and then the child', () => {
@@ -323,18 +320,12 @@ describe('securityApi - Organization', () => {
 
 	});
 
-	describe('#teardown', () => {
+	describe('teardown', () => {
 
-		it('should revoke the password access token for the admin', (done) => {
-			securityApi.setToken(adminPasswordToken);
-			securityApi.revokePasswordToken({refreshToken: adminRefreshToken})
-				.then((result) => {
-					result.body.message.should.be.equal('success');
-					done();
-				})
-				.fail((err) => {
-					done(err);
-				});
+		it('should teardown', (done) => {
+
+			setup.revokePasswordToken(adminPasswordToken, adminRefreshToken, done);
+
 		});
 
 	});
