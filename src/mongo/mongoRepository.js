@@ -2,7 +2,6 @@
 
 import logger from '@adexchange/aeg-logger';
 import config from 'config';
-import mongoose from 'mongoose';
 import _ from 'lodash';
 
 /**
@@ -17,10 +16,11 @@ class MongoRepository {
 
 	/**
 	 * Connect to Mongo
+	 * @param {Object} mongoose
 	 * @param {function} callback
 	 * @returns {*}
 	 */
-	connect(callback) {
+	connect(mongoose, callback) {
 
 		let self = this;
 
