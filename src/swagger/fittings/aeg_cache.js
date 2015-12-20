@@ -13,9 +13,16 @@ export default (cachePrefix) => {
 
 	const appConfig = config.get('app');
 
-	const client = cache({
-		host: appConfig.cache.host, port: appConfig.cache.port
-	});
+	const options = {
+		host: appConfig.cache.host,
+		port: appConfig.cache.port
+	};
+
+	if (cachePrefix) {
+		options.prefix = cachePrefix;
+	}
+
+	const client = cache(options);
 
 	return (context, callback) => {
 		const operation = context.request.swagger.operation;
@@ -25,13 +32,9 @@ export default (cachePrefix) => {
 				description: operation.description
 			});
 
-			let options = {
+			const options = {
 				expire: operation['x-cache']
 			};
-
-			if (cachePrefix) {
-				options.prefix = cachePrefix;
-			}
 
 			client.route(options)(context.request, context.response, callback);
 		} else {
