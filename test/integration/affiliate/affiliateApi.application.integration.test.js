@@ -75,8 +75,7 @@ describe('affiliateApi - Application', () => {
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id']);
-						result.body.application.approved.should.not.be.ok;
-						result.body.application.disapproved.should.not.be.ok;
+						result.body.application.status.should.be.equal('SUBMITTED');
 
 						organizationHref = result.body.application.organization.href;
 
@@ -163,9 +162,8 @@ describe('affiliateApi - Application', () => {
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id', 'approver']);
-						result.body.application.approved.should.be.ok;
+						result.body.application.status.should.be.equal('APPROVED');
 						should.exist(result.body.application.approvalDate);
-						result.body.application.disapproved.should.not.be.ok;
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
 						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
@@ -308,8 +306,7 @@ describe('affiliateApi - Application', () => {
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id']);
-						result.body.application.approved.should.not.be.ok;
-						result.body.application.disapproved.should.not.be.ok;
+						result.body.application.status.should.be.equal('SUBMITTED');
 						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
 
 						applicationIdDeny = result.body.application.id;
@@ -332,9 +329,8 @@ describe('affiliateApi - Application', () => {
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id', 'approver']);
-						result.body.application.approved.should.not.be.ok;
+						result.body.application.status.should.be.equal('DENIED');
 						should.exist(result.body.application.approvalDate);
-						result.body.application.disapproved.should.be.ok;
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
 						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
