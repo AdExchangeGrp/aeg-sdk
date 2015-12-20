@@ -1,6 +1,6 @@
 {
   "name": "@adexchange/aeg-sdk",
-  "version": "0.0.129",
+  "version": "0.0.130",
   "description": "SDK for CAMP 2.0",
   "main": "lib/index.js",
   "author": "Ad Exchange Group",
