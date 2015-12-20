@@ -168,7 +168,7 @@ describe('affiliateApi - Application', () => {
 						result.body.application.disapproved.should.not.be.ok;
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
-						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/6JNeqPfCOnCibnCI0rr9eS');
+						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
 						result.body.application.approver.givenName.should.not.be.empty;
 						result.body.application.approver.surname.should.not.be.empty;
 						done();
@@ -337,7 +337,7 @@ describe('affiliateApi - Application', () => {
 						result.body.application.disapproved.should.be.ok;
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
-						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/6JNeqPfCOnCibnCI0rr9eS');
+						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
 						result.body.application.approver.givenName.should.not.be.empty;
 						result.body.application.approver.surname.should.not.be.empty;
 						done();

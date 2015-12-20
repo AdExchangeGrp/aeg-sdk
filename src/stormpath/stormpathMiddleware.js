@@ -1,16 +1,16 @@
 'use strict';
 
-import stormpath from 'stormpath';
 import config from 'config';
 import logger from '@adexchange/aeg-logger';
 
 /**
  * Express middleware for integrating Stormpath
- * @param {Application} app
+ * @param {Object} app
+ * @param {Object} stormpath
  * @param {function} callback
  * @returns {Function}
  */
-export default (app, callback) => {
+export default (app, stormpath, callback) => {
 
 	logger.info('stormpathMiddleware: connecting...');
 
