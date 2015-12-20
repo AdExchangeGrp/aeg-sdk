@@ -6,9 +6,10 @@ import cache from 'express-redis-cache';
 
 /**
  * Swagger bagpipes fitting to cache api method responses
+ * @param {string} cachePrefix
  * @returns {Function}
  */
-export default () => {
+export default (cachePrefix) => {
 
 	const appConfig = config.get('app');
 
@@ -23,7 +24,16 @@ export default () => {
 				operation: operation.operationId,
 				description: operation.description
 			});
-			client.route({expire: operation['x-cache']})(context.request, context.response, callback);
+
+			let options = {
+				expire: operation['x-cache']
+			};
+
+			if (cachePrefix) {
+				options.prefix = cachePrefix;
+			}
+
+			client.route(options)(context.request, context.response, callback);
 		} else {
 			callback();
 		}
