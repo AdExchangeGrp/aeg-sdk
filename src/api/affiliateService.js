@@ -219,7 +219,7 @@ var AffiliateService = (function() {
      * @param {string} contactGivenName - Contact given name
      * @param {string} contactSurname - Contact surname
      * @param {string} contactTitle - Contact title
-     * @param {string} contactPhone - Contact phone XXX-XXX-XXXX
+     * @param {string} contactPhone - Contact phone +12345677890
      * @param {string} contactImScreenName - Contact instant messinger screen name
      * @param {string} contactImService - Contact instant messinger service type
      * @param {string} contactAddress - Contact street address
