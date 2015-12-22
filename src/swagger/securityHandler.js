@@ -20,7 +20,7 @@ const expiredToken = 'Expired token';
  */
 export default (req, def, routeScopes, callback) => {
 
-	logger.debug(`Authorizing ${req.swagger.apiPath}`);
+	logger.debug(`Authorizing ${req.url}`);
 
 	njwt.verify(
 		token.parseTokenFromAuthorization(req.headers.authorization),
