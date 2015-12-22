@@ -559,6 +559,7 @@ var AffiliateService = (function() {
      * Returns applications
      * @method
      * @name AffiliateService#applications
+     * @param {string} account - Account href
      * 
      */
     AffiliateService.prototype.applications = function(parameters) {
@@ -582,6 +583,10 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['account'] !== undefined) {
+            form['account'] = parameters['account'];
         }
 
         if (parameters.$queryParameters) {
