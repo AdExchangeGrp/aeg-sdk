@@ -586,7 +586,7 @@ var AffiliateService = (function() {
         }
 
         if (parameters['account'] !== undefined) {
-            form['account'] = parameters['account'];
+            queryParameters['account'] = parameters['account'];
         }
 
         if (parameters.$queryParameters) {
