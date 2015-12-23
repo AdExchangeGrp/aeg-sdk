@@ -56,7 +56,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org href', (done) => {
+			it('should not return password token with the org href and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
 						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
@@ -107,7 +107,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org name', (done) => {
+			it('should not return password token with the org name and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
 						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
@@ -158,7 +158,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org nameKey', (done) => {
+			it('should not return password token with the org nameKey and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
 						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
