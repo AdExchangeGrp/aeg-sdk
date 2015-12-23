@@ -174,6 +174,37 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
+			it('should return password token with the wrong nameKey since its an AEG directory user', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: '123456'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
 		});
 
 		describe('no search', () => {
