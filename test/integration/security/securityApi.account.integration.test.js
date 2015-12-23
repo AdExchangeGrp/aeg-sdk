@@ -48,7 +48,7 @@ describe('securityApi - Account', () => {
 					givenName: 'test',
 					surname: 'test',
 					username: testUsername,
-					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c',
+					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l',
 					customData: JSON.stringify({
 						test: 'test',
 						org: {
@@ -85,7 +85,7 @@ describe('securityApi - Account', () => {
 					username: testEmail,
 					password: 'Pa$$w0rd',
 					scope: 'platform:admin',
-					organization: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
 				})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
@@ -207,7 +207,7 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.addScopeToAccount({
 						account: registeredAccountHref,
-						scope: 'https://api.stormpath.com/v1/groups/48GbYIkAPquYtceM7SXJmn'
+						scope: 'https://api.stormpath.com/v1/groups/5stLcVH2AgzVo1lgsBVCrc'
 					})
 					.then((result) => {
 						result.body.message.should.be.equal('success');
@@ -243,7 +243,7 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.removeScopeFromAccount({
 						account: registeredAccountHref,
-						scope: 'https://api.stormpath.com/v1/groups/48GbYIkAPquYtceM7SXJmn'
+						scope: 'https://api.stormpath.com/v1/groups/5stLcVH2AgzVo1lgsBVCrc'
 					})
 					.then((result) => {
 						result.body.message.should.be.equal('success');
