@@ -58,7 +58,7 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token with the org href', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
+						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
 						fetchAccount: true,
 						searchTerm: 'href',
@@ -109,7 +109,7 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token with the org name', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
+						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
 						fetchAccount: true,
 						searchTerm: 'name',
@@ -155,6 +155,22 @@ describe('securityApi - OAuth', () => {
 					})
 					.fail((err) => {
 						done(err);
+					});
+			});
+
+			it('should not return password token with the org nameKey', (done) => {
+				securityApi.passwordToken({
+						username: 'test-affiliate-170001@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'adexchange'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail(() => {
+						done();
 					});
 			});
 
