@@ -158,7 +158,7 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org nameKey', (done) => {
+			it('should return password token with an org nameKey that exists but the account does not belong to', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -166,11 +166,26 @@ describe('securityApi - OAuth', () => {
 						searchTerm: 'nameKey',
 						searchValue: 'test-affiliate'
 					})
-					.then(() => {
-						done(new Error('Should have failed'));
-					})
-					.fail(() => {
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
 						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
 					});
 			});
 
