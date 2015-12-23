@@ -80,11 +80,10 @@ describe('securityApi - Account', () => {
 				});
 		});
 
-		it('should return scoped password token without error', (done) => {
+		it('should return password token without error', (done) => {
 			securityApi.passwordToken({
 					username: testEmail,
 					password: 'Pa$$w0rd',
-					scope: 'platform:admin',
 					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
 				})
 				.then((result) => {
