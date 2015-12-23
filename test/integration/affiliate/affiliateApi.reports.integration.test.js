@@ -96,26 +96,26 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
-	describe('#reportsTop10EpcAffiliate', () => {
+	describe('#reportsTopEpcAffiliate', () => {
 
 		it('should return performance report daily', (done) => {
-			testTop10EpcAffiliateReport({interval: 'daily'}, done);
+			testTopEpcAffiliateReport({interval: 'daily', limit: 5}, done);
 		});
 
 		it('should return performance report weekly', (done) => {
-			testTop10EpcAffiliateReport({interval: 'weekly'}, done);
+			testTopEpcAffiliateReport({interval: 'weekly'}, done);
 		});
 
 		it('should return performance report monthly', (done) => {
-			testTop10EpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, done);
+			testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, done);
 		});
 
 		it('should return performance report yearly', (done) => {
-			testTop10EpcAffiliateReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
+			testTopEpcAffiliateReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
 		it('should return performance report yearly for account 170001', (done) => {
-			testTop10EpcAffiliateReport({
+			testTopEpcAffiliateReport({
 				interval: 'yearly',
 				timezone: 'America/Los_Angeles',
 				token: passwordToken170001
@@ -123,7 +123,7 @@ describe('affiliateApi - Reports', () => {
 		});
 
 		it('should not return performance report yearly for account 170001', (done) => {
-			testTop10EpcAffiliateReport({
+			testTopEpcAffiliateReport({
 				affiliateId: 170002,
 				interval: 'yearly',
 				timezone: 'America/Los_Angeles',
@@ -139,22 +139,22 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
-	describe('#reportsTop10EpcNetwork', () => {
+	describe('#reportsTopEpcNetwork', () => {
 
 		it('should return performance report daily', (done) => {
-			testTop10EpcNetworkReport({interval: 'daily'}, done);
+			testTopEpcNetworkReport({interval: 'daily', limit: 5}, done);
 		});
 
 		it('should return performance report weekly', (done) => {
-			testTop10EpcNetworkReport({interval: 'weekly'}, done);
+			testTopEpcNetworkReport({interval: 'weekly'}, done);
 		});
 
 		it('should return performance report monthly', (done) => {
-			testTop10EpcNetworkReport({interval: 'monthly', filter: 'mobile'}, done);
+			testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, done);
 		});
 
 		it('should return performance report yearly', (done) => {
-			testTop10EpcNetworkReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
+			testTopEpcNetworkReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
 		});
 
 	});
@@ -189,9 +189,13 @@ describe('affiliateApi - Reports', () => {
 			args.timezone = options.timezone;
 		}
 
+		if (options.limit) {
+			args.limit = options.limit;
+		}
+
 		affiliateApi.reportsPerformance(args)
 			.then((result) => {
-				validatePerformanceReport(result, args.sort, args.sortDirection);
+				validatePerformanceReport(result, args.sort, args.sortDirection, args.limit);
 				callback();
 			})
 			.fail((err) => {
@@ -199,7 +203,7 @@ describe('affiliateApi - Reports', () => {
 			});
 	}
 
-	function validatePerformanceReport(result, sort, sortDirection) {
+	function validatePerformanceReport(result, sort, sortDirection, limit) {
 		should.exist(result);
 		should.exist(result.body);
 		should.exist(result.body.data);
@@ -207,6 +211,10 @@ describe('affiliateApi - Reports', () => {
 		_.isArray(result.body.data.subIds).should.be.ok;
 
 		var lastVal;
+
+		if (limit) {
+			(result.body.data.subIds.length <= limit).should.be.ok;
+		}
 
 		_.each(result.body.data.subIds, (sub, i) => {
 
@@ -250,15 +258,22 @@ describe('affiliateApi - Reports', () => {
 		});
 	}
 
-	function testTop10EpcAffiliateReport(options, callback) {
+	function testTopEpcAffiliateReport(options, callback) {
+
+		let args = {
+			affiliateId: options.affiliateId ? options.affiliateId : 170001,
+			interval: options.interval ? options.interval : 'daily',
+			filter: options.filter ? options.filter : 'all'
+		};
+
+		if (options.limit) {
+			args.limit = options.limit;
+		}
+
 		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
-		affiliateApi.reportsTop10EpcAffiliate({
-				affiliateId: options.affiliateId ? options.affiliateId : 170001,
-				interval: options.interval ? options.interval : 'daily',
-				filter: options.filter ? options.filter : 'all'
-			})
+		affiliateApi.reportsTopEpcAffiliate(args)
 			.then((result) => {
-				validateTop10EpcReport(result);
+				validateTopEpcReport(result, args.limit);
 				callback();
 			})
 			.fail((err) => {
@@ -266,14 +281,14 @@ describe('affiliateApi - Reports', () => {
 			});
 	}
 
-	function testTop10EpcNetworkReport(options, callback) {
+	function testTopEpcNetworkReport(options, callback) {
 		affiliateApi.setToken(adminPasswordToken);
-		affiliateApi.reportsTop10EpcNetwork({
+		affiliateApi.reportsTopEpcNetwork({
 				interval: options.interval ? options.interval : 'daily',
 				filter: options.filter ? options.filter : 'all'
 			})
 			.then((result) => {
-				validateTop10EpcReport(result);
+				validateTopEpcReport(result);
 				callback();
 			})
 			.fail((err) => {
@@ -281,11 +296,14 @@ describe('affiliateApi - Reports', () => {
 			});
 	}
 
-	function validateTop10EpcReport(result) {
+	function validateTopEpcReport(result, limit) {
 		should.exist(result);
 		should.exist(result.body);
 		should.exist(result.body.data);
 		_.isArray(result.body.data).should.be.ok;
+		if (limit) {
+			(result.body.data.length <= limit).should.be.ok;
+		}
 		_.each(result.body.data, (offer) => {
 			offer.should.have.properties(['id', 'epc', 'vertical']);
 		});
