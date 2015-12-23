@@ -117,7 +117,7 @@ describe('securityApi - Organization', () => {
 			it('should approve an organization', (done) => {
 				securityApi.approveOrganization({
 						id: parentOrg,
-						rename: 'Test Affiliate Rename'
+						rename: 'Test-Affiliate-Rename'
 					})
 					.then((result) => {
 						result.body.should.have.properties(['message']);
@@ -135,10 +135,11 @@ describe('securityApi - Organization', () => {
 						result.body.should.have.properties(['organization', 'directory']);
 						result.body.organization.should.have.properties(['status']);
 						result.body.organization.status.toLowerCase().should.be.equal('enabled');
-						result.body.organization.name.should.be.equal('Test Affiliate Rename');
+						result.body.organization.name.should.be.equal('Test-Affiliate-Rename');
+						result.body.organization.nameKey.should.be.equal('Test-Affiliate-Rename');
 						result.body.directory.should.have.properties(['status']);
 						result.body.directory.status.toLowerCase().should.be.equal('enabled');
-						result.body.directory.name.should.be.equal('Test Affiliate Rename');
+						result.body.directory.name.should.be.equal('Test-Affiliate-Rename');
 						done();
 					})
 					.fail((err) => {
