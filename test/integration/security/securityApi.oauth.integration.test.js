@@ -56,9 +56,9 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org href', (done) => {
+			it('should not return password token with the org href and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
+						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
 						fetchAccount: true,
 						searchTerm: 'href',
@@ -107,9 +107,9 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org name', (done) => {
+			it('should not return password token with the org name and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
+						username: 'test-affiliate-170001@test.com',
 						password: 'Pa$$w0rd',
 						fetchAccount: true,
 						searchTerm: 'name',
@@ -158,7 +158,23 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
-			it('should not return password token with the org nameKey', (done) => {
+			it('should not return password token with the org nameKey and should not hit the default directory', (done) => {
+				securityApi.passwordToken({
+						username: 'test-affiliate-170001@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: 'adexchange'
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail(() => {
+						done();
+					});
+			});
+
+			it('should return password token with an org nameKey that exists but the account does not belong to', (done) => {
 				securityApi.passwordToken({
 						username: 'test@test.com',
 						password: 'Pa$$w0rd',
@@ -166,11 +182,57 @@ describe('securityApi - OAuth', () => {
 						searchTerm: 'nameKey',
 						searchValue: 'test-affiliate'
 					})
-					.then(() => {
-						done(new Error('Should have failed'));
-					})
-					.fail(() => {
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
 						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should return password token with the wrong nameKey since its an AEG directory user', (done) => {
+				securityApi.passwordToken({
+						username: 'test@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true,
+						searchTerm: 'nameKey',
+						searchValue: '123456'
+					})
+					.then((result) => {
+						result.body.should.have.properties(['accessToken', 'refreshToken']);
+						tempPasswordAccessToken = result.body.accessToken;
+						tempPasswordRefreshToken = result.body.refreshToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should revoke the password access token and refresh token', (done) => {
+				securityApi.setToken(tempPasswordAccessToken);
+				securityApi.revokePasswordToken({refreshToken: tempPasswordRefreshToken})
+					.then((result) => {
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
 					});
 			});
 
@@ -196,6 +258,20 @@ describe('securityApi - OAuth', () => {
 					})
 					.fail((err) => {
 						done(err);
+					});
+			});
+
+			it('should not return password token for account on another organization other than the default organization', (done) => {
+				securityApi.passwordToken({
+						username: 'test-affiliate-170001@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail(() => {
+						done();
 					});
 			});
 
