@@ -261,6 +261,20 @@ describe('securityApi - OAuth', () => {
 					});
 			});
 
+			it('should not return password token for account on another organization other than the default organization', (done) => {
+				securityApi.passwordToken({
+						username: 'test-affiliate-170001@test.com',
+						password: 'Pa$$w0rd',
+						fetchAccount: true
+					})
+					.then(() => {
+						done(new Error('Should have failed'));
+					})
+					.fail(() => {
+						done();
+					});
+			});
+
 			it('should not return password token', (done) => {
 				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd2', fetchAccount: true})
 					.then(() => {
