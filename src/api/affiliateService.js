@@ -559,6 +559,7 @@ var AffiliateService = (function() {
      * Returns applications
      * @method
      * @name AffiliateService#applications
+     * @param {string} account - Account href
      * 
      */
     AffiliateService.prototype.applications = function(parameters) {
@@ -582,6 +583,10 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['account'] !== undefined) {
+            queryParameters['account'] = parameters['account'];
         }
 
         if (parameters.$queryParameters) {
@@ -1026,22 +1031,23 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Top 10 EPC data by network
+     * Top EPC data by network
      * @method
-     * @name AffiliateService#reportsTop10EpcNetwork
+     * @name AffiliateService#reportsTopEpcNetwork
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} timezone - The timezone string ex. America/New_York
+     * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
      * 
      */
-    AffiliateService.prototype.reportsTop10EpcNetwork = function(parameters) {
+    AffiliateService.prototype.reportsTopEpcNetwork = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/reports/top-10-epc/{interval}/{filter}';
+        var path = '/reports/top-epc/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -1066,6 +1072,10 @@ var AffiliateService = (function() {
 
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['limit'] !== undefined) {
+            queryParameters['limit'] = parameters['limit'];
         }
 
         path = path.replace('{filter}', parameters['filter']);
@@ -1126,23 +1136,24 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Affiliate top 10 EPC data. Must be the affiliate or admin scoped.
+     * Affiliate top EPC data. Must be the affiliate or admin scoped.
      * @method
-     * @name AffiliateService#reportsTop10EpcAffiliate
+     * @name AffiliateService#reportsTopEpcAffiliate
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} timezone - The timezone string ex. America/New_York
+     * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
      * 
      */
-    AffiliateService.prototype.reportsTop10EpcAffiliate = function(parameters) {
+    AffiliateService.prototype.reportsTopEpcAffiliate = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/top-10-epc/{interval}/{filter}';
+        var path = '/{affiliateId}/reports/top-epc/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -1174,6 +1185,10 @@ var AffiliateService = (function() {
 
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['limit'] !== undefined) {
+            queryParameters['limit'] = parameters['limit'];
         }
 
         path = path.replace('{filter}', parameters['filter']);

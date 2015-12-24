@@ -12,6 +12,7 @@ describe('affiliateApi - Application', () => {
 	let adminPasswordToken;
 	let adminRefreshToken;
 	let newUserToken;
+	let newUserHref;
 	let applicationIdApprove;
 	let applicationIdDeny;
 	let organizationHref;
@@ -78,6 +79,7 @@ describe('affiliateApi - Application', () => {
 						result.body.application.status.should.be.equal('SUBMITTED');
 
 						organizationHref = result.body.application.organization.href;
+						newUserHref = result.body.application.account.href;
 
 						//default timezone
 						result.body.application.contact.timezone.should.be.equal('America/New_York');
@@ -92,7 +94,12 @@ describe('affiliateApi - Application', () => {
 			});
 
 			it('should return token for new account', (done) => {
-				securityApi.passwordToken({username: 'test-apply-approve@test.com', password: 'Pa$$w0rd'})
+				securityApi.passwordToken({
+						username: 'test-apply-approve@test.com',
+						password: 'Pa$$w0rd',
+						searchTerm: 'href',
+						searchValue: organizationHref
+					})
 					.then((result) => {
 						newUserToken = result.body.accessToken;
 						done();
@@ -234,6 +241,25 @@ describe('affiliateApi - Application', () => {
 						result.body.should.have.properties(['applications']);
 						_.isArray(result.body.applications).should.be.ok;
 						result.body.applications.length.should.be.greaterThan(0);
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should get the application list for a specific user', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applications({account: newUserHref})
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['applications']);
+						_.isArray(result.body.applications).should.be.ok;
+						result.body.applications.length.should.be.greaterThan(0);
+						_.each(result.body.applications, (application) => {
+							application.account.href.should.be.equal(newUserHref);
+						});
 						done();
 					})
 					.fail((err) => {
