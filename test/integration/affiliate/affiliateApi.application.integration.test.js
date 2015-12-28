@@ -96,9 +96,7 @@ describe('affiliateApi - Application', () => {
 			it('should return token for new account', (done) => {
 				securityApi.passwordToken({
 						username: 'test-apply-approve@test.com',
-						password: 'Pa$$w0rd',
-						searchTerm: 'href',
-						searchValue: organizationHref
+						password: 'Pa$$w0rd'
 					})
 					.then((result) => {
 						newUserToken = result.body.accessToken;
