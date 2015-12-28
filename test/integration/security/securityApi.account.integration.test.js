@@ -370,6 +370,17 @@ describe('securityApi - Account', () => {
 				});
 		});
 
+		it('should not validate an account email with a bad email pattern', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: '@arg.com'})
+				.then(() => {
+					done(new Error('Should not have validated new account email'));
+				})
+				.fail(() => {
+					done();
+				});
+		});
+
 	});
 
 	describe('#revokeAccount', () => {
