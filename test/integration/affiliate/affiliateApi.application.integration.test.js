@@ -14,6 +14,7 @@ describe('affiliateApi - Application', () => {
 	let newUserToken;
 	let newUserHref;
 	let applicationIdApprove;
+	let applicationIdToApproveAffiliateIdTwice;
 	let applicationIdDeny;
 	let organizationHref;
 
@@ -119,6 +120,61 @@ describe('affiliateApi - Application', () => {
 					});
 			});
 
+			it('should create an application to approve an affiliate id twice', (done) => {
+
+				affiliateApi.applicationApply({
+						contactEmail: 'test-apply-approve@test.com',
+						contactPassword: 'Pa$$w0rd',
+						contactGivenName: 'test-apply-given',
+						contactSurname: 'test-apply-sur',
+						contactTitle: 'test-apply-title',
+						contactPhone: '+1-410-349.6457',
+						contactImScreenName: 'test-apply-screen-name',
+						contactImService: 'aim',
+						contactAddress: 'test-apply-address',
+						contactSuite: 'test-apply-suite',
+						contactCity: 'test-apply-city',
+						contactState: 'test-apply-state',
+						contactPostalCode: '12345',
+						contactCountry: 'test-apply-country',
+						company: 'test-apply-company',
+						companyTaxId: 'test-apply-tax-id',
+						companyTaxClass: 'llc',
+						companyPayableTo: 'contact',
+						companyPayBy: 'check',
+						companyAddress: 'test-apply-company-address',
+						companySuite: 'test-apply-company-suite',
+						companyCity: 'test-apply-company-city',
+						companyState: 'test-apply-company-state',
+						companyPostalCode: '67890',
+						companyCountry: 'test-apply-company-country',
+						marketingUrl: 'http://test',
+						marketingSiteCategory: 'test-apply-marketing-category',
+						marketingAnticipatedDailyVolume: 12345,
+						marketingTrafficSources: 'test-apply-traffic-sources',
+						marketingComments: 'test-apply-marketing-comments',
+						marketingHowMarketed: 'test-apply-merketing-how'
+					})
+					.then((result) => {
+						should.exist(result.body.application);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.status.should.be.equal('SUBMITTED');
+
+						organizationHref = result.body.application.organization.href;
+						newUserHref = result.body.application.account.href;
+
+						//default timezone
+						result.body.application.contact.timezone.should.be.equal('America/New_York');
+						applicationIdToApproveAffiliateIdTwice = result.body.application.id;
+
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+
+			});
+
 		});
 
 		describe('#applicationValidateAffiliateId', () => {
@@ -178,6 +234,30 @@ describe('affiliateApi - Application', () => {
 					})
 					.fail((err) => {
 						done(err);
+					});
+			});
+
+			it('should not approve an application already approved or denied', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateId: '8888888'})
+					.then(() => {
+						done(new Error('Should not have approved'));
+					})
+					.fail((err) => {
+						err.body.message.should.be.equal('Application is not in a submitted state');
+						done();
+					});
+			});
+
+			it('should not approve an application with the same affiliateId', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationApprove({id: applicationIdToApproveAffiliateIdTwice, affiliateId: '999999'})
+					.then(() => {
+						done(new Error('Should not have approved an application with an existing affiliateId'));
+					})
+					.fail((err) => {
+						err.body.message.should.be.equal('Affiliate already exists');
+						done();
 					});
 			});
 
@@ -282,6 +362,19 @@ describe('affiliateApi - Application', () => {
 					});
 			});
 
+			it('should delete an application', (done) => {
+				affiliateApi.applicationDelete({id: applicationIdToApproveAffiliateIdTwice})
+					.then((result) => {
+						should.exist(result);
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
 		});
 
 	});
@@ -364,6 +457,18 @@ describe('affiliateApi - Application', () => {
 					})
 					.fail((err) => {
 						done(err);
+					});
+			});
+
+			it('should not deny an application already denied or approved', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationDeny({id: applicationIdDeny})
+					.then(() => {
+						done(new Error('Application should not have been denied'));
+					})
+					.fail((err) => {
+						err.body.message.should.be.equal('Application is not in a submitted state');
+						done();
 					});
 			});
 
