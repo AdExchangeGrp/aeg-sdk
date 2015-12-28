@@ -169,10 +169,10 @@ describe('securityApi - Account', () => {
 						}
 					})
 				})
-				.then((result) => {
+				.then(() => {
 					done(new Error('Should not have updated account'));
 				})
-				.fail((err) => {
+				.fail(() => {
 					done();
 				});
 		});
