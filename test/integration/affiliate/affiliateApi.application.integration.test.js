@@ -123,7 +123,7 @@ describe('affiliateApi - Application', () => {
 			it('should create an application to approve an affiliate id twice', (done) => {
 
 				affiliateApi.applicationApply({
-						contactEmail: 'test-apply-approve@test.com',
+						contactEmail: 'test-apply-approve2@test.com',
 						contactPassword: 'Pa$$w0rd',
 						contactGivenName: 'test-apply-given',
 						contactSurname: 'test-apply-sur',

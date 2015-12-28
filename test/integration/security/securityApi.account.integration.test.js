@@ -189,7 +189,7 @@ describe('securityApi - Account', () => {
 						}
 					})
 				})
-				.then((result) => {
+				.then(() => {
 					done();
 				})
 				.fail((err) => {
