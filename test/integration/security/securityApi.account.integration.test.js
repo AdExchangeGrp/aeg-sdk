@@ -345,6 +345,33 @@ describe('securityApi - Account', () => {
 
 	});
 
+	describe('#validateAccountEmail', () => {
+
+		it('should validate an account email', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: 'test123456789@test.com'})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should not validate an account email', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: testEmail})
+				.then(() => {
+					done(new Error('Should not have validated new account email'));
+				})
+				.fail(() => {
+					done();
+				});
+		});
+
+	});
+
 	describe('#revokeAccount', () => {
 
 		it('should revoke user', (done) => {
