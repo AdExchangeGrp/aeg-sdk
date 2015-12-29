@@ -53,8 +53,7 @@ export default (app, callback) => {
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
-				logger.error('getToken: failed to refresh service level api token');
-				logger.error(err);
+				logger.errorWithMessage('getToken: failed to refresh service level api token', err);
 				callback(err);
 			});
 	}
