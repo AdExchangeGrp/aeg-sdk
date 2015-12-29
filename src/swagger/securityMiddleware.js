@@ -19,8 +19,7 @@ export default (req, res, next) => {
 				next();
 			})
 			.fail((err) => {
-				logger.warn('securityMiddleware: could not get account for authorization');
-				logger.error(err);
+				logger.errorWithMessage('securityMiddleware: could not get account for authorization', err);
 				next();
 			});
 	} else {

@@ -152,8 +152,7 @@ export default {
 		], function (err) {
 
 			if (err) {
-				logger.error('accountUtil: error');
-				logger.error(err);
+				logger.errorWithMessage('accountUtil: error', err);
 			}
 
 			accountCallback(null, account);
