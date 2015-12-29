@@ -3,9 +3,8 @@
   "version": "0.0.133",
   "dependencies": {
     "@adexchange/aeg-logger": {
-      "version": "0.0.25",
-      "from": "@adexchange/aeg-logger@0.0.25",
-      "resolved": "https://registry.npmjs.org/@adexchange/aeg-logger/-/aeg-logger-0.0.25.tgz",
+      "version": "0.0.26",
+      "from": "@adexchange/aeg-logger@0.0.26",
       "dependencies": {
         "config": {
           "version": "1.16.0",
