@@ -359,7 +359,7 @@ describe('securityApi - Account', () => {
 				});
 		});
 
-		it('should not validate an account email', (done) => {
+		it('should not validate an account email that is not unique', (done) => {
 			securityApi.setToken(adminPasswordToken);
 			securityApi.validateAccountEmail({email: testEmail})
 				.then(() => {
