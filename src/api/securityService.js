@@ -1275,6 +1275,93 @@ var SecurityService = (function() {
         return deferred.promise;
     };
     /**
+     * Validate a new account email
+     * @method
+     * @name SecurityService#validateAccountEmail
+     * @param {string} email - The email to validate
+     * 
+     */
+    SecurityService.prototype.validateAccountEmail = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/account/validate/email/{email}';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{email}', parameters['email']);
+
+        if (parameters['email'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: email'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Gets an organization
      * @method
      * @name SecurityService#getOrganization

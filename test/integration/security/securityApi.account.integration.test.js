@@ -169,10 +169,10 @@ describe('securityApi - Account', () => {
 						}
 					})
 				})
-				.then((result) => {
+				.then(() => {
 					done(new Error('Should not have updated account'));
 				})
-				.fail((err) => {
+				.fail(() => {
 					done();
 				});
 		});
@@ -189,7 +189,7 @@ describe('securityApi - Account', () => {
 						}
 					})
 				})
-				.then((result) => {
+				.then(() => {
 					done();
 				})
 				.fail((err) => {
@@ -341,6 +341,44 @@ describe('securityApi - Account', () => {
 					});
 			});
 
+		});
+
+	});
+
+	describe('#validateAccountEmail', () => {
+
+		it('should validate an account email', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: 'test123456789@test.com'})
+				.then((result) => {
+					result.body.message.should.be.equal('success');
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
+
+		it('should not validate an account email that is not unique', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: testEmail})
+				.then(() => {
+					done(new Error('Should not have validated new account email'));
+				})
+				.fail(() => {
+					done();
+				});
+		});
+
+		it('should not validate an account email with a bad email pattern', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.validateAccountEmail({email: '@arg.com'})
+				.then(() => {
+					done(new Error('Should not have validated new account email'));
+				})
+				.fail(() => {
+					done();
+				});
 		});
 
 	});
