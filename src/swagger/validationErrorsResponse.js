@@ -10,7 +10,6 @@ import _ from 'lodash';
  */
 export default (req, res, validationErrors) => {
 
-	console.log(req.swagger.operation.pathObject.path);
 	let operation = req.swagger.operation;
 
 	let response = {
