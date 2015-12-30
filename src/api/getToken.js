@@ -41,7 +41,7 @@ export default (app, callback) => {
 
 	function refreshToken(callback) {
 
-		logger.info('getToken: refresh service level api token');
+		logger.info('getToken#refreshToken: refresh service level api token');
 
 		securityApi.apiToken({
 				Authorization: 'Basic ' + new Buffer(appConfig.apiKey.id + ':' + appConfig.apiKey.secret).toString('base64'),
@@ -53,7 +53,7 @@ export default (app, callback) => {
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
-				logger.errorWithMessage('getToken: failed to refresh service level api token', err);
+				logger.errorWithMessage('getToken#refreshToken: failed to refresh service level api token', err);
 				callback(err);
 			});
 	}
