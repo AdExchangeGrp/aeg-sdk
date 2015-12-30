@@ -1,6 +1,6 @@
 'use strict';
 
-import { securityApi } from '../api';
+import securityApi from './securityApi';
 import { token } from '../stormpath';
 import config  from 'config';
 import logger from '@adexchange/aeg-logger';
