@@ -7,9 +7,9 @@ import ApiError from './apiError';
 /**
  * Executes an api call with a token
  * @param {Object} app - express app
- * @param {Object} api - aeg api
- * @param {function} apiCall - aeg api method
- * @param {Object} apiCallOptions - aeg api method params
+ * @param {Object} api - sdk api object
+ * @param {string} apiCall - api method
+ * @param {Object} apiCallOptions - api method params
  * @param {function} callback
  */
 export default (app, api, apiCall, apiCallOptions, callback) => {
@@ -19,7 +19,7 @@ export default (app, api, apiCall, apiCallOptions, callback) => {
 			callback(err);
 		} else {
 			api.setToken(token);
-			apiCall(apiCallOptions)
+			api[apiCall](apiCallOptions)
 				.then((result) => {
 					callback(null, result.body);
 				})
