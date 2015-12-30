@@ -49,9 +49,9 @@ export default (req, res, validationErrors) => {
 				indexOfParam
 			];
 
-			response.errors.push(error);
+			return error;
 		})
 	};
 
 	res.status(400).json(response);
-}
+};
