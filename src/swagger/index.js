@@ -8,6 +8,7 @@ import securityHandler from './securityHandler';
 import securityMiddleware from './securityMiddleware';
 import parseParam from './parseParam';
 import fittings from './fittings';
+import validationErrorsResponse from './validationErrorsResponse';
 
 export {
 	errorResponse,
@@ -17,7 +18,8 @@ export {
 	securityHandler,
 	securityMiddleware,
 	parseParam,
-	fittings};
+	fittings,
+	validationErrorsResponse};
 
 export default {
 	errorResponse,
@@ -27,5 +29,6 @@ export default {
 	securityHandler,
 	securityMiddleware,
 	parseParam,
-	fittings
+	fittings,
+	validationErrorsResponse
 };
