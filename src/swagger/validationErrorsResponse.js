@@ -46,7 +46,7 @@ export default (req, res, validationErrors) => {
 				operation.pathObject.path,
 				operation.method,
 				"parameters",
-				indexOfParam
+				String(indexOfParam)
 			];
 
 			return error;
