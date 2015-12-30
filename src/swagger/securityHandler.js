@@ -20,7 +20,7 @@ const expiredToken = 'Expired token';
  */
 export default (req, def, routeScopes, callback) => {
 
-	logger.debug(`Authorizing ${req.url}`);
+	logger.debug(`securityHandler: Authorizing ${req.url}`);
 
 	njwt.verify(
 		token.parseTokenFromAuthorization(req.headers.authorization),
@@ -38,7 +38,7 @@ export default (req, def, routeScopes, callback) => {
 
 				let authorizedScopes = expandedJwt.body.scope.split(',');
 
-				logger.debug('API Token Scopes', {
+				logger.debug('securityHandler: API Token Scopes', {
 					routeScopes: routeScopes,
 					validScopes: authorizedScopes
 				});

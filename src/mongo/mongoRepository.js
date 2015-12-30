@@ -43,12 +43,12 @@ class MongoRepository {
 		this._db.once('open', () => {
 			self._connected = true;
 
-			logger.debug(`mongoRepository: connected`);
+			logger.debug(`mongoRepository#connect: connected`);
 
 			callback();
 		});
 
-		logger.debug(`mongoRepository: connecting to ${connectionString}`);
+		logger.debug(`mongoRepository#connect: connecting to ${connectionString}`);
 
 		mongoose.connect(connectionString);
 	}
@@ -66,7 +66,7 @@ class MongoRepository {
 			return callback();
 		}
 
-		logger.info('mongoRepository: disconnected');
+		logger.info('mongoRepository#dispose: disconnected');
 
 		this._db.disconnect(callback);
 	}
