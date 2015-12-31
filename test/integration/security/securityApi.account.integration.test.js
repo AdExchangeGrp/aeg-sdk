@@ -80,6 +80,31 @@ describe('securityApi - Account', () => {
 				});
 		});
 
+		it('should not register with duplicate email', (done) => {
+			securityApi.registerAccount({
+					email: testEmail,
+					password: 'Pa$$w0rd',
+					givenName: 'test',
+					surname: 'test',
+					username: testUsername,
+					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l',
+					customData: JSON.stringify({
+						test: 'test',
+						org: {
+							href: 'test'
+						}
+					})
+				})
+				.then(() => {
+					done(new Error(('Should not have registered account')));
+				})
+				.fail((err) => {
+					err.body.should.have.properties(['message', 'errors']);
+					err.body.message.should.be.equal('Validation errors');
+					done();
+				});
+		});
+
 		it('should return password token without error', (done) => {
 			securityApi.passwordToken({
 					username: testEmail,
@@ -126,6 +151,22 @@ describe('securityApi - Account', () => {
 				})
 				.fail((err) => {
 					done(err);
+				});
+		});
+
+		it('should not update account with an existing email', (done) => {
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.updateAccountProfile({
+					email: 'test@test.com',
+					id: registeredAccountHref
+				})
+				.then(() => {
+					done(new Error(('Should not have updated account email')));
+				})
+				.fail((err) => {
+					err.body.should.have.properties(['message', 'errors']);
+					err.body.message.should.be.equal('Validation errors');
+					done();
 				});
 		});
 
