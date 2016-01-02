@@ -2,9 +2,9 @@
 
 import { EventEmitter } from 'events';
 import config  from 'config';
-import securityApi from './securityApi';
+import securityApi from './security-api';
 import { token } from '../stormpath';
-import ApiError from './apiError';
+import ApiError from './api-error';
 
 class Token extends EventEmitter {
 

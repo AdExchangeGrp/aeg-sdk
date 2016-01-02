@@ -1,6 +1,6 @@
 'use strict';
 
-import MongoRepository from './mongoRepository';
+import MongoRepository from './mongo-repository';
 
 /**
  * Express middleware to manage a Mongo repository

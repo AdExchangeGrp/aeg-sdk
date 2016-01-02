@@ -3,7 +3,7 @@
 /**
  * Handles an error response from Stormpath
  * @param {Error} err
- * @param {Response} res
+ * @param {Object} res
  */
 export default (err, res) => {
 	res.status(err.statusCode || 400).json({

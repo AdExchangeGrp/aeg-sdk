@@ -4,8 +4,8 @@ import _ from 'lodash';
 
 /**
  * Produces a consistent validation error response with the swagger tools
- * @param {Request} req
- * @param {Response} res
+ * @param {Object} req
+ * @param {Object} res
  * @param {Object[]} validationErrors
  */
 export default (req, res, validationErrors) => {

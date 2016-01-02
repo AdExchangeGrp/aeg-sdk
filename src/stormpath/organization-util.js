@@ -9,7 +9,7 @@ export default {
 
 	/**
 	 * Gets the default directory for an organization
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {string} href
 	 * @param callback
 	 */

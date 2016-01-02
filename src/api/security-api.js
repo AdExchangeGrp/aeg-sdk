@@ -4,7 +4,7 @@
  * Configurable service proxy
  */
 
-import { SecurityService } from './securityService.js';
+import { SecurityService } from './security-service.js';
 import config from 'config';
 
 let securityService = null;

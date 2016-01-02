@@ -48,7 +48,7 @@ export default {
 
 	/**
 	 * Parses an array of scopes from a JWT token
-	 * @param {njwt} jwt
+	 * @param {Object} jwt
 	 * @returns {*}
 	 */
 	parseScopesFromJwt: function (jwt) {
@@ -57,7 +57,7 @@ export default {
 
 	/**
 	 * Determines whether the token is the result of a password OAUTH flow
-	 * @param {njwt} jwt
+	 * @param {Object} jwt
 	 */
 	isPasswordToken: function (jwt) {
 		return jwt.body.sub.match(/https:\/\/api.stormpath.com/);

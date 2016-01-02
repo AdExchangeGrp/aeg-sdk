@@ -30,13 +30,13 @@ if (command === 'swaggerCodeGen') {
 	let service = argv.s;
 
 	if (service === 'security') {
-		generate('SecurityService', 'securityService.js', securityServiceConfig.swagger, (err) => {
+		generate('SecurityService', 'security-service.js', securityServiceConfig.swagger, (err) => {
 			if (err) {
 				throw err;
 			}
 		});
 	} else if (service === 'affiliate') {
-		generate('AffiliateService', 'affiliateService.js', affiliateServiceConfig.swagger, (err) => {
+		generate('AffiliateService', 'affiliate-service.js', affiliateServiceConfig.swagger, (err) => {
 			if (err) {
 				throw err;
 			}

@@ -2,7 +2,7 @@
 
 /**
  * Parses swagger parameters by returning its value or null
- * @param {Request} req
+ * @param {Object} req
  * @param {string} param
  * @returns {Object}
  */

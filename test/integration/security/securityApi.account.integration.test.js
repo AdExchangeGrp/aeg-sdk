@@ -1,6 +1,6 @@
 'use strict';
 
-import securityApi from '../../../src/api/securityApi';
+import securityApi from '../../../src/api/security-api';
 import uuid from 'node-uuid';
 import _ from 'lodash';
 import should from 'should';

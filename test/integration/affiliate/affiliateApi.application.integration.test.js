@@ -1,7 +1,7 @@
 'use strict';
 
-import affiliateApi from '../../../src/api/affiliateApi';
-import securityApi from '../../../src/api/securityApi';
+import affiliateApi from '../../../src/api/affiliate-api';
+import securityApi from '../../../src/api/security-api';
 import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';

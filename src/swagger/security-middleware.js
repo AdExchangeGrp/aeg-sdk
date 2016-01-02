@@ -1,13 +1,13 @@
 'use strict';
 
-import securityApi from '../api/securityApi';
+import securityApi from '../api/security-api';
 import { token } from '../stormpath';
 import { logger } from '../logger-facade';
 
 /**
  * Middleware to populate the account details to the request
- * @param {Request} req
- * @param {Response} res
+ * @param {Object} req
+ * @param {Object} res
  * @param {function} next
  */
 export default (req, res, next) => {

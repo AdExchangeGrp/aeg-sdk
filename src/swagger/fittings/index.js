@@ -1,8 +1,8 @@
 'use strict';
 
-import aeg_authorize from './aeg_authorize';
-import aeg_cache from './aeg_cache';
+import aegAuthorize from './aeg-authorize';
+import aegCache from './aeg-cache';
 
-export {aeg_authorize, aeg_cache};
+export {aegAuthorize, aegCache};
 
-export default {aeg_authorize, aeg_cache};
+export default {aegAuthorize, aegCache};

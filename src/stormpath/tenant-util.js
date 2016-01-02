@@ -1,7 +1,7 @@
 'use strict';
 
 import async from 'async';
-import organizationUtil from './organizationUtil';
+import organizationUtil from './organization-util';
 import _ from 'lodash';
 
 /**
@@ -11,7 +11,7 @@ export default {
 
 	/**
 	 * Get an organization by name
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {String} name
 	 * @param {function} callback
 	 */
@@ -21,7 +21,7 @@ export default {
 
 	/**
 	 * Get an organization by name key
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {String} nameKey
 	 * @param {function} callback
 	 */
@@ -31,7 +31,7 @@ export default {
 
 	/**
 	 * Get an organization by name
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {string} name
 	 * @param {function} callback
 	 */
@@ -41,7 +41,7 @@ export default {
 
 	/**
 	 * Get an organization by name key
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {string} nameKey
 	 * @param {function} callback
 	 */
@@ -51,7 +51,7 @@ export default {
 
 	/**
 	 * Search organizations
-	 * @param {Client} client
+	 * @param {Object} client
 	 * @param {Object} options
 	 * @param {function} callback
 	 */
@@ -91,7 +91,7 @@ export default {
 
 /**
  * Search for an organization
- * @param {Client} client
+ * @param {Object} client
  * @param {Object} search
  * @param {function} callback
  * @private
@@ -119,7 +119,7 @@ function _getOrganization(client, search, callback) {
 
 /**
  * Performs a search for an organization
- * @param {Client} client
+ * @param {Object} client
  * @param {Object} search
  * @param {function} callback
  * @private

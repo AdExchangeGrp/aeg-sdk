@@ -1,6 +1,6 @@
 'use strict';
 
-import OrganizationCustomData from './organizationCustomData';
+import OrganizationCustomData from './organization-custom-data';
 
 /**
  * Custom data schema for an affiliate

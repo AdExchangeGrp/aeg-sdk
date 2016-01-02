@@ -1,8 +1,8 @@
 'use strict';
 
-import securityApi from './securityApi';
-import affiliateApi from './affiliateApi';
-import ApiError from './apiError';
+import securityApi from './security-api';
+import affiliateApi from './affiliate-api';
+import ApiError from './api-error';
 import token from './token';
 
 export {securityApi, affiliateApi, ApiError, token};
