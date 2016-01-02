@@ -20,3 +20,5 @@ let loggerFacade = {
 };
 
 export default loggerFacade;
+
+export var logger = loggerFacade.logger;
