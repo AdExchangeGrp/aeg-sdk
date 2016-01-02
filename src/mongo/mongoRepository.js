@@ -1,15 +1,16 @@
 'use strict';
 
-import { logger } from '../logger-facade';
 import config from 'config';
 import _ from 'lodash';
+import { EventEmitter } from 'events';
 
 /**
  * Mongoose Mongo repository
  */
-class MongoRepository {
+class MongoRepository extends EventEmitter {
 
 	constructor() {
+		super();
 		this._mongoConfig = config.get('app').mongo;
 		this._connected = false;
 	}
@@ -42,14 +43,11 @@ class MongoRepository {
 		this._db.on('error', callback);
 		this._db.once('open', () => {
 			self._connected = true;
-
-			logger.debug(`mongoRepository#connect: connected`);
-
+			this.emit('connected');
 			callback();
 		});
 
-		logger.debug(`mongoRepository#connect: connecting to ${connectionString}`);
-
+		this.emit('connecting', {connectionString});
 		mongoose.connect(connectionString);
 	}
 
@@ -66,7 +64,7 @@ class MongoRepository {
 			return callback();
 		}
 
-		logger.info('mongoRepository#dispose: disconnected');
+		this.emit('disconnected');
 
 		this._db.disconnect(callback);
 	}

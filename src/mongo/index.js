@@ -1,8 +1,8 @@
 'use strict';
 
 import MongoRepository from './mongoRepository';
-import mongoRepositoryMiddleware from './mongoRepositoryMiddleware';
+import MongoRepositoryMiddleware from './mongoRepositoryMiddleware';
 
-export {MongoRepository, mongoRepositoryMiddleware};
+export {MongoRepository, MongoRepositoryMiddleware};
 
-export default {MongoRepository, mongoRepositoryMiddleware};
+export default {MongoRepository, MongoRepositoryMiddleware};

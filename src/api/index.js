@@ -3,8 +3,8 @@
 import securityApi from './securityApi';
 import affiliateApi from './affiliateApi';
 import ApiError from './apiError';
-import withToken from './withToken';
+import token from './token';
 
-export {securityApi, affiliateApi, ApiError, withToken};
+export {securityApi, affiliateApi, ApiError, token};
 
-export default {securityApi, affiliateApi, ApiError, withToken};
+export default {securityApi, affiliateApi, ApiError, token};

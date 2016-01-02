@@ -1,36 +1,40 @@
 'use strict';
 
 import MongoRepository from './mongoRepository';
-import { logger } from '../logger-facade';
 
 /**
- * Express middleware for managing a Mongo repository
- * @param {Application} app
- * @param {Object} mongoose
- * @param {function} callback
- * @returns {Function}
+ * Express middleware to manage a Mongo repository
  */
-export default (app, mongoose, callback) => {
+class MongoRepositoryMiddleware {
 
-	let repository = new MongoRepository();
+	constructor() {
+		this.repository = new MongoRepository();
+	}
 
-	logger.info('mongoRepositoryMiddleware: connecting...');
+	/**
+	 * Setup a Mongo repository and return a middleware
+	 * @param {Object} app
+	 * @param {Object} mongoose
+	 * @param {function} callback
+	 * @returns {Function}
+	 */
+	middleware(app, mongoose, callback) {
 
-	repository.connect(mongoose, (err) => {
+		this.repository.connect(mongoose, (err) => {
 
-		if (err) {
-			logger.error('mongoRepositoryMiddleware: failed to connect');
-			return callback(err);
-		}
+			if (err) {
+				return callback(err);
+			}
 
-		app.set('mongoRepository', repository);
+			app.set('mongoRepository', this.repository);
 
-		logger.info('mongoRepositoryMiddleware: connected...');
+			callback();
+		});
 
-		callback();
-	});
+		return function (req, res, next) {
+			next();
+		};
+	}
+}
 
-	return function (req, res, next) {
-		next();
-	};
-};
+export default new MongoRepositoryMiddleware();
