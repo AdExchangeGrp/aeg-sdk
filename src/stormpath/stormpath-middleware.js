@@ -14,38 +14,35 @@ class StormpathMiddleware extends EventEmitter {
 		this._stormpath = stormpath;
 	}
 
-	middleware() {
+	middleware(callback) {
 
 		var self = this;
 
-		return (callback) => {
+		self.emit('connecting');
 
-			self.emit('connecting');
+		const stormpathConfig = config.get('stormpath');
 
-			const stormpathConfig = config.get('stormpath');
+		self._app.set('stormpathConfig', stormpathConfig);
 
-			self._app.set('stormpathConfig', stormpathConfig);
+		const client = new self._stormpath.Client(stormpathConfig);
 
-			const client = new self._stormpath.Client(stormpathConfig);
+		self._app.set('stormpathClient', client);
 
-			self._app.set('stormpathClient', client);
+		client.getApplication(stormpathConfig.application.href, (err, application) => {
 
-			client.getApplication(stormpathConfig.application.href, (err, application) => {
+			if (err) {
+				return callback(err);
+			}
 
-				if (err) {
-					return callback(err);
-				}
+			self._app.set('stormpathApplication', application);
 
-				self._app.set('stormpathApplication', application);
+			self.emit('connected');
 
-				self.emit('connected');
+			callback();
+		});
 
-				callback();
-			});
-
-			return (req, res, next) => {
-				next();
-			};
+		return (req, res, next) => {
+			next();
 		};
 	}
 }
