@@ -5,110 +5,125 @@ import { parseParam, PermissionDeniedError, UnauthorizedError } from '../';
 import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
-import { logger } from '../../logger-facade';
+import { EventEmitter } from 'events';
 
 /**
  * Swagger bagpipes fitting to perform granular authorizations
- * @returns {Function}
  */
-export default () => {
+class Authorize extends EventEmitter {
 
-	const invalidToken = 'Invalid token';
-	const expiredToken = 'Expired token';
-	const appConfig = config.get('app');
-	const stormpathConfig = config.get('stormpath');
+	fitting() {
 
-	return (context, callback) => {
+		let self = this;
 
-		const operation = context.request.swagger.operation;
+		const invalidToken = 'Invalid token';
+		const expiredToken = 'Expired token';
+		const appConfig = config.get('app');
+		const stormpathConfig = config.get('stormpath');
 
-		if (operation['x-aeg-authorize']) {
+		return (context, callback) => {
 
-			var authorize = operation['x-aeg-authorize'];
-			let adminScopes = _.pluck(appConfig.authorizations.adminScopes, 'name');
+			const operation = context.request.swagger.operation;
 
-			logger.debug('aeg_authorize:', {type: authorize.type, parameter: authorize.parameter});
+			if (operation['x-aeg-authorize']) {
 
-			switch (authorize.type) {
-				case 'adminOrOwner':
+				var authorize = operation['x-aeg-authorize'];
+				let adminScopes = _.pluck(appConfig.authorizations.adminScopes, 'name');
 
-					logger.debug('aeg_authorize: adminOrOwner');
+				self.emit('debug', {
+					message: 'authorize',
+					data: {type: authorize.type, parameter: authorize.parameter}
+				});
 
-					jwt.verify(
-						token.parseTokenFromAuthorization(context.request.headers.authorization),
-						stormpathConfig.apiKey.secret,
-						(err, expandedJwt) => {
-							if (err) {
-								if (err.message === 'Jwt is expired') {
-									callback(new UnauthorizedError(expiredToken));
+				switch (authorize.type) {
+					case 'adminOrOwner':
+
+						self.emit('debug', {message: 'adminOrOwner'});
+
+						jwt.verify(
+							token.parseTokenFromAuthorization(context.request.headers.authorization),
+							stormpathConfig.apiKey.secret,
+							(err, expandedJwt) => {
+								if (err) {
+									if (err.message === 'Jwt is expired') {
+										callback(new UnauthorizedError(expiredToken));
+									} else {
+										callback(new UnauthorizedError(invalidToken));
+									}
 								} else {
-									callback(new UnauthorizedError(invalidToken));
-								}
-							} else {
-								let tokenScopes = token.parseScopesFromJwt(expandedJwt);
-								if (_.intersection(adminScopes, tokenScopes).length) {
-									callback();
-								} else {
-									var resourceId = parseParam(context.request, authorize.parameter);
-									if (resourceId === context.request.account.href) {
+									let tokenScopes = token.parseScopesFromJwt(expandedJwt);
+									if (_.intersection(adminScopes, tokenScopes).length) {
 										callback();
 									} else {
-										callback(new PermissionDeniedError());
-									}
-								}
-							}
-						});
-					break;
-				case 'adminOrAffiliate':
-
-					let affiliateId = parseParam(context.request, authorize.parameter);
-
-					logger.debug('aeg_authorize: adminOrAffiliate', {affiliateId: affiliateId});
-
-					jwt.verify(
-						token.parseTokenFromAuthorization(context.request.headers.authorization),
-						stormpathConfig.apiKey.secret,
-						(err, expandedJwt) => {
-							if (err) {
-								if (err.message === 'Jwt is expired') {
-									callback(new UnauthorizedError(expiredToken));
-								} else {
-									callback(new UnauthorizedError(invalidToken));
-								}
-							} else {
-								let tokenScopes = token.parseScopesFromJwt(expandedJwt);
-
-								logger.debug('aeg_authorize: adminOrAffiliate', {
-									tokenScopes: tokenScopes,
-									adminScopes: adminScopes
-								});
-
-								if (_.intersection(adminScopes, tokenScopes).length) {
-									callback();
-								} else {
-									if (expandedJwt.body.organization) {
-
-										logger.debug('aeg_authorize: adminOrAffiliate', {organization: expandedJwt.body.organization});
-
-										if (affiliateId === expandedJwt.body.organization.nameKey) {
+										var resourceId = parseParam(context.request, authorize.parameter);
+										if (resourceId === context.request.account.href) {
 											callback();
 										} else {
 											callback(new PermissionDeniedError());
 										}
-									} else {
-										callback(new PermissionDeniedError());
 									}
 								}
-							}
-						});
-					break;
-				default:
-					logger.debug('aeg_authorize: type not found');
-					callback(new PermissionDeniedError());
-					break;
+							});
+						break;
+					case 'adminOrAffiliate':
+
+						let affiliateId = parseParam(context.request, authorize.parameter);
+
+						self.emit('debug', {message: 'adminOrAffiliate', data: {affiliateId: affiliateId}});
+
+						jwt.verify(
+							token.parseTokenFromAuthorization(context.request.headers.authorization),
+							stormpathConfig.apiKey.secret,
+							(err, expandedJwt) => {
+								if (err) {
+									if (err.message === 'Jwt is expired') {
+										callback(new UnauthorizedError(expiredToken));
+									} else {
+										callback(new UnauthorizedError(invalidToken));
+									}
+								} else {
+									let tokenScopes = token.parseScopesFromJwt(expandedJwt);
+
+									self.emit('debug', {
+										message: 'adminOrAffiliate', data: {
+											tokenScopes: tokenScopes,
+											adminScopes: adminScopes
+										}
+									});
+
+									if (_.intersection(adminScopes, tokenScopes).length) {
+										callback();
+									} else {
+										if (expandedJwt.body.organization) {
+
+											self.emit('debug', {
+												message: 'adminOrAffiliate',
+												data: {organization: expandedJwt.body.organization}
+											});
+
+											if (affiliateId === expandedJwt.body.organization.nameKey) {
+												callback();
+											} else {
+												callback(new PermissionDeniedError());
+											}
+										} else {
+											callback(new PermissionDeniedError());
+										}
+									}
+								}
+							});
+						break;
+					default:
+						this.self('debug', {message: 'type not found'});
+						callback(new PermissionDeniedError());
+						break;
+				}
+			} else {
+				callback();
 			}
-		} else {
-			callback();
-		}
-	};
-};
+		};
+	}
+
+}
+
+export default Authorize;

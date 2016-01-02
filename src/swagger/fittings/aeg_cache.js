@@ -6,8 +6,6 @@ import { EventEmitter } from 'events';
 
 /**
  * Swagger bagpipes fitting to cache api method responses
- * @param {string} cachePrefix
- * @returns {Function}
  */
 class Cache extends EventEmitter {
 
@@ -17,6 +15,8 @@ class Cache extends EventEmitter {
 	}
 
 	fitting() {
+
+		let self = this;
 
 		const appConfig = config.get('app');
 
@@ -35,7 +35,7 @@ class Cache extends EventEmitter {
 			const operation = context.request.swagger.operation;
 			if (operation['x-cache']) {
 
-				this.emit('debug', {
+				self.emit('debug', {
 					message: 'cache hit',
 					data: {
 						operation: operation.operationId,
