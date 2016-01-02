@@ -1,7 +1,7 @@
 'use strict';
 
 import config from 'config';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 
 /**
  * Express middleware for integrating Stormpath

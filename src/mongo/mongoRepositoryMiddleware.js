@@ -1,7 +1,7 @@
 'use strict';
 
 import MongoRepository from './mongoRepository';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 
 /**
  * Express middleware for managing a Mongo repository

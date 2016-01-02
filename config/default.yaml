@@ -1,11 +1,3 @@
-logger:
-  transports:
-    - type: console
-      level: debug
-    - type: file
-      level: debug
-      filename: logs/aeg-sdk.log
-
 securityService:
   host: http://localhost:3000/v1
   swagger: http://localhost:3000/v1/swagger

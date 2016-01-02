@@ -2,7 +2,7 @@
 
 import securityApi from '../api/securityApi';
 import { token } from '../stormpath';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 
 /**
  * Middleware to populate the account details to the request

@@ -5,7 +5,7 @@ import { parseParam, PermissionDeniedError, UnauthorizedError } from '../';
 import { token } from '../../stormpath';
 import _ from 'lodash';
 import jwt from 'njwt';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../../logger-facade';
 
 /**
  * Swagger bagpipes fitting to perform granular authorizations

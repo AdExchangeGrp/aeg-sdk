@@ -5,7 +5,7 @@ import { token } from '../stormpath';
 import njwt from 'njwt';
 import _ from 'lodash';
 import config from 'config';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 
 const stormpathConfig = config.get('stormpath');
 const invalidToken = 'Invalid token';

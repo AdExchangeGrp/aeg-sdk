@@ -2,7 +2,7 @@
 
 import _ from 'lodash';
 import async from 'async';
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 
 /**
  * Manages accounts

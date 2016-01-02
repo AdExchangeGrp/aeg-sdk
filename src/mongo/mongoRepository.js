@@ -1,6 +1,6 @@
 'use strict';
 
-import logger from '@adexchange/aeg-logger';
+import { logger } from '../logger-facade';
 import config from 'config';
 import _ from 'lodash';
 
