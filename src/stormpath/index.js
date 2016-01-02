@@ -1,13 +1,21 @@
 'use strict';
 
-import accountUtil from './accountUtil';
-import organizationUtil from './organizationUtil';
-import tenantUtil from './tenantUtil';
-import AffiliateCustomData from './affiliateCustomData';
-import AccountCustomData from './accountCustomData';
+import accountUtil from './account-util';
+import organizationUtil from './organization-util';
+import tenantUtil from './tenant-util';
+import AffiliateCustomData from './affiliate-custom-data';
+import AccountCustomData from './account-custom-data';
 import token from './token';
-import stormpathMiddleware from './stormpathMiddleware';
+import StormpathMiddleware from './stormpath-middleware';
 
-export {accountUtil, organizationUtil, tenantUtil, AffiliateCustomData, AccountCustomData, token, stormpathMiddleware};
+export {accountUtil, organizationUtil, tenantUtil, AffiliateCustomData, AccountCustomData, token, StormpathMiddleware};
 
-export default {accountUtil, organizationUtil, tenantUtil, AffiliateCustomData, AccountCustomData, token, stormpathMiddleware};
+export default {
+	accountUtil,
+	organizationUtil,
+	tenantUtil,
+	AffiliateCustomData,
+	AccountCustomData,
+	token,
+	StormpathMiddleware
+};

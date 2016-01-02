@@ -1,6 +1,6 @@
 'use strict';
 
-import securityApi from '../../src/api/securityApi';
+import securityApi from '../../src/api/security-api';
 
 export default  {
 

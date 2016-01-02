@@ -1,6 +1,6 @@
 'use strict';
 
-import securityApi from '../../../src/api/securityApi';
+import securityApi from '../../../src/api/security-api';
 import _ from 'lodash';
 import jwt from 'njwt';
 import config from 'config';

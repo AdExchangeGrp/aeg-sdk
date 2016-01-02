@@ -1,6 +1,6 @@
 'use strict';
 
-import CustomData from './customData';
+import CustomData from './custom-data';
 import _  from 'lodash';
 
 /**

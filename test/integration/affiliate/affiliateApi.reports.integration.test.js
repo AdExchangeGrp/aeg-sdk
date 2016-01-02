@@ -1,6 +1,6 @@
 'use strict';
 
-import affiliateApi from '../../../src/api/affiliateApi';
+import affiliateApi from '../../../src/api/affiliate-api';
 import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';

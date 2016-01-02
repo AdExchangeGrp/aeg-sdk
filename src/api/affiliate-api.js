@@ -4,7 +4,7 @@
  * Configurable service proxy
  */
 
-import { AffiliateService } from './affiliateService.js';
+import { AffiliateService } from './affiliate-service.js';
 import config from 'config';
 
 let affiliateService = null;
