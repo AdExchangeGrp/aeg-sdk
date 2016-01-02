@@ -57,7 +57,7 @@ class Token extends EventEmitter {
 	}
 
 	callApi(app, api, apiCall, apiCallOptions, callback) {
-		this.get(app, (err, token) => {
+		this.fetch(app, (err, token) => {
 			if (err) {
 				this.emit('error', 'Could not get api token');
 				callback(err);
