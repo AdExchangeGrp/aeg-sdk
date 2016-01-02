@@ -8,21 +8,26 @@ import { EventEmitter } from 'events';
  */
 class StormpathMiddleware extends EventEmitter {
 
+	constructor(app, stormpath) {
+		this._app = app;
+		this._stormpath = stormpath;
+	}
+
 	middleware() {
 
 		var self = this;
 
-		return (app, stormpath, callback) => {
+		return (callback) => {
 
 			self.emit('connecting');
 
 			const stormpathConfig = config.get('stormpath');
 
-			app.set('stormpathConfig', stormpathConfig);
+			self._app.set('stormpathConfig', stormpathConfig);
 
-			const client = new stormpath.Client(stormpathConfig);
+			const client = new self._stormpath.Client(stormpathConfig);
 
-			app.set('stormpathClient', client);
+			self._app.set('stormpathClient', client);
 
 			client.getApplication(stormpathConfig.application.href, (err, application) => {
 
@@ -30,7 +35,7 @@ class StormpathMiddleware extends EventEmitter {
 					return callback(err);
 				}
 
-				app.set('stormpathApplication', application);
+				self._app.set('stormpathApplication', application);
 
 				self.emit('connected');
 
