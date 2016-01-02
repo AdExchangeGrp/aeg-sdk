@@ -9,6 +9,7 @@ import { EventEmitter } from 'events';
 class StormpathMiddleware extends EventEmitter {
 
 	constructor(app, stormpath) {
+		super();
 		this._app = app;
 		this._stormpath = stormpath;
 	}
