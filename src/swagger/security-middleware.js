@@ -8,6 +8,7 @@ import { EventEmitter } from 'events';
  *  Middleware to populate the account details to the request
  */
 class SecurityMiddleware extends EventEmitter {
+
 	middleware() {
 
 		var self = this;
