@@ -5,7 +5,7 @@ import errorResponse from './error-response';
 import UnauthorizedError from './unauthorized-error';
 import PermissionDeniedError from './permission-denied';
 import SecurityHandler from './security-handler';
-import securityMiddleware from './security-middleware';
+import SecurityMiddleware from './security-middleware';
 import parseParam from './parse-param';
 import fittings from './fittings';
 import validationErrorsResponse from './validation-errors-response';
@@ -16,7 +16,7 @@ export {
 	PermissionDeniedError,
 	compileSwaggerFile,
 	SecurityHandler,
-	securityMiddleware,
+	SecurityMiddleware,
 	parseParam,
 	fittings,
 	validationErrorsResponse};
@@ -27,7 +27,7 @@ export default {
 	PermissionDeniedError,
 	compileSwaggerFile,
 	SecurityHandler,
-	securityMiddleware,
+	SecurityMiddleware,
 	parseParam,
 	fittings,
 	validationErrorsResponse

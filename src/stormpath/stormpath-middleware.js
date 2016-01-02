@@ -1,42 +1,47 @@
 'use strict';
 
 import config from 'config';
-import { logger } from '../logger-facade';
+import { EventEmitter } from 'events';
 
 /**
  * Express middleware for integrating Stormpath
- * @param {Object} app
- * @param {Object} stormpath
- * @param {function} callback
- * @returns {Function}
  */
-export default (app, stormpath, callback) => {
+class StormpathMiddleware extends EventEmitter {
 
-	logger.info('stormpathMiddleware: connecting...');
+	middleware() {
 
-	const stormpathConfig = config.get('stormpath');
+		var self = this;
 
-	app.set('stormpathConfig', stormpathConfig);
+		return (app, stormpath, callback) => {
 
-	const client = new stormpath.Client(stormpathConfig);
+			self.emit('connecting');
 
-	app.set('stormpathClient', client);
+			const stormpathConfig = config.get('stormpath');
 
-	client.getApplication(stormpathConfig.application.href, (err, application) => {
+			app.set('stormpathConfig', stormpathConfig);
 
-		if (err) {
-			logger.error('stormpathMiddleware: failed to connect');
-			return callback(err);
-		}
+			const client = new stormpath.Client(stormpathConfig);
 
-		app.set('stormpathApplication', application);
+			app.set('stormpathClient', client);
 
-		logger.info('stormpathMiddleware: connected...');
+			client.getApplication(stormpathConfig.application.href, (err, application) => {
 
-		callback();
-	});
+				if (err) {
+					return callback(err);
+				}
 
-	return (req, res, next) => {
-		next();
-	};
-};
+				app.set('stormpathApplication', application);
+
+				self.emit('connected');
+
+				callback();
+			});
+
+			return (req, res, next) => {
+				next();
+			};
+		};
+	}
+}
+
+export default StormpathMiddleware;
