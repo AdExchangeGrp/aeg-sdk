@@ -37,6 +37,95 @@ var AffiliateService = (function() {
     };
 
     /**
+     * Changes the logging level of the service
+     * @method
+     * @name AffiliateService#logLevel
+     * @param {string} level - Log level
+     * 
+     */
+    AffiliateService.prototype.logLevel = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/control/logLevel';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['level'] !== undefined) {
+            form['level'] = parameters['level'];
+        }
+
+        if (parameters['level'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: level'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Get an application
      * @method
      * @name AffiliateService#application
@@ -222,13 +311,13 @@ var AffiliateService = (function() {
      * @param {string} contactPhone - Contact phone +12345677890
      * @param {string} contactImScreenName - Contact instant messinger screen name
      * @param {string} contactImService - Contact instant messinger service type
+     * @param {string} contactTimezone - Preferred timezone, default's to EST
      * @param {string} contactAddress - Contact street address
      * @param {string} contactSuite - Contact suite
      * @param {string} contactCity - Contact city
      * @param {string} contactState - Contact state
      * @param {string} contactPostalCode - Contact postal code XXXXX or XXXXX-XXXX
      * @param {string} contactCountry - Contact country
-     * @param {string} contactTimezone - Preferred timezone, default's to EST
      * @param {string} company - Company name
      * @param {string} companyTaxId - Company tax id
      * @param {string} companyTaxClass - Company tax class
@@ -319,6 +408,10 @@ var AffiliateService = (function() {
             form['contactImService'] = parameters['contactImService'];
         }
 
+        if (parameters['contactTimezone'] !== undefined) {
+            form['contactTimezone'] = parameters['contactTimezone'];
+        }
+
         if (parameters['contactAddress'] !== undefined) {
             form['contactAddress'] = parameters['contactAddress'];
         }
@@ -366,10 +459,6 @@ var AffiliateService = (function() {
         if (parameters['contactCountry'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: contactCountry'));
             return deferred.promise;
-        }
-
-        if (parameters['contactTimezone'] !== undefined) {
-            form['contactTimezone'] = parameters['contactTimezone'];
         }
 
         if (parameters['company'] !== undefined) {
@@ -916,6 +1005,7 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformance
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} filter - Mobile or desktop
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {string} sort - The sort to apply
      * @param {string} sortDirection - The sort direction to apply
@@ -928,7 +1018,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/performance/{interval}';
+        var path = '/{affiliateId}/reports/performance/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -955,6 +1045,13 @@ var AffiliateService = (function() {
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{filter}', parameters['filter']);
+
+        if (parameters['filter'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: filter'));
             return deferred.promise;
         }
 
