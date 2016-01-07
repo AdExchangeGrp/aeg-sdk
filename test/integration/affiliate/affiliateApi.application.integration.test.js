@@ -16,6 +16,13 @@ describe('affiliateApi - Application', () => {
 	let applicationIdApprove;
 	let applicationIdToApproveAffiliateIdTwice;
 	let applicationIdDeny;
+	let denyUserToken;
+	let denyApplicationOrganizationId;
+	let denyAccountId;
+	let applicationIdResubmit;
+	let resubmitUserToken;
+	let resubmitApplicationOrganizationId;
+	let resubmitAccountId;
 	let organizationHref;
 
 
@@ -427,13 +434,28 @@ describe('affiliateApi - Application', () => {
 						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
 
 						applicationIdDeny = result.body.application.id;
+						denyApplicationOrganizationId = result.body.application.organization.href;
+						denyAccountId = result.body.application.account.href;
 
 						done();
 					})
 					.fail((err) => {
 						done(err);
 					});
+			});
 
+			it('should return token for account', (done) => {
+				securityApi.passwordToken({
+						username: 'test-apply-deny@test.com',
+						password: 'Pa$$w0rd'
+					})
+					.then((result) => {
+						denyUserToken = result.body.accessToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
 			});
 
 		});
@@ -494,10 +516,139 @@ describe('affiliateApi - Application', () => {
 
 		});
 
+		describe('resubmit application', () => {
+
+			it('should resubmit an application', (done) => {
+				affiliateApi.setToken(denyUserToken);
+				affiliateApi.applicationResubmit({
+						id: applicationIdDeny,
+						contactEmail: 'test-apply-deny@test.com',
+						contactPassword: 'Pa$$w0rd',
+						contactGivenName: 'test-apply-given',
+						contactSurname: 'test-apply-sur',
+						contactTitle: 'test-apply-title',
+						contactPhone: '410-349-6457',
+						contactImScreenName: 'test-apply-screen-name',
+						contactImService: 'aim',
+						contactAddress: 'test-apply-address',
+						contactSuite: 'test-apply-suite',
+						contactCity: 'test-apply-city',
+						contactState: 'test-apply-state',
+						contactPostalCode: '12345',
+						contactCountry: 'test-apply-country',
+						contactTimezone: 'America/Los_Angeles',
+						company: 'test-apply-company',
+						companyTaxId: 'test-apply-tax-id',
+						companyTaxClass: 'llc',
+						companyPayableTo: 'contact',
+						companyPayBy: 'check',
+						companyAddress: 'test-apply-company-address',
+						companySuite: 'test-apply-company-suite',
+						companyCity: 'test-apply-company-city',
+						companyState: 'test-apply-company-state',
+						companyPostalCode: '67890',
+						companyCountry: 'test-apply-company-country',
+						marketingUrl: 'http://test',
+						marketingSiteCategory: 'test-apply-marketing-category',
+						marketingAnticipatedDailyVolume: 12345,
+						marketingTrafficSources: 'test-apply-traffic-sources',
+						marketingComments: 'test-apply-marketing-comments',
+						marketingHowMarketed: 'test-apply-merketing-how'
+					})
+					.then((result) => {
+						console.log(result);
+						should.exist(result.body.application);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.status.should.be.equal('SUBMITTED');
+						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
+
+						applicationIdResubmit = result.body.application.id;
+						resubmitApplicationOrganizationId = result.body.application.organization.href;
+						resubmitAccountId = result.body.application.account.href;
+
+						resubmitApplicationOrganizationId.should.not.be.equal(denyApplicationOrganizationId);
+						resubmitAccountId.should.not.be.equal(denyAccountId);
+
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should return token for resubmitted application account', (done) => {
+				securityApi.passwordToken({
+						username: 'test-apply-deny@test.com',
+						password: 'Pa$$w0rd'
+					})
+					.then((result) => {
+						resubmitUserToken = result.body.accessToken;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should not return the denied organization', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.getOrganization({id: denyApplicationOrganizationId})
+					.then(() => {
+						done(new Error('Should not have retrieved the old organization'));
+					})
+					.fail(() => {
+						done();
+					});
+			});
+
+			it('should not return the denied account', (done) => {
+				securityApi.setToken(adminPasswordToken);
+				securityApi.getAccount({id: denyAccountId})
+					.then(() => {
+						done(new Error('Should not have retrieved the old account'));
+					})
+					.fail(() => {
+						done();
+					});
+			});
+
+			it('should retrieve the old application as denied', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.application({id: applicationIdDeny})
+					.then((result) => {
+						should.exist(result);
+						should.exist(result.body);
+						result.body.should.have.properties(['application']);
+						result.body.application.should.have.properties(['id']);
+						result.body.application.id.should.be.equal(applicationIdDeny);
+						result.body.application.status.should.be.equal('DENIED');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+		});
+
 		describe('cleanup', () => {
 
-			it('should delete an application', (done) => {
+			it('should delete the denied application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
 				affiliateApi.applicationDelete({id: applicationIdDeny})
+					.then((result) => {
+						should.exist(result);
+						result.body.should.have.properties(['message']);
+						result.body.message.should.be.equal('success');
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
+
+			it('should delete the resubmitted application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationDelete({id: applicationIdResubmit})
 					.then((result) => {
 						should.exist(result);
 						result.body.should.have.properties(['message']);
