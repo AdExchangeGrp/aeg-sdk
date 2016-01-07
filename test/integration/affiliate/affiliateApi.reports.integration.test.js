@@ -182,7 +182,8 @@ describe('affiliateApi - Reports', () => {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
 			sort: options.sort ? options.sort : 'clicks',
-			sortDirection: options.sortDirection ? options.sortDirection : 'asc'
+			sortDirection: options.sortDirection ? options.sortDirection : 'asc',
+			filter: 'all'
 		};
 
 		if (options.timezone) {
@@ -215,6 +216,8 @@ describe('affiliateApi - Reports', () => {
 		if (limit) {
 			(result.body.data.subIds.length <= limit).should.be.ok;
 		}
+
+		console.log(result.body.data.subIds);
 
 		_.each(result.body.data.subIds, (sub, i) => {
 
