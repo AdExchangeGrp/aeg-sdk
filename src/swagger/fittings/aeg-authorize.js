@@ -58,7 +58,6 @@ class Authorize extends EventEmitter {
 										let resourceId = parseParam(context.request, authorize.parameter);
 
 										if (!resourceId) {
-											context.request.swagger.params[authorize.parameter].value = context.request.account.href;
 											resourceId = context.request.account.href;
 										}
 
