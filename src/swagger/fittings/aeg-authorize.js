@@ -55,7 +55,13 @@ class Authorize extends EventEmitter {
 									if (_.intersection(adminScopes, tokenScopes).length) {
 										callback();
 									} else {
-										var resourceId = parseParam(context.request, authorize.parameter);
+										let resourceId = parseParam(context.request, authorize.parameter);
+
+										if (!resourceId) {
+											context.request.swagger.params[authorize.parameter].value = context.request.account.href;
+											resourceId = context.request.account.href;
+										}
+
 										if (resourceId === context.request.account.href) {
 											callback();
 										} else {
