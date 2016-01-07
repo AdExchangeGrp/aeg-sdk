@@ -556,7 +556,6 @@ describe('affiliateApi - Application', () => {
 						marketingHowMarketed: 'test-apply-merketing-how'
 					})
 					.then((result) => {
-						console.log(result);
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id']);
 						result.body.application.status.should.be.equal('SUBMITTED');

@@ -1091,11 +1091,6 @@ var SecurityService = (function() {
             form['id'] = parameters['id'];
         }
 
-        if (parameters['id'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: id'));
-            return deferred.promise;
-        }
-
         if (parameters['email'] !== undefined) {
             form['email'] = parameters['email'];
         }

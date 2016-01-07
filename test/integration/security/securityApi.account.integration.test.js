@@ -216,37 +216,32 @@ describe('securityApi - Account', () => {
 				});
 		});
 
-		//it('should not get another account by id', (done) => {
-		//	securityApi.setToken(registeredPasswordToken);
-		//	securityApi.getAccountById({id: 'https://api.stormpath.com/v1/accounts/17N7wS7jbDrDuVuqzs2e3Q'})
-		//		.then((result) => {
-		//			result.body.should.have.properties(['account']);
-		//			(_.isObject(result.body.account)).should.be.ok;
-		//			result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
-		//			result.body.account.href.should.be.a.String;
-		//			result.body.account.href.length.should.be.greaterThan(0);
-		//			done();
-		//		})
-		//		.fail((err) => {
-		//			done(err);
-		//		});
-		//});
-		//
-		//it('should get updated account by id with admin', (done) => {
-		//	securityApi.setToken(adminPasswordToken);
-		//	securityApi.getAccountById({id: registeredAccountHref})
-		//		.then((result) => {
-		//			result.body.should.have.properties(['account']);
-		//			(_.isObject(result.body.account)).should.be.ok;
-		//			result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
-		//			result.body.account.href.should.be.a.String;
-		//			result.body.account.href.length.should.be.greaterThan(0);
-		//			done();
-		//		})
-		//		.fail((err) => {
-		//			done(err);
-		//		});
-		//});
+		it('should not get another account by id', (done) => {
+			securityApi.setToken(registeredPasswordToken);
+			securityApi.getAccount({id: 'https://api.stormpath.com/v1/accounts/17N7wS7jbDrDuVuqzs2e3Q'})
+				.then(() => {
+					done(new Error('Should not have retrieved an account'));
+				})
+				.fail(() => {
+					done();
+				});
+		});
+
+		it('should get updated account by id with admin', (done) => {
+			securityApi.setToken(adminPasswordToken);
+			securityApi.getAccount({id: registeredAccountHref})
+				.then((result) => {
+					result.body.should.have.properties(['account']);
+					(_.isObject(result.body.account)).should.be.ok;
+					result.body.account.should.have.properties(['href', 'status', 'email', 'givenName', 'surname', 'customData']);
+					result.body.account.href.should.be.a.String;
+					result.body.account.href.length.should.be.greaterThan(0);
+					done();
+				})
+				.fail((err) => {
+					done(err);
+				});
+		});
 
 		it('should not update another account', (done) => {
 			securityApi.setToken(registeredPasswordToken);
