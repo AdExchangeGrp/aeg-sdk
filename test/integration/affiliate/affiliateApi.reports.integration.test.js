@@ -228,7 +228,7 @@ describe('affiliateApi - Reports', () => {
 			args.limit = options.limit;
 		}
 
-		affiliateApi.reportsPerformance(args)
+		affiliateApi.reportsPerformanceHP(args)
 			.then((result) => {
 				validatePerformanceReport(result, args.sort, args.sortDirection, args.limit);
 				callback();
@@ -306,7 +306,7 @@ describe('affiliateApi - Reports', () => {
 		}
 
 		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
-		affiliateApi.reportsTopEpcAffiliate(args)
+		affiliateApi.reportsTopEpcAffiliateHP(args)
 			.then((result) => {
 				validateTopEpcReport(result, args.limit);
 				callback();
@@ -318,7 +318,7 @@ describe('affiliateApi - Reports', () => {
 
 	function testTopEpcNetworkReport(options, callback) {
 		affiliateApi.setToken(adminPasswordToken);
-		affiliateApi.reportsTopEpcNetwork({
+		affiliateApi.reportsTopEpcNetworkHP({
 				interval: options.interval ? options.interval : 'daily',
 				filter: options.filter ? options.filter : 'all'
 			})
