@@ -49,6 +49,14 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
+	describe('#reportsPoints', () => {
+
+		it('should return points report', (done) => {
+			testPointsReport({}, done);
+		});
+
+	});
+
 	describe('#reportsPerformance', () => {
 
 		it('should return performance report daily', (done) => {
@@ -175,6 +183,32 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
+	function testPointsReport(options, callback) {
+		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
+
+		var args = {
+			affiliateId: options.affiliateId ? options.affiliateId : 170001
+		};
+
+		if (options.timezone) {
+			args.timezone = options.timezone;
+		}
+
+		affiliateApi.reportsPoints(args)
+			.then((result) => {
+				should.exist(result);
+				should.exist(result.body);
+				should.exist(result.body.data);
+				result.body.data.should.have.properties('points');
+				result.body.data.points.should.be.a.Number;
+				callback();
+			})
+			.fail((err) => {
+				callback(err);
+			});
+	}
+
+
 	function testPerformaceReport(options, callback) {
 		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
 
@@ -216,8 +250,6 @@ describe('affiliateApi - Reports', () => {
 		if (limit) {
 			(result.body.data.subIds.length <= limit).should.be.ok;
 		}
-
-		console.log(result.body.data.subIds);
 
 		_.each(result.body.data.subIds, (sub, i) => {
 

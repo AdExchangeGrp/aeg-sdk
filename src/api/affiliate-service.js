@@ -1362,6 +1362,98 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Affiliate yearly aggregated points. Must be the affiliate or admin scoped.
+     * @method
+     * @name AffiliateService#reportsPoints
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} timezone - The timezone string ex. America/New_York
+     * 
+     */
+    AffiliateService.prototype.reportsPoints = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/hp/{affiliateId}/reports/points';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Affiliate performance data. Must be the affiliate or admin scoped.
      * @method
      * @name AffiliateService#reportsPerformance
@@ -1380,7 +1472,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/performance/{interval}/{filter}';
+        var path = '/hp/{affiliateId}/reports/performance/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -1506,7 +1598,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/reports/top-epc/{interval}/{filter}';
+        var path = '/hp/reports/top-epc/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -1612,7 +1704,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/top-epc/{interval}/{filter}';
+        var path = '/hp/{affiliateId}/reports/top-epc/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
