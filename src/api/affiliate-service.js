@@ -1376,7 +1376,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/hp/{affiliateId}/reports/points';
+        var path = '/{affiliateId}/reports/points';
 
         var body;
         var queryParameters = {};
