@@ -57,115 +57,268 @@ describe('affiliateApi - Reports', () => {
 
 	});
 
-	describe('#reportsPerformance', () => {
+	describe('#hp reports', () => {
 
-		it('should return performance report daily', (done) => {
-			testPerformaceReport({interval: 'daily', sort: 'clicks'}, done);
-		});
+		describe('#reportsPerformance', () => {
 
-		it('should return performance report weekly', (done) => {
-			testPerformaceReport({interval: 'weekly', sort: 'sales'}, done);
-		});
-
-		it('should return performance report monthly', (done) => {
-			testPerformaceReport({interval: 'monthly', sort: 'cr'}, done);
-		});
-
-		it('should return performance report yearly', (done) => {
-			testPerformaceReport({interval: 'yearly', sort: 'cr', sortDirection: 'desc'}, done);
-		});
-
-		it('should return performance report daily with timezone', (done) => {
-			testPerformaceReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
-		});
-
-		it('should return performance report yearly with timezone for account 170001', (done) => {
-			testPerformaceReport({
-				interval: 'yearly',
-				timezone: 'America/Los_Angeles',
-				token: passwordToken170001
-			}, done);
-		});
-
-		it('should not return performance report yearly with timezone for account 170001', (done) => {
-			testPerformaceReport({
-				affiliateId: 170002,
-				interval: 'yearly',
-				timezone: 'America/Los_Angeles',
-				token: passwordToken170001
-			}, (err) => {
-				if (err) {
-					done();
-				} else {
-					done(new Error('Should not have returned report'));
-				}
+			it('should return performance report daily', (done) => {
+				testPerformaceReport({interval: 'daily', sort: 'clicks'}, 'reportsPerformanceHP', done);
 			});
-		});
 
-	});
-
-	describe('#reportsTopEpcAffiliate', () => {
-
-		it('should return performance report daily', (done) => {
-			testTopEpcAffiliateReport({interval: 'daily', limit: 5}, done);
-		});
-
-		it('should return performance report weekly', (done) => {
-			testTopEpcAffiliateReport({interval: 'weekly'}, done);
-		});
-
-		it('should return performance report monthly', (done) => {
-			testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, done);
-		});
-
-		it('should return performance report yearly', (done) => {
-			testTopEpcAffiliateReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
-		});
-
-		it('should return performance report yearly for account 170001', (done) => {
-			testTopEpcAffiliateReport({
-				interval: 'yearly',
-				timezone: 'America/Los_Angeles',
-				token: passwordToken170001
-			}, done);
-		});
-
-		it('should not return performance report yearly for account 170001', (done) => {
-			testTopEpcAffiliateReport({
-				affiliateId: 170002,
-				interval: 'yearly',
-				timezone: 'America/Los_Angeles',
-				token: passwordToken170001
-			}, (err) => {
-				if (err) {
-					done();
-				} else {
-					done(new Error('Should not have returned report'));
-				}
+			it('should return performance report weekly', (done) => {
+				testPerformaceReport({interval: 'weekly', sort: 'sales'}, 'reportsPerformanceHP', done);
 			});
+
+			it('should return performance report monthly', (done) => {
+				testPerformaceReport({interval: 'monthly', sort: 'cr'}, 'reportsPerformanceHP', done);
+			});
+
+			it('should return performance report yearly', (done) => {
+				testPerformaceReport({
+					interval: 'yearly',
+					sort: 'cr',
+					sortDirection: 'desc'
+				}, 'reportsPerformanceHP', done);
+			});
+
+			it('should return performance report daily with timezone', (done) => {
+				testPerformaceReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles'
+				}, 'reportsPerformanceHP', done);
+			});
+
+			it('should return performance report yearly with timezone for account 170001', (done) => {
+				testPerformaceReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles',
+					token: passwordToken170001
+				}, 'reportsPerformanceHP', done);
+			});
+
+			it('should not return performance report yearly with timezone for account 170001', (done) => {
+				testPerformaceReport({
+						affiliateId: 170002,
+						interval: 'yearly',
+						timezone: 'America/Los_Angeles',
+						token: passwordToken170001
+					},
+					'reportsPerformanceHP',
+					(err) => {
+						if (err) {
+							done();
+						} else {
+							done(new Error('Should not have returned report'));
+						}
+					});
+			});
+
+		});
+
+		describe('#reportsTopEpcAffiliate', () => {
+
+			it('should return performance report daily', (done) => {
+				testTopEpcAffiliateReport({interval: 'daily', limit: 5}, 'reportsTopEpcAffiliateHP', done);
+			});
+
+			it('should return performance report weekly', (done) => {
+				testTopEpcAffiliateReport({interval: 'weekly'}, 'reportsTopEpcAffiliateHP', done);
+			});
+
+			it('should return performance report monthly', (done) => {
+				testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateHP', done);
+			});
+
+			it('should return performance report yearly', (done) => {
+				testTopEpcAffiliateReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles'
+				}, 'reportsTopEpcAffiliateHP', done);
+			});
+
+			it('should return performance report yearly for account 170001', (done) => {
+				testTopEpcAffiliateReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles',
+					token: passwordToken170001
+				}, 'reportsTopEpcAffiliateHP', done);
+			});
+
+			it('should not return performance report yearly for account 170001', (done) => {
+				testTopEpcAffiliateReport({
+						affiliateId: 170002,
+						interval: 'yearly',
+						timezone: 'America/Los_Angeles',
+						token: passwordToken170001
+					},
+					'reportsTopEpcAffiliateHP',
+					(err) => {
+						if (err) {
+							done();
+						} else {
+							done(new Error('Should not have returned report'));
+						}
+					});
+			});
+
+		});
+
+		describe('#reportsTopEpcNetwork', () => {
+
+			it('should return performance report daily', (done) => {
+				testTopEpcNetworkReport({interval: 'daily', limit: 5}, 'reportsTopEpcNetworkHP', done);
+			});
+
+			it('should return performance report weekly', (done) => {
+				testTopEpcNetworkReport({interval: 'weekly'}, 'reportsTopEpcNetworkHP', done);
+			});
+
+			it('should return performance report monthly', (done) => {
+				testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkHP', done);
+			});
+
+			it('should return performance report yearly', (done) => {
+				testTopEpcNetworkReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles'
+				}, 'reportsTopEpcNetworkHP', done);
+			});
+
 		});
 
 	});
 
-	describe('#reportsTopEpcNetwork', () => {
-
-		it('should return performance report daily', (done) => {
-			testTopEpcNetworkReport({interval: 'daily', limit: 5}, done);
-		});
-
-		it('should return performance report weekly', (done) => {
-			testTopEpcNetworkReport({interval: 'weekly'}, done);
-		});
-
-		it('should return performance report monthly', (done) => {
-			testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, done);
-		});
-
-		it('should return performance report yearly', (done) => {
-			testTopEpcNetworkReport({interval: 'yearly', timezone: 'America/Los_Angeles'}, done);
-		});
-
-	});
+	//todo: once the endpoints are complete
+	//describe('#aeg reports', () => {
+	//
+	//	describe('#reportsPerformance', () => {
+	//
+	//		it('should return performance report daily', (done) => {
+	//			testPerformaceReport({interval: 'daily', sort: 'clicks'}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should return performance report weekly', (done) => {
+	//			testPerformaceReport({interval: 'weekly', sort: 'sales'}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should return performance report monthly', (done) => {
+	//			testPerformaceReport({interval: 'monthly', sort: 'cr'}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should return performance report yearly', (done) => {
+	//			testPerformaceReport({
+	//				interval: 'yearly',
+	//				sort: 'cr',
+	//				sortDirection: 'desc'
+	//			}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should return performance report daily with timezone', (done) => {
+	//			testPerformaceReport({
+	//				interval: 'yearly',
+	//				timezone: 'America/Los_Angeles'
+	//			}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should return performance report yearly with timezone for account 170001', (done) => {
+	//			testPerformaceReport({
+	//				interval: 'yearly',
+	//				timezone: 'America/Los_Angeles',
+	//				token: passwordToken170001
+	//			}, 'reportsPerformanceAEG', done);
+	//		});
+	//
+	//		it('should not return performance report yearly with timezone for account 170001', (done) => {
+	//			testPerformaceReport({
+	//					affiliateId: 170002,
+	//					interval: 'yearly',
+	//					timezone: 'America/Los_Angeles',
+	//					token: passwordToken170001
+	//				},
+	//				'reportsPerformanceAEG',
+	//				(err) => {
+	//					if (err) {
+	//						done();
+	//					} else {
+	//						done(new Error('Should not have returned report'));
+	//					}
+	//				});
+	//		});
+	//
+	//	});
+	//
+	//	describe('#reportsTopEpcAffiliate', () => {
+	//
+	//		it('should return performance report daily', (done) => {
+	//			testTopEpcAffiliateReport({interval: 'daily', limit: 5}, 'reportsTopEpcAffiliateAEG', done);
+	//		});
+	//
+	//		it('should return performance report weekly', (done) => {
+	//			testTopEpcAffiliateReport({interval: 'weekly'}, 'reportsTopEpcAffiliateAEG', done);
+	//		});
+	//
+	//		it('should return performance report monthly', (done) => {
+	//			testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateAEG', done);
+	//		});
+	//
+	//		it('should return performance report yearly', (done) => {
+	//			testTopEpcAffiliateReport({
+	//				interval: 'yearly',
+	//				timezone: 'America/Los_Angeles'
+	//			}, 'reportsTopEpcAffiliateAEG', done);
+	//		});
+	//
+	//		it('should return performance report yearly for account 170001', (done) => {
+	//			testTopEpcAffiliateReport({
+	//				interval: 'yearly',
+	//				timezone: 'America/Los_Angeles',
+	//				token: passwordToken170001
+	//			}, 'reportsTopEpcAffiliateAEG', done);
+	//		});
+	//
+	//		it('should not return performance report yearly for account 170001', (done) => {
+	//			testTopEpcAffiliateReport({
+	//					affiliateId: 170002,
+	//					interval: 'yearly',
+	//					timezone: 'America/Los_Angeles',
+	//					token: passwordToken170001
+	//				},
+	//				'reportsTopEpcAffiliateAEG',
+	//				(err) => {
+	//					if (err) {
+	//						done();
+	//					} else {
+	//						done(new Error('Should not have returned report'));
+	//					}
+	//				});
+	//		});
+	//
+	//	});
+	//
+	//	describe('#reportsTopEpcNetwork', () => {
+	//
+	//		it('should return performance report daily', (done) => {
+	//			testTopEpcNetworkReport({interval: 'daily', limit: 5}, 'reportsTopEpcNetworkAEG', done);
+	//		});
+	//
+	//		it('should return performance report weekly', (done) => {
+	//			testTopEpcNetworkReport({interval: 'weekly'}, 'reportsTopEpcNetworkAEG', done);
+	//		});
+	//
+	//		it('should return performance report monthly', (done) => {
+	//			testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkAEG', done);
+	//		});
+	//
+	//		it('should return performance report yearly', (done) => {
+	//			testTopEpcNetworkReport({
+	//				interval: 'yearly',
+	//				timezone: 'America/Los_Angeles'
+	//			}, 'reportsTopEpcNetworkAEG', done);
+	//		});
+	//
+	//	});
+	//
+	//});
 
 	describe('teardown', () => {
 
@@ -208,8 +361,7 @@ describe('affiliateApi - Reports', () => {
 			});
 	}
 
-
-	function testPerformaceReport(options, callback) {
+	function testPerformaceReport(options, func, callback) {
 		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
 
 		var args = {
@@ -228,7 +380,7 @@ describe('affiliateApi - Reports', () => {
 			args.limit = options.limit;
 		}
 
-		affiliateApi.reportsPerformanceHP(args)
+		affiliateApi[func](args)
 			.then((result) => {
 				validatePerformanceReport(result, args.sort, args.sortDirection, args.limit);
 				callback();
@@ -293,7 +445,7 @@ describe('affiliateApi - Reports', () => {
 		});
 	}
 
-	function testTopEpcAffiliateReport(options, callback) {
+	function testTopEpcAffiliateReport(options, func, callback) {
 
 		let args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
@@ -306,7 +458,7 @@ describe('affiliateApi - Reports', () => {
 		}
 
 		affiliateApi.setToken(options.token ? options.token : adminPasswordToken);
-		affiliateApi.reportsTopEpcAffiliateHP(args)
+		affiliateApi[func](args)
 			.then((result) => {
 				validateTopEpcReport(result, args.limit);
 				callback();
@@ -316,12 +468,12 @@ describe('affiliateApi - Reports', () => {
 			});
 	}
 
-	function testTopEpcNetworkReport(options, callback) {
+	function testTopEpcNetworkReport(options, func, callback) {
 		affiliateApi.setToken(adminPasswordToken);
-		affiliateApi.reportsTopEpcNetworkHP({
-				interval: options.interval ? options.interval : 'daily',
-				filter: options.filter ? options.filter : 'all'
-			})
+		affiliateApi[func]({
+			interval: options.interval ? options.interval : 'daily',
+			filter: options.filter ? options.filter : 'all'
+		})
 			.then((result) => {
 				validateTopEpcReport(result);
 				callback();
