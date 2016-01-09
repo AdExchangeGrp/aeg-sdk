@@ -246,76 +246,76 @@ describe('affiliateApi - Reports', () => {
 
 		});
 
-		//describe('#reportsTopEpcAffiliate', () => {
-		//
-		//	it('should return performance report daily', (done) => {
-		//		testTopEpcAffiliateReport({interval: 'daily', limit: 5}, 'reportsTopEpcAffiliateAEG', done);
-		//	});
-		//
-		//	it('should return performance report weekly', (done) => {
-		//		testTopEpcAffiliateReport({interval: 'weekly'}, 'reportsTopEpcAffiliateAEG', done);
-		//	});
-		//
-		//	it('should return performance report monthly', (done) => {
-		//		testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateAEG', done);
-		//	});
-		//
-		//	it('should return performance report yearly', (done) => {
-		//		testTopEpcAffiliateReport({
-		//			interval: 'yearly',
-		//			timezone: 'America/Los_Angeles'
-		//		}, 'reportsTopEpcAffiliateAEG', done);
-		//	});
-		//
-		//	it('should return performance report yearly for account 170001', (done) => {
-		//		testTopEpcAffiliateReport({
-		//			interval: 'yearly',
-		//			timezone: 'America/Los_Angeles',
-		//			token: passwordToken170001
-		//		}, 'reportsTopEpcAffiliateAEG', done);
-		//	});
-		//
-		//	it('should not return performance report yearly for account 170001', (done) => {
-		//		testTopEpcAffiliateReport({
-		//				affiliateId: 170002,
-		//				interval: 'yearly',
-		//				timezone: 'America/Los_Angeles',
-		//				token: passwordToken170001
-		//			},
-		//			'reportsTopEpcAffiliateAEG',
-		//			(err) => {
-		//				if (err) {
-		//					done();
-		//				} else {
-		//					done(new Error('Should not have returned report'));
-		//				}
-		//			});
-		//	});
-		//
-		//});
-		//
-		//describe('#reportsTopEpcNetwork', () => {
-		//
-		//	it('should return performance report daily', (done) => {
-		//		testTopEpcNetworkReport({interval: 'daily', limit: 5}, 'reportsTopEpcNetworkAEG', done);
-		//	});
-		//
-		//	it('should return performance report weekly', (done) => {
-		//		testTopEpcNetworkReport({interval: 'weekly'}, 'reportsTopEpcNetworkAEG', done);
-		//	});
-		//
-		//	it('should return performance report monthly', (done) => {
-		//		testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkAEG', done);
-		//	});
-		//
-		//	it('should return performance report yearly', (done) => {
-		//		testTopEpcNetworkReport({
-		//			interval: 'yearly',
-		//			timezone: 'America/Los_Angeles'
-		//		}, 'reportsTopEpcNetworkAEG', done);
-		//	});
-		//
-		//});
+		describe('#reportsTopEpcAffiliate', () => {
+
+			it('should return performance report daily', (done) => {
+				testTopEpcAffiliateReport({interval: 'daily', limit: 5}, 'reportsTopEpcAffiliateAEG', done);
+			});
+
+			it('should return performance report weekly', (done) => {
+				testTopEpcAffiliateReport({interval: 'weekly'}, 'reportsTopEpcAffiliateAEG', done);
+			});
+
+			it('should return performance report monthly', (done) => {
+				testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateAEG', done);
+			});
+
+			it('should return performance report yearly', (done) => {
+				testTopEpcAffiliateReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles'
+				}, 'reportsTopEpcAffiliateAEG', done);
+			});
+
+			it('should return performance report yearly for account 170001', (done) => {
+				testTopEpcAffiliateReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles',
+					token: passwordToken170001
+				}, 'reportsTopEpcAffiliateAEG', done);
+			});
+
+			it('should not return performance report yearly for account 170001', (done) => {
+				testTopEpcAffiliateReport({
+						affiliateId: 170002,
+						interval: 'yearly',
+						timezone: 'America/Los_Angeles',
+						token: passwordToken170001
+					},
+					'reportsTopEpcAffiliateAEG',
+					(err) => {
+						if (err) {
+							done();
+						} else {
+							done(new Error('Should not have returned report'));
+						}
+					});
+			});
+
+		});
+
+		describe('#reportsTopEpcNetwork', () => {
+
+			it('should return performance report daily', (done) => {
+				testTopEpcNetworkReport({interval: 'daily', limit: 5}, 'reportsTopEpcNetworkAEG', done);
+			});
+
+			it('should return performance report weekly', (done) => {
+				testTopEpcNetworkReport({interval: 'weekly'}, 'reportsTopEpcNetworkAEG', done);
+			});
+
+			it('should return performance report monthly', (done) => {
+				testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkAEG', done);
+			});
+
+			it('should return performance report yearly', (done) => {
+				testTopEpcNetworkReport({
+					interval: 'yearly',
+					timezone: 'America/Los_Angeles'
+				}, 'reportsTopEpcNetworkAEG', done);
+			});
+
+		});
 
 	});
 
