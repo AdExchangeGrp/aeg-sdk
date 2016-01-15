@@ -617,7 +617,8 @@ describe('affiliateApi - Reports', () => {
 		let args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
-			filter: options.filter ? options.filter : 'all'
+			filter: options.filter ? options.filter : 'all',
+			vertical: options.vertical ? options.vertical: 'all'
 		};
 
 		if (options.limit) {
@@ -639,7 +640,8 @@ describe('affiliateApi - Reports', () => {
 		affiliateApi.setToken(adminPasswordToken);
 		affiliateApi[func]({
 			interval: options.interval ? options.interval : 'daily',
-			filter: options.filter ? options.filter : 'all'
+			filter: options.filter ? options.filter : 'all',
+			vertical: options.vertical ? options.vertical: 'all'
 		})
 			.then((result) => {
 				validateTopEpcReport(result);

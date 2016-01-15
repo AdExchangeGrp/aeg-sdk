@@ -2048,6 +2048,7 @@ var AffiliateService = (function() {
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetworkAEG = function(parameters) {
@@ -2057,7 +2058,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/reports/top-epc/{interval}/{filter}';
+        var path = '/aeg/reports/top-epc/{vertical}/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -2092,6 +2093,13 @@ var AffiliateService = (function() {
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{vertical}', parameters['vertical']);
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
@@ -2154,6 +2162,7 @@ var AffiliateService = (function() {
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliateAEG = function(parameters) {
@@ -2163,7 +2172,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/top-epc/{interval}/{filter}';
+        var path = '/aeg/{affiliateId}/reports/top-epc/{vertical}/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -2205,6 +2214,13 @@ var AffiliateService = (function() {
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{vertical}', parameters['vertical']);
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
