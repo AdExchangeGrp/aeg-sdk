@@ -1807,8 +1807,6 @@ var AffiliateService = (function() {
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} filter - Mobile or desktop
      * @param {string} timezone - The timezone string ex. America/New_York
-     * @param {string} sort - The sort to apply
-     * @param {string} sortDirection - The sort direction to apply
      * 
      */
     AffiliateService.prototype.reportsPerformanceAEG = function(parameters) {
@@ -1857,6 +1855,121 @@ var AffiliateService = (function() {
 
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Affiliate performance data using AEG adjustments. Must be the affiliate or admin scoped.
+     * @method
+     * @name AffiliateService#reportsPerformanceSubIdsAEG
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} filter - Mobile or desktop
+     * @param {string} timezone - The timezone string ex. America/New_York
+     * @param {integer} limit - The number of records to return
+     * @param {string} sort - The sort to apply
+     * @param {string} sortDirection - The sort direction to apply
+     * 
+     */
+    AffiliateService.prototype.reportsPerformanceSubIdsAEG = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/aeg/{affiliateId}/reports/performance/sub-ids/{interval}/{filter}';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{interval}', parameters['interval']);
+
+        if (parameters['interval'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: interval'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{filter}', parameters['filter']);
+
+        if (parameters['filter'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['limit'] !== undefined) {
+            queryParameters['limit'] = parameters['limit'];
         }
 
         if (parameters['sort'] !== undefined) {
@@ -1935,6 +2048,7 @@ var AffiliateService = (function() {
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetworkAEG = function(parameters) {
@@ -1944,7 +2058,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/reports/top-epc/{interval}/{filter}';
+        var path = '/aeg/reports/top-epc/{vertical}/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -1979,6 +2093,13 @@ var AffiliateService = (function() {
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{vertical}', parameters['vertical']);
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
@@ -2041,6 +2162,7 @@ var AffiliateService = (function() {
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
      * @param {string} filter - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliateAEG = function(parameters) {
@@ -2050,7 +2172,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/top-epc/{interval}/{filter}';
+        var path = '/aeg/{affiliateId}/reports/top-epc/{vertical}/{interval}/{filter}';
 
         var body;
         var queryParameters = {};
@@ -2092,6 +2214,13 @@ var AffiliateService = (function() {
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{vertical}', parameters['vertical']);
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
