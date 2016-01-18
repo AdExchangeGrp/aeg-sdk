@@ -10,3 +10,10 @@ stormpath:
     secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww
   application:
     href: https://api.stormpath.com/v1/applications/6x9i1BvcTdaUTjbWhYhNbx
+
+aws:
+  public: "AKIAI6UQYWI5EOZXIN7A"
+  private: "I2Gv3Z22YsEHEumeFLNKBCsCptT97t2kttBVCnnx"
+  ses:
+    from: 'donotreply@aegaffiliate.com'
+    zone: 'https://email.us-west-2.amazonaws.com'

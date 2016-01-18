@@ -60,7 +60,7 @@ export default {
 		let args = Array.prototype.slice.call(arguments);
 		client = args.shift();
 		callback = args.pop();
-		args.length > 0 ? options = args.shift() : options = null;
+		options = args.length > 0 ? args.shift() : null;
 
 		async.waterfall([
 			(callback) => {
