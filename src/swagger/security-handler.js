@@ -44,8 +44,6 @@ class SecurityHandler extends EventEmitter {
 							}
 						});
 
-						console.log(authorizedScopes);
-
 						if (routeScopes && routeScopes.length) {
 							if (_.intersection(routeScopes, authorizedScopes).length) {
 								callback();
