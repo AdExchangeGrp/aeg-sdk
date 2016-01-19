@@ -34,7 +34,7 @@ export default {
 	},
 
 	/**
-	 * Returns an array of enabled group names that an account is associated too
+	 * Returns an array of all enabled group names that an account is associated too
 	 * @param {Object} account
 	 * @param {function} callback
 	 */
