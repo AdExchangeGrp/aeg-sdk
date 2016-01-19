@@ -7,12 +7,13 @@ import async from 'async';
  * Manages accounts
  */
 export default {
+
 	/**
-	 * Returns an array of enabled group names that an account is associated too
+	 * Returns an array of all enabled groups that an account is associated too
 	 * @param {Object} account
 	 * @param {function} callback
 	 */
-	getGroupNamesFromMembership: function getGroupNamesFromMembership(account, callback) {
+	getGroupsFromMembership: function getGroupsFromMembership(account, callback) {
 		account.getGroupMemberships({expand: 'group'}, function (err, memberships) {
 
 			if (err) {
@@ -25,10 +26,25 @@ export default {
 				},
 				function (enabledMemberships) {
 					var groups = _.map(enabledMemberships, function (membership) {
-						return membership.group.name;
+						return membership.group;
 					});
 					callback(null, groups);
 				});
+		});
+	},
+
+	/**
+	 * Returns an array of all enabled group names that an account is associated too
+	 * @param {Object} account
+	 * @param {function} callback
+	 */
+	getGroupNamesFromMembership: function getGroupNamesFromMembership(account, callback) {
+		this.getGroupsFromMembership(account, (err, groups) => {
+			if (err) {
+				callback(err);
+			} else {
+				callback(null, _.pluck(groups, 'name'));
+			}
 		});
 	},
 
