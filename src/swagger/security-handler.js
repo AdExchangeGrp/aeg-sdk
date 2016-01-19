@@ -35,7 +35,7 @@ class SecurityHandler extends EventEmitter {
 
 					} else {
 
-						let authorizedScopes = expandedJwt.body.scope.split(',');
+						let authorizedScopes = expandedJwt.body.scope.split(' ');
 
 						self.emit('debug', {
 							message: 'API Token Scopes', data: {
