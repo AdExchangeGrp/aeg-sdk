@@ -70,18 +70,22 @@ export default {
 					},
 					(tenant, callback) => {
 						tenant.getOrganizations({expand: 'customData'}, (err, organizations) => {
-							callback(err, organizations.items);
+							callback(err, organizations);
 						});
 					}
 				], callback);
 			},
 			(organizations, callback) => {
 				if (options && options.type) {
-					callback(null, _.filter(organizations, (organization) => {
-						return organization.customData.type === options.type;
-					}));
+					organizations.filter((organization, callback) => {
+						callback(organization.customData.type === options.type);
+					}, (results) => {
+						callback(null, results);
+					});
 				} else {
-					callback(null, organizations);
+					organizations.concat((organization, callback) => {
+						callback(null, organization);
+					}, callback);
 				}
 			}
 		], callback);
