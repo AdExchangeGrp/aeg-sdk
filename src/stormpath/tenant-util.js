@@ -2,7 +2,6 @@
 
 import async from 'async';
 import organizationUtil from './organization-util';
-import _ from 'lodash';
 
 /**
  * Manages tenants
