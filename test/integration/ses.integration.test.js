@@ -13,7 +13,7 @@ describe('ses', () => {
 		client.send('justin@adexchangegrp.com', 'Test Email', 'This is a test', done);
 	});
 
-	it('should generate an email', (done) => {
+	it.skip('should generate an email', (done) => {
 		client.send('justin@adexchangegrp.com', 'Test Email', 'This is a test', {from: 'test@aegaffiliate.com'}, done);
 	});
 

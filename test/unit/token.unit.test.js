@@ -3,7 +3,7 @@
 import should from 'should';
 import token from '../../src/stormpath/token';
 
-describe('Token', () => {
+describe('token', () => {
 
 	describe('#willExpire()', () => {
 
