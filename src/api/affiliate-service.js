@@ -396,23 +396,23 @@ var AffiliateService = (function() {
      * @param {string} contact.im.screenName - Contact instant messinger screen name
      * @param {string} contact.im.service - Contact instant messinger service type
      * @param {string} contact.timezone - Preferred timezone, default's to EST
-     * @param {string} contact.address - Contact street address
-     * @param {string} contact.suite - Contact suite
-     * @param {string} contact.city - Contact city
-     * @param {string} contact.state - Contact state
-     * @param {string} contact.postalCode - Contact postal code XXXXX or XXXXX-XXXX
-     * @param {string} contact.country - Contact country
+     * @param {string} contact.address.address - Contact street address
+     * @param {string} contact.address.suite - Contact suite
+     * @param {string} contact.address.city - Contact city
+     * @param {string} contact.address.state - Contact state
+     * @param {string} contact.address.postalCode - Contact postal code XXXXX or XXXXX-XXXX
+     * @param {string} contact.address.country - Contact country
      * @param {string} company.company - Company name
      * @param {string} company.taxId - Company tax id
      * @param {string} company.taxClass - Company tax class
      * @param {string} company.payableTo - Company payable to
      * @param {string} company.payBy - Company pay by type
-     * @param {string} company.address - Company address
-     * @param {string} company.suite - Company suite
-     * @param {string} company.city - Company city
-     * @param {string} company.state - Company state
-     * @param {string} company.postalCode - Company postal code XXXXX or XXXXX-XXXX
-     * @param {string} company.country - Company country
+     * @param {string} company.address.address - Company address
+     * @param {string} company.address.suite - Company suite
+     * @param {string} company.address.city - Company city
+     * @param {string} company.address.state - Company state
+     * @param {string} company.address.postalCode - Company postal code XXXXX or XXXXX-XXXX
+     * @param {string} company.address.country - Company country
      * @param {string} marketing.url - Marketing site url
      * @param {string} marketing.siteCategory - Marketing site category
      * @param {number} marketing.anticipatedDailyVolume - Marketing anticipated daily sales volume
@@ -496,52 +496,52 @@ var AffiliateService = (function() {
             form['contact.timezone'] = parameters['contact.timezone'];
         }
 
-        if (parameters['contact.address'] !== undefined) {
-            form['contact.address'] = parameters['contact.address'];
+        if (parameters['contact.address.address'] !== undefined) {
+            form['contact.address.address'] = parameters['contact.address.address'];
         }
 
-        if (parameters['contact.address'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.address'));
+        if (parameters['contact.address.address'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.address'));
             return deferred.promise;
         }
 
-        if (parameters['contact.suite'] !== undefined) {
-            form['contact.suite'] = parameters['contact.suite'];
+        if (parameters['contact.address.suite'] !== undefined) {
+            form['contact.address.suite'] = parameters['contact.address.suite'];
         }
 
-        if (parameters['contact.city'] !== undefined) {
-            form['contact.city'] = parameters['contact.city'];
+        if (parameters['contact.address.city'] !== undefined) {
+            form['contact.address.city'] = parameters['contact.address.city'];
         }
 
-        if (parameters['contact.city'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.city'));
+        if (parameters['contact.address.city'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.city'));
             return deferred.promise;
         }
 
-        if (parameters['contact.state'] !== undefined) {
-            form['contact.state'] = parameters['contact.state'];
+        if (parameters['contact.address.state'] !== undefined) {
+            form['contact.address.state'] = parameters['contact.address.state'];
         }
 
-        if (parameters['contact.state'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.state'));
+        if (parameters['contact.address.state'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.state'));
             return deferred.promise;
         }
 
-        if (parameters['contact.postalCode'] !== undefined) {
-            form['contact.postalCode'] = parameters['contact.postalCode'];
+        if (parameters['contact.address.postalCode'] !== undefined) {
+            form['contact.address.postalCode'] = parameters['contact.address.postalCode'];
         }
 
-        if (parameters['contact.postalCode'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.postalCode'));
+        if (parameters['contact.address.postalCode'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.postalCode'));
             return deferred.promise;
         }
 
-        if (parameters['contact.country'] !== undefined) {
-            form['contact.country'] = parameters['contact.country'];
+        if (parameters['contact.address.country'] !== undefined) {
+            form['contact.address.country'] = parameters['contact.address.country'];
         }
 
-        if (parameters['contact.country'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.country'));
+        if (parameters['contact.address.country'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.country'));
             return deferred.promise;
         }
 
@@ -590,52 +590,52 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['company.address'] !== undefined) {
-            form['company.address'] = parameters['company.address'];
+        if (parameters['company.address.address'] !== undefined) {
+            form['company.address.address'] = parameters['company.address.address'];
         }
 
-        if (parameters['company.address'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.address'));
+        if (parameters['company.address.address'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.address'));
             return deferred.promise;
         }
 
-        if (parameters['company.suite'] !== undefined) {
-            form['company.suite'] = parameters['company.suite'];
+        if (parameters['company.address.suite'] !== undefined) {
+            form['company.address.suite'] = parameters['company.address.suite'];
         }
 
-        if (parameters['company.city'] !== undefined) {
-            form['company.city'] = parameters['company.city'];
+        if (parameters['company.address.city'] !== undefined) {
+            form['company.address.city'] = parameters['company.address.city'];
         }
 
-        if (parameters['company.city'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.city'));
+        if (parameters['company.address.city'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.city'));
             return deferred.promise;
         }
 
-        if (parameters['company.state'] !== undefined) {
-            form['company.state'] = parameters['company.state'];
+        if (parameters['company.address.state'] !== undefined) {
+            form['company.address.state'] = parameters['company.address.state'];
         }
 
-        if (parameters['company.state'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.state'));
+        if (parameters['company.address.state'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.state'));
             return deferred.promise;
         }
 
-        if (parameters['company.postalCode'] !== undefined) {
-            form['company.postalCode'] = parameters['company.postalCode'];
+        if (parameters['company.address.postalCode'] !== undefined) {
+            form['company.address.postalCode'] = parameters['company.address.postalCode'];
         }
 
-        if (parameters['company.postalCode'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.postalCode'));
+        if (parameters['company.address.postalCode'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.postalCode'));
             return deferred.promise;
         }
 
-        if (parameters['company.country'] !== undefined) {
-            form['company.country'] = parameters['company.country'];
+        if (parameters['company.address.country'] !== undefined) {
+            form['company.address.country'] = parameters['company.address.country'];
         }
 
-        if (parameters['company.country'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.country'));
+        if (parameters['company.address.country'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.country'));
             return deferred.promise;
         }
 
@@ -742,23 +742,23 @@ var AffiliateService = (function() {
      * @param {string} contact.im.screenName - Contact instant messinger screen name
      * @param {string} contact.im.service - Contact instant messinger service type
      * @param {string} contact.timezone - Preferred timezone, default's to EST
-     * @param {string} contact.address - Contact street address
-     * @param {string} contact.suite - Contact suite
-     * @param {string} contact.city - Contact city
-     * @param {string} contact.state - Contact state
-     * @param {string} contact.postalCode - Contact postal code XXXXX or XXXXX-XXXX
-     * @param {string} contact.country - Contact country
+     * @param {string} contact.address.address - Contact street address
+     * @param {string} contact.address.suite - Contact suite
+     * @param {string} contact.address.city - Contact city
+     * @param {string} contact.address.state - Contact state
+     * @param {string} contact.address.postalCode - Contact postal code XXXXX or XXXXX-XXXX
+     * @param {string} contact.address.country - Contact country
      * @param {string} company.company - Company name
      * @param {string} company.taxId - Company tax id
      * @param {string} company.taxClass - Company tax class
      * @param {string} company.payableTo - Company payable to
      * @param {string} company.payBy - Company pay by type
-     * @param {string} company.address - Company address
-     * @param {string} company.suite - Company suite
-     * @param {string} company.city - Company city
-     * @param {string} company.state - Company state
-     * @param {string} company.postalCode - Company postal code XXXXX or XXXXX-XXXX
-     * @param {string} company.country - Company country
+     * @param {string} company.address.address - Company address
+     * @param {string} company.address.suite - Company suite
+     * @param {string} company.address.city - Company city
+     * @param {string} company.address.state - Company state
+     * @param {string} company.address.postalCode - Company postal code XXXXX or XXXXX-XXXX
+     * @param {string} company.address.country - Company country
      * @param {string} marketing.url - Marketing site url
      * @param {string} marketing.siteCategory - Marketing site category
      * @param {number} marketing.anticipatedDailyVolume - Marketing anticipated daily sales volume
@@ -858,52 +858,52 @@ var AffiliateService = (function() {
             form['contact.timezone'] = parameters['contact.timezone'];
         }
 
-        if (parameters['contact.address'] !== undefined) {
-            form['contact.address'] = parameters['contact.address'];
+        if (parameters['contact.address.address'] !== undefined) {
+            form['contact.address.address'] = parameters['contact.address.address'];
         }
 
-        if (parameters['contact.address'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.address'));
+        if (parameters['contact.address.address'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.address'));
             return deferred.promise;
         }
 
-        if (parameters['contact.suite'] !== undefined) {
-            form['contact.suite'] = parameters['contact.suite'];
+        if (parameters['contact.address.suite'] !== undefined) {
+            form['contact.address.suite'] = parameters['contact.address.suite'];
         }
 
-        if (parameters['contact.city'] !== undefined) {
-            form['contact.city'] = parameters['contact.city'];
+        if (parameters['contact.address.city'] !== undefined) {
+            form['contact.address.city'] = parameters['contact.address.city'];
         }
 
-        if (parameters['contact.city'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.city'));
+        if (parameters['contact.address.city'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.city'));
             return deferred.promise;
         }
 
-        if (parameters['contact.state'] !== undefined) {
-            form['contact.state'] = parameters['contact.state'];
+        if (parameters['contact.address.state'] !== undefined) {
+            form['contact.address.state'] = parameters['contact.address.state'];
         }
 
-        if (parameters['contact.state'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.state'));
+        if (parameters['contact.address.state'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.state'));
             return deferred.promise;
         }
 
-        if (parameters['contact.postalCode'] !== undefined) {
-            form['contact.postalCode'] = parameters['contact.postalCode'];
+        if (parameters['contact.address.postalCode'] !== undefined) {
+            form['contact.address.postalCode'] = parameters['contact.address.postalCode'];
         }
 
-        if (parameters['contact.postalCode'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.postalCode'));
+        if (parameters['contact.address.postalCode'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.postalCode'));
             return deferred.promise;
         }
 
-        if (parameters['contact.country'] !== undefined) {
-            form['contact.country'] = parameters['contact.country'];
+        if (parameters['contact.address.country'] !== undefined) {
+            form['contact.address.country'] = parameters['contact.address.country'];
         }
 
-        if (parameters['contact.country'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.country'));
+        if (parameters['contact.address.country'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: contact.address.country'));
             return deferred.promise;
         }
 
@@ -952,52 +952,52 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['company.address'] !== undefined) {
-            form['company.address'] = parameters['company.address'];
+        if (parameters['company.address.address'] !== undefined) {
+            form['company.address.address'] = parameters['company.address.address'];
         }
 
-        if (parameters['company.address'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.address'));
+        if (parameters['company.address.address'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.address'));
             return deferred.promise;
         }
 
-        if (parameters['company.suite'] !== undefined) {
-            form['company.suite'] = parameters['company.suite'];
+        if (parameters['company.address.suite'] !== undefined) {
+            form['company.address.suite'] = parameters['company.address.suite'];
         }
 
-        if (parameters['company.city'] !== undefined) {
-            form['company.city'] = parameters['company.city'];
+        if (parameters['company.address.city'] !== undefined) {
+            form['company.address.city'] = parameters['company.address.city'];
         }
 
-        if (parameters['company.city'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.city'));
+        if (parameters['company.address.city'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.city'));
             return deferred.promise;
         }
 
-        if (parameters['company.state'] !== undefined) {
-            form['company.state'] = parameters['company.state'];
+        if (parameters['company.address.state'] !== undefined) {
+            form['company.address.state'] = parameters['company.address.state'];
         }
 
-        if (parameters['company.state'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.state'));
+        if (parameters['company.address.state'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.state'));
             return deferred.promise;
         }
 
-        if (parameters['company.postalCode'] !== undefined) {
-            form['company.postalCode'] = parameters['company.postalCode'];
+        if (parameters['company.address.postalCode'] !== undefined) {
+            form['company.address.postalCode'] = parameters['company.address.postalCode'];
         }
 
-        if (parameters['company.postalCode'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.postalCode'));
+        if (parameters['company.address.postalCode'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.postalCode'));
             return deferred.promise;
         }
 
-        if (parameters['company.country'] !== undefined) {
-            form['company.country'] = parameters['company.country'];
+        if (parameters['company.address.country'] !== undefined) {
+            form['company.address.country'] = parameters['company.address.country'];
         }
 
-        if (parameters['company.country'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: company.country'));
+        if (parameters['company.address.country'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: company.address.country'));
             return deferred.promise;
         }
 
