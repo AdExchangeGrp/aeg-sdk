@@ -20,11 +20,7 @@ describe('affiliateApi - Application', () => {
 	let denyApplicationOrganizationId;
 	let denyAccountId;
 	let applicationIdResubmit;
-	let resubmitUserToken;
-	let resubmitApplicationOrganizationId;
-	let resubmitAccountId;
 	let organizationHref;
-
 
 	describe('setup', () => {
 
@@ -522,8 +518,6 @@ describe('affiliateApi - Application', () => {
 				affiliateApi.setToken(denyUserToken);
 				affiliateApi.applicationResubmit({
 						id: applicationIdDeny,
-						'contact.email': 'test-apply-deny@test.com',
-						'contact.password': 'Pa$$w0rd',
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
 						'contact.title': 'test-apply-title',
@@ -562,52 +556,11 @@ describe('affiliateApi - Application', () => {
 						result.body.application.contact.timezone.should.be.equal('America/Los_Angeles');
 
 						applicationIdResubmit = result.body.application.id;
-						resubmitApplicationOrganizationId = result.body.application.organization.href;
-						resubmitAccountId = result.body.application.account.href;
-
-						resubmitApplicationOrganizationId.should.not.be.equal(denyApplicationOrganizationId);
-						resubmitAccountId.should.not.be.equal(denyAccountId);
 
 						done();
 					})
 					.fail((err) => {
 						done(err);
-					});
-			});
-
-			it('should return token for resubmitted application account', (done) => {
-				securityApi.passwordToken({
-						username: 'test-apply-deny@test.com',
-						password: 'Pa$$w0rd'
-					})
-					.then((result) => {
-						resubmitUserToken = result.body.accessToken;
-						done();
-					})
-					.fail((err) => {
-						done(err);
-					});
-			});
-
-			it('should not return the denied organization', (done) => {
-				securityApi.setToken(adminPasswordToken);
-				securityApi.getOrganization({id: denyApplicationOrganizationId})
-					.then(() => {
-						done(new Error('Should not have retrieved the old organization'));
-					})
-					.fail(() => {
-						done();
-					});
-			});
-
-			it('should not return the denied account', (done) => {
-				securityApi.setToken(adminPasswordToken);
-				securityApi.getAccount({id: denyAccountId})
-					.then(() => {
-						done(new Error('Should not have retrieved the old account'));
-					})
-					.fail(() => {
-						done();
 					});
 			});
 
@@ -627,6 +580,7 @@ describe('affiliateApi - Application', () => {
 						done(err);
 					});
 			});
+
 		});
 
 		describe('cleanup', () => {

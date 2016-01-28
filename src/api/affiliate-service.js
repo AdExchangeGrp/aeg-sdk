@@ -733,8 +733,6 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#applicationResubmit
      * @param {string} id - Application id
-     * @param {string} contact.email - Contact email address and primary user name
-     * @param {string} contact.password - Contact account password
      * @param {string} contact.givenName - Contact given name
      * @param {string} contact.surname - Contact surname
      * @param {string} contact.title - Contact title
@@ -794,24 +792,6 @@ var AffiliateService = (function() {
 
         if (parameters['id'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: id'));
-            return deferred.promise;
-        }
-
-        if (parameters['contact.email'] !== undefined) {
-            form['contact.email'] = parameters['contact.email'];
-        }
-
-        if (parameters['contact.email'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.email'));
-            return deferred.promise;
-        }
-
-        if (parameters['contact.password'] !== undefined) {
-            form['contact.password'] = parameters['contact.password'];
-        }
-
-        if (parameters['contact.password'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: contact.password'));
             return deferred.promise;
         }
 
