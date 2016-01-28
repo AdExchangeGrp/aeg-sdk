@@ -33,13 +33,13 @@ export default (req, res, validationErrors) => {
 					code: error.code,
 					message: error.message,
 					path: [],
-					description: param.description
+					description: param ? param.description : ''
 				};
 			});
 
-			error.in = param.in;
-			error.message = `Invalid parameter (${param.name}): Value failed JSON Schema validation`;
-			error.name = param.name;
+			error.in = param ? param.in : '';
+			error.message = `Invalid parameter (${param ? param.name : ''}): Value failed JSON Schema validation`;
+			error.name = param ? param.name : '';
 			error.path = [
 				"paths",
 				operation.pathObject.path,
