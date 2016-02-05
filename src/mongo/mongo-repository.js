@@ -64,9 +64,9 @@ class MongoRepository extends EventEmitter {
 			return callback();
 		}
 
-		this.emit('disconnected');
+		self.emit('disconnected');
 
-		this._db.disconnect(callback);
+		self._db.close(callback);
 	}
 
 }
