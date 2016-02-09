@@ -732,7 +732,6 @@ var AffiliateService = (function() {
      * Resubmit an application to be an affiliate
      * @method
      * @name AffiliateService#applicationResubmit
-     * @param {string} id - Application id
      * @param {string} contact.givenName - Contact given name
      * @param {string} contact.surname - Contact surname
      * @param {string} contact.title - Contact title
@@ -772,7 +771,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/{id}/resubmit';
+        var path = '/application/account/resubmit';
 
         var body;
         var queryParameters = {};
@@ -786,13 +785,6 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        path = path.replace('{id}', parameters['id']);
-
-        if (parameters['id'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: id'));
-            return deferred.promise;
         }
 
         if (parameters['contact.givenName'] !== undefined) {
