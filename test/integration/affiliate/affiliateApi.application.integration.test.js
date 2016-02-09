@@ -517,7 +517,6 @@ describe('affiliateApi - Application', () => {
 			it('should resubmit an application', (done) => {
 				affiliateApi.setToken(denyUserToken);
 				affiliateApi.applicationResubmit({
-						id: applicationIdDeny,
 						'contact.givenName': 'test-apply-given-r',
 						'contact.surname': 'test-apply-sur-r',
 						'contact.title': 'test-apply-title-r',
