@@ -1444,7 +1444,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/hp/{affiliateId}/reports/performance/{interval}/{filter}';
+        var path = '/hp/{affiliateId}/reports/performance';
 
         var body;
         var queryParameters = {};
@@ -1467,14 +1467,18 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
             return deferred.promise;
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
@@ -1570,7 +1574,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/hp/reports/top-epc/{interval}/{filter}';
+        var path = '/hp/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -1586,7 +1590,9 @@ var AffiliateService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
@@ -1601,7 +1607,9 @@ var AffiliateService = (function() {
             queryParameters['limit'] = parameters['limit'];
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
@@ -1676,7 +1684,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/hp/{affiliateId}/reports/top-epc/{interval}/{filter}';
+        var path = '/hp/{affiliateId}/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -1699,7 +1707,9 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
@@ -1714,7 +1724,9 @@ var AffiliateService = (function() {
             queryParameters['limit'] = parameters['limit'];
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
@@ -1788,7 +1800,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/performance/{interval}/{filter}';
+        var path = '/aeg/{affiliateId}/reports/performance';
 
         var body;
         var queryParameters = {};
@@ -1811,14 +1823,18 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
             return deferred.promise;
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
@@ -1899,7 +1915,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/performance/sub-ids/{interval}/{filter}';
+        var path = '/aeg/{affiliateId}/reports/performance/sub-ids';
 
         var body;
         var queryParameters = {};
@@ -1922,14 +1938,18 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
             return deferred.promise;
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
@@ -2030,7 +2050,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/reports/top-epc/{vertical}/{interval}/{filter}';
+        var path = '/aeg/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -2046,7 +2066,9 @@ var AffiliateService = (function() {
             headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
@@ -2061,14 +2083,18 @@ var AffiliateService = (function() {
             queryParameters['limit'] = parameters['limit'];
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
             return deferred.promise;
         }
 
-        path = path.replace('{vertical}', parameters['vertical']);
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
 
         if (parameters['vertical'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: vertical'));
@@ -2144,7 +2170,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/top-epc/{vertical}/{interval}/{filter}';
+        var path = '/aeg/{affiliateId}/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -2167,7 +2193,9 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        path = path.replace('{interval}', parameters['interval']);
+        if (parameters['interval'] !== undefined) {
+            queryParameters['interval'] = parameters['interval'];
+        }
 
         if (parameters['interval'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: interval'));
@@ -2182,14 +2210,18 @@ var AffiliateService = (function() {
             queryParameters['limit'] = parameters['limit'];
         }
 
-        path = path.replace('{filter}', parameters['filter']);
+        if (parameters['filter'] !== undefined) {
+            queryParameters['filter'] = parameters['filter'];
+        }
 
         if (parameters['filter'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: filter'));
             return deferred.promise;
         }
 
-        path = path.replace('{vertical}', parameters['vertical']);
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
 
         if (parameters['vertical'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: vertical'));
