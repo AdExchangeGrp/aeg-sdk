@@ -536,6 +536,7 @@ describe('affiliateApi - Reports', () => {
 		var args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
+			vertical: options.vertical ? options.vertical : 'all',
 			sort: options.sort ? options.sort : 'clicks',
 			sortDirection: options.sortDirection ? options.sortDirection : 'asc',
 			device: 'all'
