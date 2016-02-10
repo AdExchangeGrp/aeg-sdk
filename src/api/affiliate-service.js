@@ -1822,6 +1822,7 @@ var AffiliateService = (function() {
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
+     * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
     AffiliateService.prototype.reportsPerformanceAEG = function(parameters) {
@@ -1883,6 +1884,10 @@ var AffiliateService = (function() {
 
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['format'] !== undefined) {
+            queryParameters['format'] = parameters['format'];
         }
 
         if (parameters.$queryParameters) {
@@ -1947,6 +1952,7 @@ var AffiliateService = (function() {
      * @param {integer} limit - The number of records to return
      * @param {string} sort - The sort to apply
      * @param {string} sortDirection - The sort direction to apply
+     * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
     AffiliateService.prototype.reportsPerformanceSubIdsAEG = function(parameters) {
@@ -2032,6 +2038,10 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
+        if (parameters['format'] !== undefined) {
+            queryParameters['format'] = parameters['format'];
+        }
+
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -2091,6 +2101,7 @@ var AffiliateService = (function() {
      * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
+     * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetworkAEG = function(parameters) {
@@ -2149,6 +2160,10 @@ var AffiliateService = (function() {
 
         if (parameters['limit'] !== undefined) {
             queryParameters['limit'] = parameters['limit'];
+        }
+
+        if (parameters['format'] !== undefined) {
+            queryParameters['format'] = parameters['format'];
         }
 
         if (parameters.$queryParameters) {
@@ -2211,6 +2226,7 @@ var AffiliateService = (function() {
      * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
+     * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliateAEG = function(parameters) {
@@ -2276,6 +2292,10 @@ var AffiliateService = (function() {
 
         if (parameters['limit'] !== undefined) {
             queryParameters['limit'] = parameters['limit'];
+        }
+
+        if (parameters['format'] !== undefined) {
+            queryParameters['format'] = parameters['format'];
         }
 
         if (parameters.$queryParameters) {
