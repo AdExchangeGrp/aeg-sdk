@@ -1431,7 +1431,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformanceHP
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} filter - Mobile or desktop
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {string} sort - The sort to apply
      * @param {string} sortDirection - The sort direction to apply
@@ -1476,12 +1477,21 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
         }
 
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
+            return deferred.promise;
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
@@ -1562,9 +1572,10 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsTopEpcNetworkHP
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
-     * @param {string} filter - Mobile or desktop
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetworkHP = function(parameters) {
@@ -1599,21 +1610,30 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
+        }
+
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
+            return deferred.promise;
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
+            return deferred.promise;
+        }
+
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
         }
 
         if (parameters['limit'] !== undefined) {
             queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
-        }
-
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
-            return deferred.promise;
         }
 
         if (parameters.$queryParameters) {
@@ -1672,9 +1692,10 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsTopEpcAffiliateHP
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
-     * @param {string} filter - Mobile or desktop
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliateHP = function(parameters) {
@@ -1716,21 +1737,30 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
+        }
+
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
+            return deferred.promise;
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
+            return deferred.promise;
+        }
+
         if (parameters['timezone'] !== undefined) {
             queryParameters['timezone'] = parameters['timezone'];
         }
 
         if (parameters['limit'] !== undefined) {
             queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
-        }
-
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
-            return deferred.promise;
         }
 
         if (parameters.$queryParameters) {
@@ -1789,7 +1819,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformanceAEG
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} filter - Mobile or desktop
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * 
      */
@@ -1832,12 +1863,21 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
         }
 
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
+            return deferred.promise;
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
@@ -1901,7 +1941,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformanceSubIdsAEG
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} filter - Mobile or desktop
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
      * @param {string} sort - The sort to apply
@@ -1947,12 +1988,21 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
         }
 
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
+            return deferred.promise;
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
         }
 
@@ -2037,10 +2087,10 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsTopEpcNetworkAEG
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
-     * @param {string} filter - Mobile or desktop
-     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetworkAEG = function(parameters) {
@@ -2075,20 +2125,12 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['timezone'] !== undefined) {
-            queryParameters['timezone'] = parameters['timezone'];
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
         }
 
-        if (parameters['limit'] !== undefined) {
-            queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
-        }
-
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
             return deferred.promise;
         }
 
@@ -2099,6 +2141,14 @@ var AffiliateService = (function() {
         if (parameters['vertical'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['limit'] !== undefined) {
+            queryParameters['limit'] = parameters['limit'];
         }
 
         if (parameters.$queryParameters) {
@@ -2157,10 +2207,10 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsTopEpcAffiliateAEG
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} device - Mobile or desktop
+     * @param {string} vertical - The market vertical
      * @param {string} timezone - The timezone string ex. America/New_York
      * @param {integer} limit - The number of records to return
-     * @param {string} filter - Mobile or desktop
-     * @param {string} vertical - The market vertical
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliateAEG = function(parameters) {
@@ -2202,20 +2252,12 @@ var AffiliateService = (function() {
             return deferred.promise;
         }
 
-        if (parameters['timezone'] !== undefined) {
-            queryParameters['timezone'] = parameters['timezone'];
+        if (parameters['device'] !== undefined) {
+            queryParameters['device'] = parameters['device'];
         }
 
-        if (parameters['limit'] !== undefined) {
-            queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters['filter'] !== undefined) {
-            queryParameters['filter'] = parameters['filter'];
-        }
-
-        if (parameters['filter'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: filter'));
+        if (parameters['device'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: device'));
             return deferred.promise;
         }
 
@@ -2226,6 +2268,14 @@ var AffiliateService = (function() {
         if (parameters['vertical'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: vertical'));
             return deferred.promise;
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            queryParameters['timezone'] = parameters['timezone'];
+        }
+
+        if (parameters['limit'] !== undefined) {
+            queryParameters['limit'] = parameters['limit'];
         }
 
         if (parameters.$queryParameters) {

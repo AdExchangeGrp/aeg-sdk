@@ -126,7 +126,7 @@ describe('affiliateApi - Reports', () => {
 			});
 
 			it('should return performance report monthly', (done) => {
-				testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateHP', done);
+				testTopEpcAffiliateReport({interval: 'monthly', device: 'desktop'}, 'reportsTopEpcAffiliateHP', done);
 			});
 
 			it('should return performance report yearly', (done) => {
@@ -174,7 +174,7 @@ describe('affiliateApi - Reports', () => {
 			});
 
 			it('should return performance report monthly', (done) => {
-				testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkHP', done);
+				testTopEpcNetworkReport({interval: 'monthly', device: 'mobile'}, 'reportsTopEpcNetworkHP', done);
 			});
 
 			it('should return performance report yearly', (done) => {
@@ -311,7 +311,7 @@ describe('affiliateApi - Reports', () => {
 			});
 
 			it('should return performance report monthly', (done) => {
-				testTopEpcAffiliateReport({interval: 'monthly', filter: 'desktop'}, 'reportsTopEpcAffiliateAEG', done);
+				testTopEpcAffiliateReport({interval: 'monthly', device: 'desktop'}, 'reportsTopEpcAffiliateAEG', done);
 			});
 
 			it('should return performance report yearly', (done) => {
@@ -359,7 +359,7 @@ describe('affiliateApi - Reports', () => {
 			});
 
 			it('should return performance report monthly', (done) => {
-				testTopEpcNetworkReport({interval: 'monthly', filter: 'mobile'}, 'reportsTopEpcNetworkAEG', done);
+				testTopEpcNetworkReport({interval: 'monthly', device: 'mobile'}, 'reportsTopEpcNetworkAEG', done);
 			});
 
 			it('should return performance report yearly', (done) => {
@@ -420,7 +420,8 @@ describe('affiliateApi - Reports', () => {
 		var args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
-			filter: 'all'
+			vertical: options.vertical ? options.vertical : 'all',
+			device: 'all'
 		};
 
 		if (options.timezone) {
@@ -450,9 +451,10 @@ describe('affiliateApi - Reports', () => {
 		var args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
+			vertical: options.vertical ? options.vertical : 'all',
 			sort: options.sort ? options.sort : 'clicks',
 			sortDirection: options.sortDirection ? options.sortDirection : 'asc',
-			filter: 'all'
+			device: 'all'
 		};
 
 		if (options.timezone) {
@@ -534,9 +536,10 @@ describe('affiliateApi - Reports', () => {
 		var args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
+			vertical: options.vertical ? options.vertical : 'all',
 			sort: options.sort ? options.sort : 'clicks',
 			sortDirection: options.sortDirection ? options.sortDirection : 'asc',
-			filter: 'all'
+			device: 'all'
 		};
 
 		if (options.timezone) {
@@ -617,7 +620,7 @@ describe('affiliateApi - Reports', () => {
 		let args = {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
-			filter: options.filter ? options.filter : 'all',
+			device: options.device ? options.device : 'all',
 			vertical: options.vertical ? options.vertical: 'all'
 		};
 
@@ -640,7 +643,7 @@ describe('affiliateApi - Reports', () => {
 		affiliateApi.setToken(adminPasswordToken);
 		affiliateApi[func]({
 			interval: options.interval ? options.interval : 'daily',
-			filter: options.filter ? options.filter : 'all',
+			device: options.device ? options.device : 'all',
 			vertical: options.vertical ? options.vertical: 'all'
 		})
 			.then((result) => {
