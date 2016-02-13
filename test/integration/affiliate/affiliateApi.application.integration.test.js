@@ -6,6 +6,9 @@ import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';
 
+const applyEmail = 	'test-apply-approve1@test.com';
+const applyEmail2 = 'test-apply-approve2@test.com';
+
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
 
@@ -45,7 +48,7 @@ describe('affiliateApi - Application', () => {
 			it('should create an application', (done) => {
 
 				affiliateApi.applicationApply({
-						'contact.email': 'test-apply-approve@test.com',
+						'contact.email': applyEmail,
 						'contact.password': 'Pa$$w0rd',
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
@@ -99,7 +102,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should return token for new account', (done) => {
 				securityApi.passwordToken({
-						username: 'test-apply-approve@test.com',
+						username: applyEmail,
 						password: 'Pa$$w0rd'
 					})
 					.then((result) => {
@@ -126,7 +129,7 @@ describe('affiliateApi - Application', () => {
 			it('should create an application to approve an affiliate id twice', (done) => {
 
 				affiliateApi.applicationApply({
-						'contact.email': 'test-apply-approve2@test.com',
+						'contact.email': applyEmail2,
 						'contact.password': 'Pa$$w0rd',
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
@@ -180,11 +183,31 @@ describe('affiliateApi - Application', () => {
 
 		});
 
-		describe('#applicationValidateAffiliateId', () => {
+		describe('#applicationApprove()', () => {
+
+			it('should approve an application', (done) => {
+				affiliateApi.setToken(adminPasswordToken);
+				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateId: '999999'})
+					.then((result) => {
+						should.exist(result.body.application);
+						result.body.application.should.have.properties(['id', 'approver']);
+						result.body.application.status.should.be.equal('APPROVED');
+						should.exist(result.body.application.approvalDate);
+						_.isObject(result.body.application.approver).should.be.ok;
+						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
+						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
+						result.body.application.approver.givenName.should.not.be.empty;
+						result.body.application.approver.surname.should.not.be.empty;
+						done();
+					})
+					.fail((err) => {
+						done(err);
+					});
+			});
 
 			it('should not validate an existing affiliateId', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationValidateAffiliateId({id: applicationIdApprove})
+				affiliateApi.applicationValidateAffiliateId({id: '999999'})
 					.then(() => {
 						done(new Error('Should not validate with an existing name key'));
 					})
@@ -209,30 +232,6 @@ describe('affiliateApi - Application', () => {
 				affiliateApi.applicationValidateAffiliateId({id: '0000999999'})
 					.then((result) => {
 						result.body.message.should.be.equal('success');
-						done();
-					})
-					.fail((err) => {
-						done(err);
-					});
-			});
-
-		});
-
-		describe('#applicationApprove()', () => {
-
-			it('should approve an application', (done) => {
-				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationApprove({id: applicationIdApprove, affiliateId: '999999'})
-					.then((result) => {
-						should.exist(result.body.application);
-						result.body.application.should.have.properties(['id', 'approver']);
-						result.body.application.status.should.be.equal('APPROVED');
-						should.exist(result.body.application.approvalDate);
-						_.isObject(result.body.application.approver).should.be.ok;
-						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
-						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
-						result.body.application.approver.givenName.should.not.be.empty;
-						result.body.application.approver.surname.should.not.be.empty;
 						done();
 					})
 					.fail((err) => {
