@@ -6,7 +6,7 @@ import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';
 
-const applyEmail = 	'test-apply-approve1@test.com';
+const applyEmail = 'test-apply-approve1@test.com';
 const applyEmail2 = 'test-apply-approve2@test.com';
 
 /** @namespace result.body.should.have */
@@ -459,7 +459,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should deny an application', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationDeny({id: applicationIdDeny})
+				affiliateApi.applicationDeny({id: applicationIdDeny, reason: 'Denial test reason'})
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id', 'approver']);
@@ -500,8 +500,9 @@ describe('affiliateApi - Application', () => {
 						should.exist(result);
 						should.exist(result.body);
 						result.body.should.have.properties(['application']);
-						result.body.application.should.have.properties(['id']);
+						result.body.application.should.have.properties(['id', 'denialReason']);
 						result.body.application.id.should.be.equal(applicationIdDeny);
+						result.body.application.denialReason.should.be.equal('Denial test reason');
 						done();
 					})
 					.fail((err) => {
