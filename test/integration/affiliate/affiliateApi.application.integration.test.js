@@ -42,7 +42,7 @@ describe('affiliateApi - Application', () => {
 
 	});
 
-	describe.skip('approve an application', () => {
+	describe('approve an application', () => {
 
 		describe('#apply() to approve', () => {
 
