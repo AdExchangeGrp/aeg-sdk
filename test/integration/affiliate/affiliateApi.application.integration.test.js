@@ -6,8 +6,9 @@ import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';
 
-const applyEmail = 'test-apply-approve1@test.com';
-const applyEmail2 = 'test-apply-approve2@test.com';
+const applyEmail = 'test-apply-approve3@test.com';
+const applyEmail2 = 'test-apply-approve4@test.com';
+const denyEmail = 'test-apply-deny2@test.com';
 
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
@@ -389,7 +390,7 @@ describe('affiliateApi - Application', () => {
 
 				affiliateApi.setToken(null);
 				affiliateApi.applicationApply({
-						'contact.email': 'test-apply-deny@test.com',
+						'contact.email': denyEmail,
 						'contact.password': 'Pa$$w0rd',
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
@@ -441,7 +442,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should return token for account', (done) => {
 				securityApi.passwordToken({
-						username: 'test-apply-deny@test.com',
+						username: denyEmail,
 						password: 'Pa$$w0rd'
 					})
 					.then((result) => {
