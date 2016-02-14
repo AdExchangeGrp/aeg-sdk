@@ -459,7 +459,7 @@ describe('affiliateApi - Application', () => {
 
 			it('should deny an application', (done) => {
 				affiliateApi.setToken(adminPasswordToken);
-				affiliateApi.applicationDeny({id: applicationIdDeny, reason: 'Denial test reason'})
+				affiliateApi.applicationDeny({id: applicationIdDeny, denialReason: 'Denial test reason'})
 					.then((result) => {
 						should.exist(result.body.application);
 						result.body.application.should.have.properties(['id', 'approver']);
