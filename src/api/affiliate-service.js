@@ -126,6 +126,85 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Flushes the affiliate cache
+     * @method
+     * @name AffiliateService#controlCacheFlush
+     * 
+     */
+    AffiliateService.prototype.controlCacheFlush = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/control/cache/flush';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Returns applications
      * @method
      * @name AffiliateService#applications
@@ -1164,6 +1243,7 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#applicationDeny
      * @param {string} id - Application id
+     * @param {string} denialReason - Denial reason
      * 
      */
     AffiliateService.prototype.applicationDeny = function(parameters) {
@@ -1194,6 +1274,10 @@ var AffiliateService = (function() {
         if (parameters['id'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: id'));
             return deferred.promise;
+        }
+
+        if (parameters['denialReason'] !== undefined) {
+            form['denialReason'] = parameters['denialReason'];
         }
 
         if (parameters.$queryParameters) {

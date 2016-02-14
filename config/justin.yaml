@@ -6,6 +6,12 @@ affiliateService:
   host: http://localhost:3002/v1
   swagger: http://localhost:3002/v1/swagger
 
+#securityService:
+#  host: https://api.aegcamp.com/v1/security
+#
+#affiliateService:
+#  host: https://api.aegcamp.com/v1/affiliate
+
 stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ
