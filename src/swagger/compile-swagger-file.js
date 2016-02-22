@@ -11,7 +11,7 @@ import config from 'config';
  */
 export default (swaggerPath) => {
 
-	let protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+	let protocols = process.env.NODE_ENV === 'production' ? ['https'] : ['https', 'http'];
 
 	let adminScopes = [];
 	var defaultResponseCodes = [];
@@ -30,7 +30,7 @@ export default (swaggerPath) => {
 	let template = fs.readFileSync(path.join(swaggerPath, 'swagger.mustache.yaml'), {encoding: 'utf8'});
 	Mustache.parse(template);
 	var rendered = Mustache.render(template, {
-		protocol: protocol,
+		protocols: protocols,
 		adminScopes: adminScopes,
 		defaultResponseCodes: defaultResponseCodes
 	});
