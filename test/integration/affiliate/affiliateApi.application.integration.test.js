@@ -10,6 +10,14 @@ const applyEmail = 'test-apply-approve1@test.com';
 const applyEmail2 = 'test-apply-approve2@test.com';
 const denyEmail = 'test-apply-deny@test.com';
 
+const password = 'Pa$$w0rd';
+
+//prod
+//const approverAccount = 'https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW';
+
+//ci
+const approverAccount = 'https://api.stormpath.com/v1/accounts/64E5CA7IqfBcbKOXszeJ8b';
+
 /** @namespace result.body.should.have */
 describe('affiliateApi - Application', () => {
 
@@ -50,7 +58,7 @@ describe('affiliateApi - Application', () => {
 
 				affiliateApi.applicationApply({
 						'contact.email': applyEmail,
-						'contact.password': 'Pa$$w0rd',
+						'contact.password': password,
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
 						'contact.title': 'test-apply-title',
@@ -104,7 +112,7 @@ describe('affiliateApi - Application', () => {
 			it('should return token for new account', (done) => {
 				securityApi.passwordToken({
 						username: applyEmail,
-						password: 'Pa$$w0rd'
+						password: password
 					})
 					.then((result) => {
 						newUserToken = result.body.accessToken;
@@ -131,7 +139,7 @@ describe('affiliateApi - Application', () => {
 
 				affiliateApi.applicationApply({
 						'contact.email': applyEmail2,
-						'contact.password': 'Pa$$w0rd',
+						'contact.password': password,
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
 						'contact.title': 'test-apply-title',
@@ -196,7 +204,7 @@ describe('affiliateApi - Application', () => {
 						should.exist(result.body.application.approvalDate);
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
-						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
+						result.body.application.approver.href.should.be.equal(approverAccount);
 						result.body.application.approver.givenName.should.not.be.empty;
 						result.body.application.approver.surname.should.not.be.empty;
 						done();
@@ -391,7 +399,7 @@ describe('affiliateApi - Application', () => {
 				affiliateApi.setToken(null);
 				affiliateApi.applicationApply({
 						'contact.email': denyEmail,
-						'contact.password': 'Pa$$w0rd',
+						'contact.password': password,
 						'contact.givenName': 'test-apply-given',
 						'contact.surname': 'test-apply-sur',
 						'contact.title': 'test-apply-title',
@@ -443,7 +451,7 @@ describe('affiliateApi - Application', () => {
 			it('should return token for account', (done) => {
 				securityApi.passwordToken({
 						username: denyEmail,
-						password: 'Pa$$w0rd'
+						password: password
 					})
 					.then((result) => {
 						denyUserToken = result.body.accessToken;
@@ -468,7 +476,7 @@ describe('affiliateApi - Application', () => {
 						should.exist(result.body.application.approvalDate);
 						_.isObject(result.body.application.approver).should.be.ok;
 						result.body.application.approver.should.have.properties(['href', 'givenName', 'surname']);
-						result.body.application.approver.href.should.be.equal('https://api.stormpath.com/v1/accounts/22gdzGBJWvXasOme1kiWkW');
+						result.body.application.approver.href.should.be.equal(approverAccount);
 						result.body.application.approver.givenName.should.not.be.empty;
 						result.body.application.approver.surname.should.not.be.empty;
 						done();
