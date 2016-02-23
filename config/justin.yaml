@@ -30,6 +30,8 @@ affiliateService:
 #production
 
 #ci:
+
+stormpath:
   apiKey:
     id: 4MW5I4WPBI0LRCR8OKTAGTAW7
     secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
