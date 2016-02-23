@@ -5,6 +5,16 @@ import should from 'should';
 import _ from 'lodash';
 import setup from '../setup';
 
+const password = 'Pa$$w0rd';
+
+//prod
+//const test170001Org = 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE';
+//const test170001User = 'test-affiliate-170001@test.com';
+
+//ci
+const test170001Org = 'https://api.stormpath.com/v1/organizations/7hUmZ0AZC5MZE7qK7AYa8I';
+const test170001User = 'test-affiliate-170001@test.com';
+
 /** @namespace result.body.should.have */
 describe('affiliateApi - Reports', () => {
 
@@ -31,10 +41,10 @@ describe('affiliateApi - Reports', () => {
 
 		it('should setup', (done) => {
 
-			setup.getPasswordToken('test-affiliate-170001@test.com', 'Pa$$w0rd', {
+			setup.getPasswordToken(test170001User, password, {
 				fetchAccount: false,
 				searchTerm: 'href',
-				searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+				searchValue: test170001Org
 			}, (err, result) => {
 				if (err) {
 					done(err);
@@ -621,7 +631,7 @@ describe('affiliateApi - Reports', () => {
 			affiliateId: options.affiliateId ? options.affiliateId : 170001,
 			interval: options.interval ? options.interval : 'daily',
 			device: options.device ? options.device : 'all',
-			vertical: options.vertical ? options.vertical: 'all'
+			vertical: options.vertical ? options.vertical : 'all'
 		};
 
 		if (options.limit) {
@@ -644,7 +654,7 @@ describe('affiliateApi - Reports', () => {
 		affiliateApi[func]({
 			interval: options.interval ? options.interval : 'daily',
 			device: options.device ? options.device : 'all',
-			vertical: options.vertical ? options.vertical: 'all'
+			vertical: options.vertical ? options.vertical : 'all'
 		})
 			.then((result) => {
 				validateTopEpcReport(result);

@@ -8,6 +8,19 @@ import setup from '../setup';
 
 const testEmail = 'test-account13@test.com';
 const testUsername = 'test-account13';
+const password = 'Pa$$w0rd';
+
+//prod
+//const aegOrg = 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l';
+//const aegOrgUser = 'test@test.com';
+//const aegOrgUserHref = 'https://api.stormpath.com/v1/accounts/17N7wS7jbDrDuVuqzs2e3Q';
+//const aegOrgScope = 'https://api.stormpath.com/v1/groups/5stLcVH2AgzVo1lgsBVCrc';
+
+//ci
+const aegOrg = 'https://api.stormpath.com/v1/organizations/yDtISjHeCinprKx35GVIw';
+const aegOrgUser = 'test@test.com';
+const aegOrgUserHref = 'https://api.stormpath.com/v1/accounts/2lyxyWP7dBnQZ7JzrFNRhK';
+const aegOrgScope = 'https://api.stormpath.com/v1/groups/30Y0UOKWAMlm32AKUWI3Ig';
 
 /** @namespace result.body.should.have */
 describe('securityApi - Account', () => {
@@ -44,11 +57,11 @@ describe('securityApi - Account', () => {
 		it('should register without error', (done) => {
 			securityApi.registerAccount({
 					email: testEmail,
-					password: 'Pa$$w0rd',
+					password: password,
 					givenName: 'test',
 					surname: 'test',
 					username: testUsername,
-					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l',
+					organization: aegOrg,
 					customData: JSON.stringify({
 						test: 'test',
 						org: {
@@ -83,11 +96,11 @@ describe('securityApi - Account', () => {
 		it('should not register with duplicate email', (done) => {
 			securityApi.registerAccount({
 					email: testEmail,
-					password: 'Pa$$w0rd',
+					password: password,
 					givenName: 'test',
 					surname: 'test',
 					username: testUsername,
-					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l',
+					organization: aegOrg,
 					customData: JSON.stringify({
 						test: 'test',
 						org: {
@@ -108,8 +121,8 @@ describe('securityApi - Account', () => {
 		it('should return password token without error', (done) => {
 			securityApi.passwordToken({
 					username: testEmail,
-					password: 'Pa$$w0rd',
-					organization: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
+					password: password,
+					organization: aegOrg
 				})
 				.then((result) => {
 					result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope']);
@@ -157,7 +170,7 @@ describe('securityApi - Account', () => {
 		it('should not update account with an existing email', (done) => {
 			securityApi.setToken(registeredPasswordToken);
 			securityApi.updateAccountProfile({
-					email: 'test@test.com',
+					email: aegOrgUser,
 					id: registeredAccountHref
 				})
 				.then(() => {
@@ -218,7 +231,7 @@ describe('securityApi - Account', () => {
 
 		it('should not get another account by id', (done) => {
 			securityApi.setToken(registeredPasswordToken);
-			securityApi.getAccount({id: 'https://api.stormpath.com/v1/accounts/17N7wS7jbDrDuVuqzs2e3Q'})
+			securityApi.getAccount({id: aegOrgUserHref})
 				.then(() => {
 					done(new Error('Should not have retrieved an account'));
 				})
@@ -292,7 +305,7 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.addScopeToAccount({
 						account: registeredAccountHref,
-						scope: 'https://api.stormpath.com/v1/groups/5stLcVH2AgzVo1lgsBVCrc'
+						scope: aegOrgScope
 					})
 					.then((result) => {
 						result.body.message.should.be.equal('success');
@@ -328,7 +341,7 @@ describe('securityApi - Account', () => {
 				securityApi.setToken(adminPasswordToken);
 				securityApi.removeScopeFromAccount({
 						account: registeredAccountHref,
-						scope: 'https://api.stormpath.com/v1/groups/5stLcVH2AgzVo1lgsBVCrc'
+						scope: aegOrgScope
 					})
 					.then((result) => {
 						result.body.message.should.be.equal('success');

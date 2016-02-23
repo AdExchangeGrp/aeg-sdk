@@ -6,6 +6,22 @@ import jwt from 'njwt';
 import config from 'config';
 import should from 'should';
 
+const password = 'Pa$$w0rd';
+
+//prod
+//const aegOrg = 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l';
+//const aegOrgUser = 'test@test.com';
+//const testAffOrg = 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c';
+//const test170001Org = 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE';
+//const test170001User = 'test-affiliate-170001@test.com';
+
+//ci
+const aegOrg = 'https://api.stormpath.com/v1/organizations/yDtISjHeCinprKx35GVIw';
+const aegOrgUser = 'test@test.com';
+const testAffOrg = 'https://api.stormpath.com/v1/organizations/40PJXqW5BiEtk4RgIG1qeA';
+const test170001Org = 'https://api.stormpath.com/v1/organizations/7hUmZ0AZC5MZE7qK7AYa8I';
+const test170001User = 'test-affiliate-170001@test.com';
+
 /** @namespace result.body.should.have */
 describe('securityApi - OAuth', () => {
 
@@ -26,11 +42,11 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token with org href and not return the account object', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
+						username: aegOrgUser,
+						password: password,
 						fetchAccount: false,
 						searchTerm: 'href',
-						searchValue: 'https://api.stormpath.com/v1/organizations/5ejJyvdIsJNZ2j5clY0o1l'
+						searchValue: aegOrg
 					})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken']);
@@ -58,11 +74,11 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token with the org href and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
-						username: 'test-affiliate-170001@test.com',
-						password: 'Pa$$w0rd',
+						username: test170001User,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'href',
-						searchValue: 'https://api.stormpath.com/v1/organizations/FY4fz7C6gywxukmYolq3c'
+						searchValue: testAffOrg
 					})
 					.then(() => {
 						done(new Error('Should have failed'));
@@ -78,8 +94,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token with the org name', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
+						username: aegOrgUser,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'name',
 						searchValue: 'Ad Exchange Group'
@@ -109,8 +125,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token with the org name and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
-						username: 'test-affiliate-170001@test.com',
-						password: 'Pa$$w0rd',
+						username: test170001User,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'name',
 						searchValue: 'Test Affiliate'
@@ -129,8 +145,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token with the org nameKey', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
+						username: aegOrgUser,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'nameKey',
 						searchValue: 'adexchange'
@@ -160,8 +176,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should not return password token with the org nameKey and should not hit the default directory', (done) => {
 				securityApi.passwordToken({
-						username: 'test-affiliate-170001@test.com',
-						password: 'Pa$$w0rd',
+						username: test170001User,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'nameKey',
 						searchValue: 'adexchange'
@@ -176,8 +192,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token with an org nameKey that exists but the account does not belong to', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
+						username: aegOrgUser,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'nameKey',
 						searchValue: 'test-affiliate'
@@ -207,8 +223,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token with the wrong nameKey since its an AEG directory user', (done) => {
 				securityApi.passwordToken({
-						username: 'test@test.com',
-						password: 'Pa$$w0rd',
+						username: aegOrgUser,
+						password: password,
 						fetchAccount: true,
 						searchTerm: 'nameKey',
 						searchValue: '123456'
@@ -241,7 +257,7 @@ describe('securityApi - OAuth', () => {
 		describe('no search', () => {
 
 			it('should return password token', (done) => {
-				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd', fetchAccount: true})
+				securityApi.passwordToken({username: aegOrgUser, password: password, fetchAccount: true})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken', 'tokenType', 'expiresIn', 'scope', 'account']);
 						(_.isObject(result.body.account)).should.be.ok;
@@ -263,8 +279,8 @@ describe('securityApi - OAuth', () => {
 
 			it('should return password token for an account without an organization specified', (done) => {
 				securityApi.passwordToken({
-						username: 'test-affiliate-170001@test.com',
-						password: 'Pa$$w0rd',
+						username: test170001User,
+						password: password,
 						fetchAccount: true
 					})
 					.then(() => {
@@ -276,7 +292,7 @@ describe('securityApi - OAuth', () => {
 			});
 
 			it('should not return password token', (done) => {
-				securityApi.passwordToken({username: 'test@test.com', password: 'Pa$$w0rd2', fetchAccount: true})
+				securityApi.passwordToken({username: aegOrgUser, password: 'Pa$$w0rd2', fetchAccount: true})
 					.then(() => {
 						done(new Error('Should have failed'));
 					})
@@ -295,11 +311,11 @@ describe('securityApi - OAuth', () => {
 
 			it('should get a password token for an organization account', (done) => {
 				securityApi.passwordToken({
-						username: 'test-affiliate-170001@test.com',
-						password: 'Pa$$w0rd',
+						username: test170001User,
+						password: password,
 						fetchAccount: false,
 						searchTerm: 'href',
-						searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+						searchValue: test170001Org
 					})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken']);
@@ -314,7 +330,7 @@ describe('securityApi - OAuth', () => {
 							} else {
 								should.exist(expanded.body.organization);
 								expanded.body.organization.should.have.properties(['href', 'nameKey']);
-								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
+								expanded.body.organization.href.should.be.equal(test170001Org);
 								expanded.body.organization.nameKey.should.be.equal('170001');
 								done();
 							}
@@ -330,7 +346,7 @@ describe('securityApi - OAuth', () => {
 				securityApi.refreshPasswordToken({
 						refreshToken: refreshToken,
 						searchTerm: 'href',
-						searchValue: 'https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE'
+						searchValue: test170001Org
 					})
 					.then((result) => {
 						result.body.should.have.properties(['accessToken', 'refreshToken']);
@@ -345,7 +361,7 @@ describe('securityApi - OAuth', () => {
 							} else {
 								should.exist(expanded.body.organization);
 								expanded.body.organization.should.have.properties(['href', 'nameKey']);
-								expanded.body.organization.href.should.be.equal('https://api.stormpath.com/v1/organizations/WEtXUXdI444q8jNq7NGAE');
+								expanded.body.organization.href.should.be.equal(test170001Org);
 								expanded.body.organization.nameKey.should.be.equal('170001');
 								done();
 							}
