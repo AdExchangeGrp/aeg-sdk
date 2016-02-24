@@ -18,6 +18,7 @@ class Authorize extends EventEmitter {
 
 		const invalidToken = 'Invalid token';
 		const expiredToken = 'Expired token';
+		const wrongEnvToken = 'Token environment mismatch';
 		const appConfig = config.get('app');
 		const stormpathConfig = config.get('stormpath');
 
@@ -51,7 +52,13 @@ class Authorize extends EventEmitter {
 										callback(new UnauthorizedError(invalidToken));
 									}
 								} else {
-									let tokenScopes = token.parseScopesFromJwt(expandedJwt);
+
+									if (token.parseEnvFromJwt(expandedJwt) !== process.env.NODE_ENV) {
+										return callback(new UnauthorizedError(wrongEnvToken));
+									}
+
+									const tokenScopes = token.parseScopesFromJwt(expandedJwt);
+
 									if (_.intersection(adminScopes, tokenScopes).length) {
 										callback();
 									} else {
@@ -87,7 +94,12 @@ class Authorize extends EventEmitter {
 										callback(new UnauthorizedError(invalidToken));
 									}
 								} else {
-									let tokenScopes = token.parseScopesFromJwt(expandedJwt);
+
+									if (token.parseEnvFromJwt(expandedJwt) !== process.env.NODE_ENV) {
+										return callback(new UnauthorizedError(wrongEnvToken));
+									}
+
+									const tokenScopes = token.parseScopesFromJwt(expandedJwt);
 
 									self.emit('debug', {
 										message: 'adminOrAffiliate', data: {
