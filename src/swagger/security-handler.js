@@ -10,6 +10,7 @@ import { EventEmitter } from 'events';
 const stormpathConfig = config.get('stormpath');
 const invalidToken = 'Invalid token';
 const expiredToken = 'Expired token';
+const wrongEnvToken = 'Token environment mismatch';
 
 class SecurityHandler extends EventEmitter {
 
@@ -35,7 +36,11 @@ class SecurityHandler extends EventEmitter {
 
 					} else {
 
-						let authorizedScopes = expandedJwt.body.scope.split(' ');
+						if (token.parseEnvFromJwt(expandedJwt) !== process.env.NODE_ENV) {
+							return callback(new UnauthorizedError(wrongEnvToken));
+						}
+
+						const authorizedScopes = expandedJwt.body.scope.split(' ');
 
 						self.emit('debug', {
 							message: 'API Token Scopes', data: {
