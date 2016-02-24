@@ -56,6 +56,15 @@ export default {
 	},
 
 	/**
+	 * Parses the environment from a JWT token
+	 * @param {Object} jwt
+	 * @returns {*}
+	 */
+	parseEnvFromJwt: function (jwt) {
+		return jwt.body.env;
+	},
+
+	/**
 	 * Determines whether the token is the result of a password OAUTH flow
 	 * @param {Object} jwt
 	 */
