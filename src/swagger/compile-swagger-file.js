@@ -11,13 +11,17 @@ import config from 'config';
  */
 export default (swaggerPath) => {
 
-	let protocols = process.env.NODE_ENV === 'production' ? ['https'] : ['https', 'http'];
-
 	let adminScopes = [];
-	var defaultResponseCodes = [];
+	let defaultResponseCodes = [];
+	let protocols = ['http', 'https'];
 
 	if (config.has('app')) {
 		const appConfig = config.get('app');
+
+		if (appConfig.protocols) {
+			protocols = appConfig.protocols;
+		}
+
 		if (appConfig.authorizations && appConfig.authorizations.adminScopes) {
 			adminScopes = appConfig.authorizations.adminScopes;
 		}
