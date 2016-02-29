@@ -13,7 +13,7 @@ export default {
 	 * @param {Object} account
 	 * @param {function} callback
 	 */
-	getOrganizationForAccount: function (account, callback) {
+	getDefaultOrganizationForAccount: function (account, callback) {
 		async.waterfall([
 			(callback) => {
 				account.getDirectory(callback);
