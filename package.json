@@ -41,7 +41,6 @@
     "node-uuid": "^1.4.7",
     "q": "^1.4.1",
     "request": "^2.65.0",
-    "stormpath": "^0.17.4",
     "swagger-js-codegen": "^1.1.5",
     "yargs": "^3.29.0"
   },
