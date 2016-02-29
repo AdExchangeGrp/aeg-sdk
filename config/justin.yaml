@@ -27,20 +27,10 @@ affiliateService:
 #  application:
 #    href: https://api.stormpath.com/v1/applications/6x9i1BvcTdaUTjbWhYhNbx
 
-#production
-
-#ci:
-
+#ci
 stormpath:
   apiKey:
     id: 4MW5I4WPBI0LRCR8OKTAGTAW7
     secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
   application:
     href: https://api.stormpath.com/v1/applications/X3drpV1iQTPh1uSwLuUpW
-
-aws:
-  public: "AKIAI6UQYWI5EOZXIN7A"
-  private: "I2Gv3Z22YsEHEumeFLNKBCsCptT97t2kttBVCnnx"
-  ses:
-    from: 'donotreply@aegaffiliate.com'
-    zone: 'https://email.us-west-2.amazonaws.com'
