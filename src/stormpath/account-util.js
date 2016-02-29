@@ -9,6 +9,29 @@ import async from 'async';
 export default {
 
 	/**
+	 * Get the default organization for an account via their directory
+	 * @param {Object} account
+	 * @param {function} callback
+	 */
+	getDefaultOrganizationForAccount: function (account, callback) {
+		async.waterfall([
+			(callback) => {
+				account.getDirectory(callback);
+			},
+			(directory, callback) => {
+				directory.getOrganizations((err, organizations) => {
+					if (err) {
+						callback(err);
+					} else {
+						const organization = organizations.items.length ? organizations.items[0] : null;
+						callback(null, organization);
+					}
+				});
+			}
+		], callback);
+	},
+
+	/**
 	 * Returns an array of all enabled groups that an account is associated too
 	 * @param {Object} account
 	 * @param {function} callback
