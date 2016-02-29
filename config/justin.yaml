@@ -1,10 +1,10 @@
-#securityService:
-#  host: http://localhost:3000/v1
-#  swagger: http://localhost:3000/v1/swagger
-#
-#affiliateService:
-#  host: http://localhost:3002/v1
-#  swagger: http://localhost:3002/v1/swagger
+securityService:
+  host: http://localhost:3000/v1
+  swagger: http://localhost:3000/v1/swagger
+
+affiliateService:
+  host: http://localhost:3002/v1
+  swagger: http://localhost:3002/v1/swagger
 
 #securityService:
 #  host: https://api.aegcamp.com/v1/security
@@ -12,11 +12,11 @@
 #affiliateService:
 #  host: https://api.aegcamp.com/v1/affiliate
 
-securityService:
-  host: https://api-ci.aegcamp.com/v1/security
-
-affiliateService:
-  host: https://api-ci.aegcamp.com/v1/affiliate
+#securityService:
+#  host: https://api-ci.aegcamp.com/v1/security
+#
+#affiliateService:
+#  host: https://api-ci.aegcamp.com/v1/affiliate
 
 #production
 
