@@ -3,3 +3,8 @@ securityService:
 
 affiliateService:
   host: https://api.aegcamp.com/v1/affiliate
+
+stormpath:
+  apiKey:
+    id: 3555F4IHMVXTSB0WUZFJQZQPJ
+    secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww

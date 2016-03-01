@@ -17,3 +17,16 @@ affiliateService:
 #
 #affiliateService:
 #  host: https://api-ci.aegcamp.com/v1/affiliate
+
+#production
+
+#stormpath:
+#  apiKey:
+#    id: 3555F4IHMVXTSB0WUZFJQZQPJ
+#    secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww
+
+#ci
+stormpath:
+  apiKey:
+    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
+    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
