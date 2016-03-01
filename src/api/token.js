@@ -49,7 +49,7 @@ class Token extends EventEmitter {
 			securityApi.setToken(accessToken);
 			securityApi.authorize({scopes: 'affiliate:service', strict: false})
 				.then(() => {
-					if (Token._willExpire()) {
+					if (Token._willExpire(app)) {
 						this.emit('debug', {message: 'service level api token will expire'});
 						this._refreshToken(app, callback);
 					} else {
