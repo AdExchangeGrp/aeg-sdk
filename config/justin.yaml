@@ -1,10 +1,19 @@
-securityService:
-  host: http://localhost:3000/v1
-  swagger: http://localhost:3000/v1/swagger
+#local
 
-affiliateService:
-  host: http://localhost:3002/v1
-  swagger: http://localhost:3002/v1/swagger
+#securityService:
+#  host: http://localhost:3000/v1
+#  swagger: http://localhost:3000/v1/swagger
+#
+#affiliateService:
+#  host: http://localhost:3002/v1
+#  swagger: http://localhost:3002/v1/swagger
+
+#stormpath:
+#  apiKey:
+#    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
+#    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
+
+#production
 
 #securityService:
 #  host: https://api.aegcamp.com/v1/security
@@ -12,25 +21,20 @@ affiliateService:
 #affiliateService:
 #  host: https://api.aegcamp.com/v1/affiliate
 
-#securityService:
-#  host: https://api-ci.aegcamp.com/v1/security
-#
-#affiliateService:
-#  host: https://api-ci.aegcamp.com/v1/affiliate
-
-#production
-
 #stormpath:
 #  apiKey:
 #    id: 3555F4IHMVXTSB0WUZFJQZQPJ
 #    secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww
-#  application:
-#    href: https://api.stormpath.com/v1/applications/6x9i1BvcTdaUTjbWhYhNbx
 
 #ci
+
+securityService:
+  host: https://api-ci.aegcamp.com/v1/security
+
+affiliateService:
+  host: https://api-ci.aegcamp.com/v1/affiliate
+
 stormpath:
   apiKey:
     id: 4MW5I4WPBI0LRCR8OKTAGTAW7
     secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
-  application:
-    href: https://api.stormpath.com/v1/applications/X3drpV1iQTPh1uSwLuUpW

@@ -3,7 +3,7 @@
 import { EventEmitter } from 'events';
 import config  from 'config';
 import securityApi from './security-api';
-import { token } from '../stormpath';
+import { token } from '@adexchange/aeg-stormpath';
 import ApiError from './api-error';
 
 class Token extends EventEmitter {

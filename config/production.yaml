@@ -8,5 +8,3 @@ stormpath:
   apiKey:
     id: 3555F4IHMVXTSB0WUZFJQZQPJ
     secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww
-  application:
-    href: https://api.stormpath.com/v1/applications/6x9i1BvcTdaUTjbWhYhNbx

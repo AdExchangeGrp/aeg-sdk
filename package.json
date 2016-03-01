@@ -29,13 +29,12 @@
     "should": "^5.2.0"
   },
   "dependencies": {
+    "@adexchange/aeg-stormpath": "0.0.2",
     "async": "^1.5.0",
     "babel-core": "^6.1.21",
     "babel-preset-es2015": "^6.1.18",
     "config": "^1.16.0",
-    "express-redis-cache": "^0.2.0",
     "lodash": "^3.10.1",
-    "merge": "^1.2.0",
     "njwt": "^0.2.3",
     "node-uuid": "^1.4.7",
     "q": "^1.4.1",
