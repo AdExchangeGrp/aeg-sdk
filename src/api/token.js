@@ -86,7 +86,8 @@ class Token extends EventEmitter {
 			})
 			.then((result) => {
 				app.set('accessToken', result.body.accessToken);
-				app.set('expiresIn', result.body.expiresIn);
+				//api is in seconds, subtract a 30 second buffer
+				app.set('expiresIn', new Date(new Date().getTime() + ((result.body.expiresIn - 30) * 1000)));
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
@@ -106,7 +107,7 @@ class Token extends EventEmitter {
 		if (!expiresIn) {
 			return true;
 		}
-		return new Date((expiresIn * 1000) - 30) <= new Date();
+		return expiresIn <= new Date();
 	}
 
 }
