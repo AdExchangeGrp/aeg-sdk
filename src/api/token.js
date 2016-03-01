@@ -5,9 +5,44 @@ import config  from 'config';
 import securityApi from './security-api';
 import ApiError from './api-error';
 
+/**
+ * Manages an access token refresh cycle
+ */
 class Token extends EventEmitter {
 
-	fetch(app, callback) {
+	/**
+	 * Wraps an api call to ensure a valid token
+	 * @param {Object} app - express app
+	 * @param {Object} api - api module
+	 * @param {string} apiCall - api method name
+	 * @param {Object} apiCallOptions - options
+	 * @param {function} callback - nodeback
+	 */
+	callApi(app, api, apiCall, apiCallOptions, callback) {
+		this._fetch(app, (err, token) => {
+			if (err) {
+				this.emit('error', {message: 'Could not get api token', data: err});
+				callback(err);
+			} else {
+				api.setToken(token);
+				api[apiCall](apiCallOptions)
+					.then((result) => {
+						callback(null, result.body);
+					})
+					.fail((err) => {
+						callback(new ApiError(err));
+					});
+			}
+		});
+	}
+
+	/**
+	 * Try to fetch a valid access token
+	 * @param {Object} app - express app
+	 * @param {function} callback - nodeback
+	 * @private
+	 */
+	_fetch(app, callback) {
 		const accessToken = app.get('accessToken');
 
 		if (accessToken) {
@@ -16,23 +51,29 @@ class Token extends EventEmitter {
 				.then(() => {
 					if (Token._willExpire()) {
 						this.emit('debug', {message: 'service level api token will expire'});
-						this.refreshToken(app, callback);
+						this._refreshToken(app, callback);
 					} else {
 						callback(null, accessToken);
 					}
 				})
 				.fail(() => {
 					this.emit('debug', {message: 'service level api token has expired'});
-					this.refreshToken(app, callback);
+					this._refreshToken(app, callback);
 				});
 
 		} else {
 			this.emit('debug', {message: 'service level api token not found'});
-			this.refreshToken(app, callback);
+			this._refreshToken(app, callback);
 		}
 	}
 
-	refreshToken(app, callback) {
+	/**
+	 * Try to refresh an access token
+	 * @param {Object} app - express app
+	 * @param {function} callback - nodeback
+	 * @private
+	 */
+	_refreshToken(app, callback) {
 
 		let appConfig = config.get('app');
 
@@ -54,24 +95,12 @@ class Token extends EventEmitter {
 			});
 	}
 
-	callApi(app, api, apiCall, apiCallOptions, callback) {
-		this.fetch(app, (err, token) => {
-			if (err) {
-				this.emit('error', {message: 'Could not get api token', data: err});
-				callback(err);
-			} else {
-				api.setToken(token);
-				api[apiCall](apiCallOptions)
-					.then((result) => {
-						callback(null, result.body);
-					})
-					.fail((err) => {
-						callback(new ApiError(err));
-					});
-			}
-		});
-	}
-
+	/**
+	 * Test to see if a token will expire in the next 30 seconds
+	 * @param {Object} app - express app
+	 * @returns {boolean}
+	 * @private
+	 */
 	static _willExpire(app) {
 		const expiresIn = app.get('expiresIn');
 		if (!expiresIn) {

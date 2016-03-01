@@ -1,4 +1,5 @@
 /*jshint -W069 */
+/* AUTO GENERATED DO NOT EDIT */
 /**
  * Security endpoints for CAMP 2.0 services
  * @class SecurityService
