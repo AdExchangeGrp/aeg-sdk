@@ -3,26 +3,23 @@
 import { EventEmitter } from 'events';
 import config  from 'config';
 import securityApi from './security-api';
-import { token } from '@adexchange/aeg-stormpath';
 import ApiError from './api-error';
 
 class Token extends EventEmitter {
 
 	fetch(app, callback) {
-		let accessToken = app.get('accessToken');
+		const accessToken = app.get('accessToken');
 
 		if (accessToken) {
 			securityApi.setToken(accessToken);
 			securityApi.authorize({scopes: 'affiliate:service', strict: false})
 				.then(() => {
-					token.willExpire(accessToken, 30, (err) => {
-						if (err) {
-							this.emit('debug', {message: 'service level api token will expire'});
-							this.refreshToken(app, callback);
-						} else {
-							callback(null, accessToken);
-						}
-					});
+					if (Token._willExpire()) {
+						this.emit('debug', {message: 'service level api token will expire'});
+						this.refreshToken(app, callback);
+					} else {
+						callback(null, accessToken);
+					}
 				})
 				.fail(() => {
 					this.emit('debug', {message: 'service level api token has expired'});
@@ -48,6 +45,7 @@ class Token extends EventEmitter {
 			})
 			.then((result) => {
 				app.set('accessToken', result.body.accessToken);
+				app.set('expiresIn', result.body.expiresIn);
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
@@ -72,6 +70,14 @@ class Token extends EventEmitter {
 					});
 			}
 		});
+	}
+
+	static _willExpire(app) {
+		const expiresIn = app.get('expiresIn');
+		if (!expiresIn) {
+			return true;
+		}
+		return new Date((expiresIn * 1000) - 30) <= new Date();
 	}
 
 }
