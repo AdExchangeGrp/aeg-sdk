@@ -5,8 +5,3 @@ securityService:
 affiliateService:
   host: http://localhost:3002/v1
   swagger: http://localhost:3002/v1/swagger
-
-stormpath:
-  apiKey:
-    id: 3555F4IHMVXTSB0WUZFJQZQPJ
-    secret: qSAhf1HC39wmnz1/UVKvpwyfVWPywrqE9Te8CdwGGww

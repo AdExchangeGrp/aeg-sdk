@@ -1,4 +1,5 @@
 /*jshint -W069 */
+/* AUTO GENERATED DO NOT EDIT */
 /**
  * Affiliate operations for Camp 2.0
  * @class AffiliateService

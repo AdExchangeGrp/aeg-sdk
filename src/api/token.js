@@ -3,61 +3,23 @@
 import { EventEmitter } from 'events';
 import config  from 'config';
 import securityApi from './security-api';
-import { token } from '@adexchange/aeg-stormpath';
 import ApiError from './api-error';
 
+/**
+ * Manages an access token refresh cycle
+ */
 class Token extends EventEmitter {
 
-	fetch(app, callback) {
-		let accessToken = app.get('accessToken');
-
-		if (accessToken) {
-			securityApi.setToken(accessToken);
-			securityApi.authorize({scopes: 'affiliate:service', strict: false})
-				.then(() => {
-					token.willExpire(accessToken, 30, (err) => {
-						if (err) {
-							this.emit('debug', {message: 'service level api token will expire'});
-							this.refreshToken(app, callback);
-						} else {
-							callback(null, accessToken);
-						}
-					});
-				})
-				.fail(() => {
-					this.emit('debug', {message: 'service level api token has expired'});
-					this.refreshToken(app, callback);
-				});
-
-		} else {
-			this.emit('debug', {message: 'service level api token not found'});
-			this.refreshToken(app, callback);
-		}
-	}
-
-	refreshToken(app, callback) {
-
-		let appConfig = config.get('app');
-
-		this.emit('debug', {message: 'refresh service level api token'});
-
-		securityApi.apiToken({
-				Authorization: 'Basic ' + new Buffer(appConfig.apiKey.id + ':' + appConfig.apiKey.secret).toString('base64'),
-				grantType: 'client_credentials',
-				scope: 'affiliate:service'
-			})
-			.then((result) => {
-				app.set('accessToken', result.body.accessToken);
-				callback(null, result.body.accessToken);
-			})
-			.fail((err) => {
-				this.emit('error', {message: 'failed to refresh service level api token', data: err});
-				callback(err);
-			});
-	}
-
+	/**
+	 * Wraps an api call to ensure a valid token
+	 * @param {Object} app - express app
+	 * @param {Object} api - api module
+	 * @param {string} apiCall - api method name
+	 * @param {Object} apiCallOptions - options
+	 * @param {function} callback - nodeback
+	 */
 	callApi(app, api, apiCall, apiCallOptions, callback) {
-		this.fetch(app, (err, token) => {
+		this._fetch(app, (err, token) => {
 			if (err) {
 				this.emit('error', {message: 'Could not get api token', data: err});
 				callback(err);
@@ -72,6 +34,79 @@ class Token extends EventEmitter {
 					});
 			}
 		});
+	}
+
+	/**
+	 * Try to fetch a valid access token
+	 * @param {Object} app - express app
+	 * @param {function} callback - nodeback
+	 * @private
+	 */
+	_fetch(app, callback) {
+		const accessToken = app.get('accessToken');
+
+		if (accessToken) {
+			securityApi.setToken(accessToken);
+			securityApi.authorize({scopes: 'affiliate:service', strict: false})
+				.then(() => {
+					if (Token._willExpire()) {
+						this.emit('debug', {message: 'service level api token will expire'});
+						this._refreshToken(app, callback);
+					} else {
+						callback(null, accessToken);
+					}
+				})
+				.fail(() => {
+					this.emit('debug', {message: 'service level api token has expired'});
+					this._refreshToken(app, callback);
+				});
+
+		} else {
+			this.emit('debug', {message: 'service level api token not found'});
+			this._refreshToken(app, callback);
+		}
+	}
+
+	/**
+	 * Try to refresh an access token
+	 * @param {Object} app - express app
+	 * @param {function} callback - nodeback
+	 * @private
+	 */
+	_refreshToken(app, callback) {
+
+		let appConfig = config.get('app');
+
+		this.emit('debug', {message: 'refresh service level api token'});
+
+		securityApi.apiToken({
+				Authorization: 'Basic ' + new Buffer(appConfig.apiKey.id + ':' + appConfig.apiKey.secret).toString('base64'),
+				grantType: 'client_credentials',
+				scope: 'affiliate:service'
+			})
+			.then((result) => {
+				app.set('accessToken', result.body.accessToken);
+				app.set('expiresIn', result.body.expiresIn);
+				callback(null, result.body.accessToken);
+			})
+			.fail((err) => {
+				this.emit('error', {message: 'failed to refresh service level api token', data: err});
+				callback(err);
+			});
+	}
+
+	/**
+	 * Test to see if a token will expire in the next 30 seconds
+	 * @param {Object} app - express app
+	 * @returns {boolean}
+	 * @private
+	 */
+	static _willExpire(app) {
+		const expiresIn = app.get('expiresIn');
+		if (!expiresIn) {
+			return true;
+		}
+		return new Date((expiresIn * 1000) - 30) <= new Date();
 	}
 
 }
