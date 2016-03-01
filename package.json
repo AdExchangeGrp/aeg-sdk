@@ -37,6 +37,7 @@
     "lodash": "^3.10.1",
     "njwt": "^0.2.3",
     "node-uuid": "^1.4.7",
+    "q": "^1.4.1",
     "request": "^2.65.0",
     "swagger-js-codegen": "^1.1.5",
     "yargs": "^3.29.0"
