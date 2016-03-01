@@ -1,17 +1,17 @@
 #local
 
-#securityService:
-#  host: http://localhost:3000/v1
-#  swagger: http://localhost:3000/v1/swagger
-#
-#affiliateService:
-#  host: http://localhost:3002/v1
-#  swagger: http://localhost:3002/v1/swagger
+securityService:
+  host: http://localhost:3000/v1
+  swagger: http://localhost:3000/v1/swagger
 
-#stormpath:
-#  apiKey:
-#    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
-#    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
+affiliateService:
+  host: http://localhost:3002/v1
+  swagger: http://localhost:3002/v1/swagger
+
+stormpath:
+  apiKey:
+    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
+    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
 
 #production
 
@@ -28,13 +28,13 @@
 
 #ci
 
-securityService:
-  host: https://api-ci.aegcamp.com/v1/security
-
-affiliateService:
-  host: https://api-ci.aegcamp.com/v1/affiliate
-
-stormpath:
-  apiKey:
-    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
-    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
+#securityService:
+#  host: https://api-ci.aegcamp.com/v1/security
+#
+#affiliateService:
+#  host: https://api-ci.aegcamp.com/v1/affiliate
+#
+#stormpath:
+#  apiKey:
+#    id: 4MW5I4WPBI0LRCR8OKTAGTAW7
+#    secret: 6+D5saEKgPUToaQdbPdvrdN8aJJkkOwwDNqPzaEteeA
