@@ -5,7 +5,6 @@ machine:
 dependencies:
   pre:
     - npm install -g npm
-    - echo //registry.npmjs.org/:_authToken=$NPM_TOKEN  >> ~/.npmrc
 
 test:
   override:
