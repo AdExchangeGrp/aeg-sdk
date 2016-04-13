@@ -38,7 +38,7 @@ var AffiliateService = (function() {
     };
 
     /**
-     * Changes the logging level of the service
+     * Changes the logging level of the service.
      * @method
      * @name AffiliateService#logLevel
      * @param {string} level - Log level
@@ -127,7 +127,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Flushes the affiliate cache
+     * Flushes the affiliate cache.
      * @method
      * @name AffiliateService#controlCacheFlush
      * 
@@ -206,7 +206,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Returns applications
+     * Returns applications.
      * @method
      * @name AffiliateService#applications
      * @param {string} account - Account href
@@ -290,7 +290,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Get an application
+     * Get an application.
      * @method
      * @name AffiliateService#application
      * @param {string} id - Application id
@@ -464,7 +464,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Apply to be an affiliate
+     * Apply to be an affiliate.
      * @method
      * @name AffiliateService#applicationApply
      * @param {string} contact.email - Contact email address and primary user name
@@ -809,7 +809,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Resubmit an application to be an affiliate
+     * Resubmit an application to be an affiliate.
      * @method
      * @name AffiliateService#applicationResubmit
      * @param {string} contact.givenName - Contact given name
@@ -1143,7 +1143,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Approve an affiliate application
+     * Approve an affiliate application.
      * @method
      * @name AffiliateService#applicationApprove
      * @param {string} id - Application id
@@ -1240,7 +1240,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Deny an affiliate application
+     * Deny an affiliate application.
      * @method
      * @name AffiliateService#applicationDeny
      * @param {string} id - Application id
@@ -1332,7 +1332,7 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Validates a new affiliate id
+     * Validates a new affiliate id.
      * @method
      * @name AffiliateService#applicationValidateAffiliateId
      * @param {string} id - Affiliate id
@@ -1593,382 +1593,9 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Affiliate performance data matching HP. Must be the affiliate or admin scoped.
+     * Affiliate performance data. Must be the affiliate or admin scoped.
      * @method
-     * @name AffiliateService#reportsPerformanceHP
-     * @param {string} affiliateId - The affiliate id
-     * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} device - Mobile or desktop
-     * @param {string} vertical - The market vertical
-     * @param {string} sort - The sort to apply
-     * @param {string} sortDirection - The sort direction to apply
-     * 
-     */
-    AffiliateService.prototype.reportsPerformanceHP = function(parameters) {
-        if (parameters === undefined) {
-            parameters = {};
-        }
-        var deferred = Q.defer();
-
-        var domain = this.domain;
-        var path = '/hp/{affiliateId}/reports/performance';
-
-        var body;
-        var queryParameters = {};
-        var headers = {};
-        var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        path = path.replace('{affiliateId}', parameters['affiliateId']);
-
-        if (parameters['affiliateId'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: affiliateId'));
-            return deferred.promise;
-        }
-
-        if (parameters['interval'] !== undefined) {
-            queryParameters['interval'] = parameters['interval'];
-        }
-
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
-        }
-
-        if (parameters['device'] !== undefined) {
-            queryParameters['device'] = parameters['device'];
-        }
-
-        if (parameters['device'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: device'));
-            return deferred.promise;
-        }
-
-        if (parameters['vertical'] !== undefined) {
-            queryParameters['vertical'] = parameters['vertical'];
-        }
-
-        if (parameters['vertical'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: vertical'));
-            return deferred.promise;
-        }
-
-        if (parameters['sort'] !== undefined) {
-            queryParameters['sort'] = parameters['sort'];
-        }
-
-        if (parameters['sort'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: sort'));
-            return deferred.promise;
-        }
-
-        if (parameters['sortDirection'] !== undefined) {
-            queryParameters['sortDirection'] = parameters['sortDirection'];
-        }
-
-        if (parameters['sortDirection'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: sortDirection'));
-            return deferred.promise;
-        }
-
-        if (parameters.$queryParameters) {
-            Object.keys(parameters.$queryParameters)
-                .forEach(function(parameterName) {
-                    var parameter = parameters.$queryParameters[parameterName];
-                    queryParameters[parameterName] = parameter;
-                });
-        }
-
-        var req = {
-            method: 'GET',
-            uri: domain + path,
-            qs: queryParameters,
-            headers: headers,
-            body: body
-        };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
-        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
-            req.json = true;
-        }
-        request(req, function(error, response, body) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (e) {
-
-                    }
-                }
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    deferred.resolve({
-                        response: response,
-                        body: body
-                    });
-                } else {
-                    deferred.reject({
-                        response: response,
-                        body: body
-                    });
-                }
-            }
-        });
-
-        return deferred.promise;
-    };
-    /**
-     * Top EPC data by network matching HP
-     * @method
-     * @name AffiliateService#reportsTopEpcNetworkHP
-     * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} device - Mobile or desktop
-     * @param {string} vertical - The market vertical
-     * @param {integer} limit - The number of records to return
-     * 
-     */
-    AffiliateService.prototype.reportsTopEpcNetworkHP = function(parameters) {
-        if (parameters === undefined) {
-            parameters = {};
-        }
-        var deferred = Q.defer();
-
-        var domain = this.domain;
-        var path = '/hp/reports/top-epc';
-
-        var body;
-        var queryParameters = {};
-        var headers = {};
-        var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['interval'] !== undefined) {
-            queryParameters['interval'] = parameters['interval'];
-        }
-
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
-        }
-
-        if (parameters['device'] !== undefined) {
-            queryParameters['device'] = parameters['device'];
-        }
-
-        if (parameters['device'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: device'));
-            return deferred.promise;
-        }
-
-        if (parameters['vertical'] !== undefined) {
-            queryParameters['vertical'] = parameters['vertical'];
-        }
-
-        if (parameters['vertical'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: vertical'));
-            return deferred.promise;
-        }
-
-        if (parameters['limit'] !== undefined) {
-            queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters.$queryParameters) {
-            Object.keys(parameters.$queryParameters)
-                .forEach(function(parameterName) {
-                    var parameter = parameters.$queryParameters[parameterName];
-                    queryParameters[parameterName] = parameter;
-                });
-        }
-
-        var req = {
-            method: 'GET',
-            uri: domain + path,
-            qs: queryParameters,
-            headers: headers,
-            body: body
-        };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
-        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
-            req.json = true;
-        }
-        request(req, function(error, response, body) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (e) {
-
-                    }
-                }
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    deferred.resolve({
-                        response: response,
-                        body: body
-                    });
-                } else {
-                    deferred.reject({
-                        response: response,
-                        body: body
-                    });
-                }
-            }
-        });
-
-        return deferred.promise;
-    };
-    /**
-     * Affiliate top EPC data matching HP. Must be the affiliate or admin scoped.
-     * @method
-     * @name AffiliateService#reportsTopEpcAffiliateHP
-     * @param {string} affiliateId - The affiliate id
-     * @param {string} interval - The time interval to use (weekly, daily, etc...)
-     * @param {string} device - Mobile or desktop
-     * @param {string} vertical - The market vertical
-     * @param {integer} limit - The number of records to return
-     * 
-     */
-    AffiliateService.prototype.reportsTopEpcAffiliateHP = function(parameters) {
-        if (parameters === undefined) {
-            parameters = {};
-        }
-        var deferred = Q.defer();
-
-        var domain = this.domain;
-        var path = '/hp/{affiliateId}/reports/top-epc';
-
-        var body;
-        var queryParameters = {};
-        var headers = {};
-        var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        path = path.replace('{affiliateId}', parameters['affiliateId']);
-
-        if (parameters['affiliateId'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: affiliateId'));
-            return deferred.promise;
-        }
-
-        if (parameters['interval'] !== undefined) {
-            queryParameters['interval'] = parameters['interval'];
-        }
-
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
-        }
-
-        if (parameters['device'] !== undefined) {
-            queryParameters['device'] = parameters['device'];
-        }
-
-        if (parameters['device'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: device'));
-            return deferred.promise;
-        }
-
-        if (parameters['vertical'] !== undefined) {
-            queryParameters['vertical'] = parameters['vertical'];
-        }
-
-        if (parameters['vertical'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: vertical'));
-            return deferred.promise;
-        }
-
-        if (parameters['limit'] !== undefined) {
-            queryParameters['limit'] = parameters['limit'];
-        }
-
-        if (parameters.$queryParameters) {
-            Object.keys(parameters.$queryParameters)
-                .forEach(function(parameterName) {
-                    var parameter = parameters.$queryParameters[parameterName];
-                    queryParameters[parameterName] = parameter;
-                });
-        }
-
-        var req = {
-            method: 'GET',
-            uri: domain + path,
-            qs: queryParameters,
-            headers: headers,
-            body: body
-        };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
-        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
-            req.json = true;
-        }
-        request(req, function(error, response, body) {
-            if (error) {
-                deferred.reject(error);
-            } else {
-                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
-                    try {
-                        body = JSON.parse(body);
-                    } catch (e) {
-
-                    }
-                }
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    deferred.resolve({
-                        response: response,
-                        body: body
-                    });
-                } else {
-                    deferred.reject({
-                        response: response,
-                        body: body
-                    });
-                }
-            }
-        });
-
-        return deferred.promise;
-    };
-    /**
-     * Affiliate performance data using AEG adjustments. Must be the affiliate or admin scoped.
-     * @method
-     * @name AffiliateService#reportsPerformanceAEG
+     * @name AffiliateService#reportsPerformance
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} offerPair - Offer pair filter
@@ -1978,14 +1605,14 @@ var AffiliateService = (function() {
      * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
-    AffiliateService.prototype.reportsPerformanceAEG = function(parameters) {
+    AffiliateService.prototype.reportsPerformance = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/performance';
+        var path = '/{affiliateId}/reports/performance';
 
         var body;
         var queryParameters = {};
@@ -2098,9 +1725,9 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Affiliate performance data using AEG adjustments. Must be the affiliate or admin scoped.
+     * Affiliate performance data. Must be the affiliate or admin scoped.
      * @method
-     * @name AffiliateService#reportsPerformanceSubIdsAEG
+     * @name AffiliateService#reportsPerformanceSubIds
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} offerPair - Offer pair filter
@@ -2112,14 +1739,14 @@ var AffiliateService = (function() {
      * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
-    AffiliateService.prototype.reportsPerformanceSubIdsAEG = function(parameters) {
+    AffiliateService.prototype.reportsPerformanceSubIds = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/performance/sub-ids';
+        var path = '/{affiliateId}/reports/performance/sub-ids';
 
         var body;
         var queryParameters = {};
@@ -2250,9 +1877,10 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Top EPC data by network using AEG adjustments
+     * Affiliate top EPC data. Must be the affiliate or admin scoped.
      * @method
-     * @name AffiliateService#reportsTopEpcNetworkAEG
+     * @name AffiliateService#reportsTopEpcAffiliate
+     * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
@@ -2260,14 +1888,14 @@ var AffiliateService = (function() {
      * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
-    AffiliateService.prototype.reportsTopEpcNetworkAEG = function(parameters) {
+    AffiliateService.prototype.reportsTopEpcAffiliate = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/reports/top-epc';
+        var path = '/{affiliateId}/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -2281,6 +1909,13 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
         }
 
         if (parameters['interval'] !== undefined) {
@@ -2369,10 +2004,9 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
-     * Affiliate top EPC data using AEG adjustments. Must be the affiliate or admin scoped.
+     * Top EPC data by network.
      * @method
-     * @name AffiliateService#reportsTopEpcAffiliateAEG
-     * @param {string} affiliateId - The affiliate id
+     * @name AffiliateService#reportsTopEpcNetwork
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
@@ -2380,14 +2014,14 @@ var AffiliateService = (function() {
      * @param {string} format - The output format, csv returns a link to download a report
      * 
      */
-    AffiliateService.prototype.reportsTopEpcAffiliateAEG = function(parameters) {
+    AffiliateService.prototype.reportsTopEpcNetwork = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/aeg/{affiliateId}/reports/top-epc';
+        var path = '/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -2401,13 +2035,6 @@ var AffiliateService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        path = path.replace('{affiliateId}', parameters['affiliateId']);
-
-        if (parameters['affiliateId'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: affiliateId'));
-            return deferred.promise;
         }
 
         if (parameters['interval'] !== undefined) {
