@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-cli": "^6.1.18",
     "istanbul": "^0.3.17",
+    "jshint": "^2.9.1",
     "mocha": "^2.2.5",
     "mocha-junit-reporter": "^1.9.1",
     "onchange": "^1.1.0",
