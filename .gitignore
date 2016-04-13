@@ -35,3 +35,5 @@ node_modules
 xunit.xml
 
 lib
+
+test-results.xml
