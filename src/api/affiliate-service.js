@@ -1508,11 +1508,11 @@ var AffiliateService = (function() {
     /**
      * Affiliate offer pairs. Must be the affiliate or admin scoped.
      * @method
-     * @name AffiliateService#offerPairs
+     * @name AffiliateService#reportsOfferPairs
      * @param {string} affiliateId - The affiliate id
      * 
      */
-    AffiliateService.prototype.offerPairs = function(parameters) {
+    AffiliateService.prototype.reportsOfferPairs = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
