@@ -129,17 +129,96 @@ var AffiliateService = (function() {
     /**
      * Flushes the affiliate cache.
      * @method
-     * @name AffiliateService#controlCacheFlush
+     * @name AffiliateService#controlCacheFlushAffiliates
      * 
      */
-    AffiliateService.prototype.controlCacheFlush = function(parameters) {
+    AffiliateService.prototype.controlCacheFlushAffiliates = function(parameters) {
         if (parameters === undefined) {
             parameters = {};
         }
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/cache/flush';
+        var path = '/control/cache/affiliate/flush';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+        if (Object.keys(form).length > 0) {
+            req.form = form;
+        } else {
+            req.form = {};
+        }
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Flushes the affiliate point cache.
+     * @method
+     * @name AffiliateService#controlFlushPoints
+     * 
+     */
+    AffiliateService.prototype.controlFlushPoints = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/control/cache/points/flush';
 
         var body;
         var queryParameters = {};
@@ -1510,6 +1589,7 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsPoints
      * @param {string} affiliateId - The affiliate id
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
     AffiliateService.prototype.reportsPoints = function(parameters) {
@@ -1540,6 +1620,10 @@ var AffiliateService = (function() {
         if (parameters['affiliateId'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: affiliateId'));
             return deferred.promise;
+        }
+
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
         }
 
         if (parameters.$queryParameters) {
@@ -1597,6 +1681,7 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsOfferPairs
      * @param {string} affiliateId - The affiliate id
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
     AffiliateService.prototype.reportsOfferPairs = function(parameters) {
@@ -1627,6 +1712,10 @@ var AffiliateService = (function() {
         if (parameters['affiliateId'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: affiliateId'));
             return deferred.promise;
+        }
+
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
         }
 
         if (parameters.$queryParameters) {
@@ -1824,6 +1913,7 @@ var AffiliateService = (function() {
      * @param {string} sort - The sort to apply
      * @param {string} sortDirection - The sort direction to apply
      * @param {string} format - The output format, csv returns a link to download a report
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
     AffiliateService.prototype.reportsPerformanceSubIds = function(parameters) {
@@ -1913,6 +2003,10 @@ var AffiliateService = (function() {
             queryParameters['format'] = parameters['format'];
         }
 
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
+        }
+
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -1973,6 +2067,7 @@ var AffiliateService = (function() {
      * @param {string} vertical - The market vertical
      * @param {integer} limit - The number of records to return
      * @param {string} format - The output format, csv returns a link to download a report
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
     AffiliateService.prototype.reportsTopEpcAffiliate = function(parameters) {
@@ -2040,6 +2135,10 @@ var AffiliateService = (function() {
             queryParameters['format'] = parameters['format'];
         }
 
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
+        }
+
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -2099,6 +2198,7 @@ var AffiliateService = (function() {
      * @param {string} vertical - The market vertical
      * @param {integer} limit - The number of records to return
      * @param {string} format - The output format, csv returns a link to download a report
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
      * 
      */
     AffiliateService.prototype.reportsTopEpcNetwork = function(parameters) {
@@ -2157,6 +2257,10 @@ var AffiliateService = (function() {
 
         if (parameters['format'] !== undefined) {
             queryParameters['format'] = parameters['format'];
+        }
+
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
         }
 
         if (parameters.$queryParameters) {
