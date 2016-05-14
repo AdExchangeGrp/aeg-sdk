@@ -9,8 +9,10 @@ import config from 'config';
 
 let affiliateService = null;
 
-if (config.has('affiliateService')) {
-	let affiliateServiceConfig = config.get('affiliateService');
+//noinspection JSUnresolvedVariable
+if (config.has('aeg-sdk') && config.get('aeg-sdk').affiliateService) {
+	//noinspection JSUnresolvedVariable
+	let affiliateServiceConfig = config.get('aeg-sdk').affiliateService;
 	affiliateService = new AffiliateService(affiliateServiceConfig.host);
 }
 
