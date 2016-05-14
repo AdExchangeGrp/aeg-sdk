@@ -6,8 +6,10 @@ import request from 'request';
 import config from 'config';
 import path from 'path';
 
-const securityServiceConfig = config.get('securityService');
-const affiliateServiceConfig = config.get('affiliateService');
+//noinspection JSUnresolvedVariable
+const securityServiceConfig = config.get('aeg-sdk').securityService;
+//noinspection JSUnresolvedVariable
+const affiliateServiceConfig = config.get('aeg-sdk').affiliateService;
 
 let argv = require('yargs')
 	.usage('Usage: {0} <command> [options]')
