@@ -19,7 +19,23 @@ var AffiliateService = (function() {
         if (this.domain.length === 0) {
             throw new Error('Domain parameter must be specified as a string.');
         }
+        this.token = (typeof options === 'object') ? (options.token ? options.token : {}) : {};
     }
+
+    /**
+     * Set Token
+     * @method
+     * @name AffiliateService#setToken
+     * @param {string} value - token's value
+     * @param {string} [prefix] - the token header prefix (Basic, Bearer)
+     *
+     */
+    AffiliateService.prototype.setToken = function(value, prefix) {
+        this.token.value = value;
+        this.token.headerOrQueryName = null;
+        this.token.isQuery = false;
+        this.token.prefix = prefix;
+    };
 
     /**
      * Changes the logging level of the service.
@@ -41,6 +57,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         if (parameters['level'] !== undefined) {
             form['level'] = parameters['level'];
@@ -121,6 +146,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -191,6 +225,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -256,16 +299,23 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/cap/request';
+        var path = '/{affiliateId}/cap/request';
 
         var body;
         var queryParameters = {};
         var headers = {};
         var form = {};
 
-        if (parameters['affiliateId'] !== undefined) {
-            form['affiliateId'] = parameters['affiliateId'];
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
         }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
 
         if (parameters['affiliateId'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: affiliateId'));
@@ -352,6 +402,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
         if (parameters['affiliateId'] === undefined) {
@@ -430,6 +489,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         if (parameters['account'] !== undefined) {
             queryParameters['account'] = parameters['account'];
         }
@@ -504,6 +572,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{id}', parameters['id']);
 
@@ -582,6 +659,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{id}', parameters['id']);
 
@@ -1035,6 +1121,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         if (parameters['contact.givenName'] !== undefined) {
             form['contact.givenName'] = parameters['contact.givenName'];
         }
@@ -1332,6 +1427,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         path = path.replace('{id}', parameters['id']);
 
         if (parameters['id'] === undefined) {
@@ -1420,6 +1524,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         path = path.replace('{id}', parameters['id']);
 
         if (parameters['id'] === undefined) {
@@ -1502,6 +1615,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         path = path.replace('{id}', parameters['id']);
 
         if (parameters['id'] === undefined) {
@@ -1580,6 +1702,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
@@ -1663,6 +1794,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
@@ -1751,6 +1891,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
@@ -1877,6 +2026,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
@@ -2023,6 +2181,15 @@ var AffiliateService = (function() {
         var headers = {};
         var form = {};
 
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
         path = path.replace('{affiliateId}', parameters['affiliateId']);
 
         if (parameters['affiliateId'] === undefined) {
@@ -2144,6 +2311,15 @@ var AffiliateService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         if (parameters['interval'] !== undefined) {
             queryParameters['interval'] = parameters['interval'];
