@@ -19,7 +19,23 @@ var FulfillmentService = (function() {
         if (this.domain.length === 0) {
             throw new Error('Domain parameter must be specified as a string.');
         }
+        this.token = (typeof options === 'object') ? (options.token ? options.token : {}) : {};
     }
+
+    /**
+     * Set Token
+     * @method
+     * @name FulfillmentService#setToken
+     * @param {string} value - token's value
+     * @param {string} [prefix] - the token header prefix (Basic, Bearer)
+     *
+     */
+    FulfillmentService.prototype.setToken = function(value, prefix) {
+        this.token.value = value;
+        this.token.headerOrQueryName = null;
+        this.token.isQuery = false;
+        this.token.prefix = prefix;
+    };
 
     /**
      * Fetches the fulfillment configuration
@@ -40,6 +56,15 @@ var FulfillmentService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
@@ -111,6 +136,15 @@ var FulfillmentService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
 
         if (parameters['configuration'] !== undefined) {
             body = parameters['configuration'];
