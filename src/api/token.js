@@ -1,6 +1,6 @@
 'use strict';
 
-import { EventEmitter } from 'events';
+import {EventEmitter} from 'events';
 import config  from 'config';
 import securityApi from './security-api';
 import ApiError from './api-error';
@@ -9,6 +9,10 @@ import ApiError from './api-error';
  * Manages an access token refresh cycle
  */
 class Token extends EventEmitter {
+
+	constructor() {
+		this._config = config.get('aeg-sdk');
+	}
 
 	/**
 	 * Wraps an api call to ensure a valid token
@@ -47,7 +51,7 @@ class Token extends EventEmitter {
 
 		if (accessToken) {
 			securityApi.setToken(accessToken);
-			securityApi.authorize({scopes: 'affiliate:service', strict: false})
+			securityApi.authorize({scopes: this._config.scope, strict: false})
 				.then(() => {
 					if (Token._willExpire(app)) {
 						this.emit('debug', {message: 'service level api token will expire'});
@@ -75,15 +79,13 @@ class Token extends EventEmitter {
 	 */
 	_refreshToken(app, callback) {
 
-		let appConfig = config.get('app');
-
 		this.emit('debug', {message: 'refresh service level api token'});
 
 		securityApi.apiToken({
-				Authorization: 'Basic ' + new Buffer(appConfig.apiKey.id + ':' + appConfig.apiKey.secret).toString('base64'),
-				grantType: 'client_credentials',
-				scope: 'affiliate:service'
-			})
+			Authorization: 'Basic ' + new Buffer(this._config.apiKey.id + ':' + this._config.apiKey.secret).toString('base64'),
+			grantType: 'client_credentials',
+			scope: this._config.scope
+		})
 			.then((result) => {
 				app.set('accessToken', result.body.accessToken);
 				//api is in seconds, subtract a 30 second buffer
