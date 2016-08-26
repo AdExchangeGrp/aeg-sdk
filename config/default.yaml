@@ -1,9 +1,8 @@
 aeg-sdk:
   scope: 'affiliate:service'
-  apiKey: {
-    id: x,
-    secret: x,
-  },
+  apiKey:
+    id: x
+    secret: x
   securityService:
     host: http://localhost:3000/v1
     swagger: http://localhost:3000/v1/swagger

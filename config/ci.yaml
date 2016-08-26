@@ -1,9 +1,8 @@
 aeg-sdk:
   scope: 'affiliate:service'
-  apiKey: {
-    id: x,
-    secret: x,
-  },
+  apiKey:
+    id: x
+    secret: x
   securityService:
     host: https://api-ci.aegcamp.com/v1/security
   affiliateService:
