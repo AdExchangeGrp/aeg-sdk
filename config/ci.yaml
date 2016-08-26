@@ -3,3 +3,5 @@ aeg-sdk:
     host: https://api-ci.aegcamp.com/v1/security
   affiliateService:
     host: https://api-ci.aegcamp.com/v1/affiliate
+  fulfillmentService:
+    host: https://api-ci.aegcamp.com/v1/fulfillment

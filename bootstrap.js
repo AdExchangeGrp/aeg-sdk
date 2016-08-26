@@ -1,15 +1,14 @@
 'use strict';
 
-import { CodeGen } from 'swagger-js-codegen';
+import {CodeGen} from 'swagger-js-codegen';
 import fs from 'fs';
 import request from 'request';
 import config from 'config';
 import path from 'path';
 
-//noinspection JSUnresolvedVariable
 const securityServiceConfig = config.get('aeg-sdk').securityService;
-//noinspection JSUnresolvedVariable
 const affiliateServiceConfig = config.get('aeg-sdk').affiliateService;
+const fulfillmentServiceConfig = config.get('aeg-sdk').fulfillmentService;
 
 let argv = require('yargs')
 	.usage('Usage: {0} <command> [options]')
@@ -23,6 +22,7 @@ let argv = require('yargs')
 	})
 	.example('swaggerCodeGen -s security')
 	.example('swaggerCodeGen -s affiliate')
+	.example('swaggerCodeGen -s fulfillment')
 	.demand(1)
 	.argv;
 
@@ -39,6 +39,12 @@ if (command === 'swaggerCodeGen') {
 		});
 	} else if (service === 'affiliate') {
 		generate('AffiliateService', 'affiliate-service.js', affiliateServiceConfig.swagger, (err) => {
+			if (err) {
+				throw err;
+			}
+		});
+	} else if (service === 'fulfillment') {
+		generate('FulfillmentService', 'fulfillment-service.js', fulfillmentServiceConfig.swagger, (err) => {
 			if (err) {
 				throw err;
 			}
