@@ -11,6 +11,7 @@ function ApiError(err) {
 	this.stack = temp.stack;
 	this.message = (err.body && err.body.message) ? err.body.message : 'An unknown error occurred';
 	this.statusCode = 400;
+	this.body = err.body;
 }
 
 ApiError.prototype = Object.create(Error.prototype, {
