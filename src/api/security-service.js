@@ -58,15 +58,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['level'] !== undefined) {
             form['level'] = parameters['level'];
         }
@@ -91,14 +82,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -146,15 +142,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -170,14 +157,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -225,15 +217,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -249,14 +232,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -342,14 +330,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -397,15 +390,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -421,14 +405,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -526,14 +515,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -582,15 +576,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['refreshToken'] !== undefined) {
             queryParameters['refreshToken'] = parameters['refreshToken'];
         }
@@ -610,14 +595,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -700,14 +690,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -794,14 +789,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -850,15 +850,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['id'] !== undefined) {
             form['id'] = parameters['id'];
         }
@@ -878,14 +869,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -933,15 +929,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters.$queryParameters) {
             Object.keys(parameters.$queryParameters)
                 .forEach(function(parameterName) {
@@ -957,14 +944,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1019,15 +1011,6 @@ var SecurityService = (function() {
         var queryParameters = {};
         var headers = {};
         var form = {};
-
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
 
         if (parameters['organization'] !== undefined) {
             form['organization'] = parameters['organization'];
@@ -1096,14 +1079,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1158,15 +1146,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['id'] !== undefined) {
             form['id'] = parameters['id'];
         }
@@ -1210,14 +1189,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1267,15 +1251,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['account'] !== undefined) {
             form['account'] = parameters['account'];
         }
@@ -1309,14 +1284,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1366,15 +1346,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['account'] !== undefined) {
             form['account'] = parameters['account'];
         }
@@ -1408,14 +1379,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1486,14 +1462,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1542,15 +1523,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['id'] !== undefined) {
             queryParameters['id'] = parameters['id'];
         }
@@ -1575,14 +1547,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1631,15 +1608,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['id'] !== undefined) {
             queryParameters['id'] = parameters['id'];
         }
@@ -1664,14 +1632,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1723,15 +1696,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         form['type'] = 'affiliate';
 
         if (parameters['type'] === undefined) {
@@ -1771,14 +1735,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1827,15 +1796,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         queryParameters['type'] = 'affiliate';
 
         if (parameters.$queryParameters) {
@@ -1853,14 +1813,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1910,15 +1875,6 @@ var SecurityService = (function() {
         var headers = {};
         var form = {};
 
-        if (this.token.isQuery) {
-            queryParameters[this.token.headerOrQueryName] = this.token.value;
-        } else if (this.token.headerOrQueryName) {
-            headers[this.token.headerOrQueryName] = this.token.value;
-        } else {
-            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
-            headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
         if (parameters['id'] !== undefined) {
             form['id'] = parameters['id'];
         }
@@ -1947,14 +1903,19 @@ var SecurityService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
