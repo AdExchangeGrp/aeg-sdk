@@ -81,14 +81,19 @@ var FulfillmentService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -170,14 +175,19 @@ var FulfillmentService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);

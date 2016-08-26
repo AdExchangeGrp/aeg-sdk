@@ -91,14 +91,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -170,14 +175,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -249,14 +259,553 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Sends a notification to ask for more cap
+     * @method
+     * @name AffiliateService#requestCap
+     * @param {string} affiliateId - Affiliate id
+     * @param {string} offerPair - The offer pair id in the form of X:X
+     * 
+     */
+    AffiliateService.prototype.requestCap = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/cap/request';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        if (parameters['offerPair'] !== undefined) {
+            form['offerPair'] = parameters['offerPair'];
+        }
+
+        if (parameters['offerPair'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: offerPair'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * neutral an offer
+     * @method
+     * @name AffiliateService#setFunnelOfferNeutral
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} offerId - The offer pair id in the form of X:X
+     * @param {integer} funnelId - The funnel id
+     * 
+     */
+    AffiliateService.prototype.setFunnelOfferNeutral = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/neutral';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{offerId}', parameters['offerId']);
+
+        if (parameters['offerId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: offerId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{funnelId}', parameters['funnelId']);
+
+        if (parameters['funnelId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: funnelId'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * dislike an offer
+     * @method
+     * @name AffiliateService#dislikeFunnelOffer
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} offerId - The offer pair id in the form of X:X
+     * @param {integer} funnelId - The funnel id
+     * 
+     */
+    AffiliateService.prototype.dislikeFunnelOffer = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/dislike';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{offerId}', parameters['offerId']);
+
+        if (parameters['offerId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: offerId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{funnelId}', parameters['funnelId']);
+
+        if (parameters['funnelId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: funnelId'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * like an offer
+     * @method
+     * @name AffiliateService#likeFunnelOffer
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} offerId - The offer pair id in the form of X:X
+     * @param {integer} funnelId - The funnel id
+     * 
+     */
+    AffiliateService.prototype.likeFunnelOffer = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/like';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{offerId}', parameters['offerId']);
+
+        if (parameters['offerId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: offerId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{funnelId}', parameters['funnelId']);
+
+        if (parameters['funnelId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: funnelId'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * skips an offer
+     * @method
+     * @name AffiliateService#skipFunnelOffer
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} offerId - The offer pair ID in X:X
+     * @param {integer} funnelId - The funnel id
+     * 
+     */
+    AffiliateService.prototype.skipFunnelOffer = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/skip';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{offerId}', parameters['offerId']);
+
+        if (parameters['offerId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: offerId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{funnelId}', parameters['funnelId']);
+
+        if (parameters['funnelId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: funnelId'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -336,14 +885,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -420,14 +974,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -507,14 +1066,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -594,14 +1158,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -939,14 +1508,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1273,14 +1847,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1370,14 +1949,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1462,14 +2046,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1549,14 +2138,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1641,14 +2235,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1733,14 +2332,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -1865,14 +2469,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -2022,14 +2631,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -2154,14 +2768,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
@@ -2278,14 +2897,19 @@ var AffiliateService = (function() {
             headers: headers,
             body: body
         };
-        if (Object.keys(form).length > 0) {
-            req.form = form;
-        } else {
-            req.form = {};
-        }
+
         if (typeof(body) === 'object' && !(body instanceof Buffer)) {
             req.json = true;
         }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
         request(req, function(error, response, body) {
             if (error) {
                 deferred.reject(error);
