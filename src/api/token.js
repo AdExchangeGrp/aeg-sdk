@@ -11,6 +11,7 @@ import ApiError from './api-error';
 class Token extends EventEmitter {
 
 	constructor() {
+		super();
 		this._config = config.get('aeg-sdk');
 	}
 
