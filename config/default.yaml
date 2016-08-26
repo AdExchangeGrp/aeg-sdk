@@ -5,3 +5,6 @@ aeg-sdk:
   affiliateService:
     host: http://localhost:3002/v1
     swagger: http://localhost:3002/v1/swagger
+  fulfillmentService:
+    host: http://localhost:3005/v1
+    swagger: http://localhost:3005/v1/swagger
