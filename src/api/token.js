@@ -26,7 +26,7 @@ class Token extends EventEmitter {
 	callApi(app, api, apiCall, apiCallOptions, callback) {
 		this._fetch(app, (err, token) => {
 			if (err) {
-				this.emit('error', {message: 'Could not get api token', data: err});
+				this.emit('error', {message: 'Could not get api token', err});
 				callback(err);
 			} else {
 				api.setToken(token);
@@ -94,7 +94,7 @@ class Token extends EventEmitter {
 				callback(null, result.body.accessToken);
 			})
 			.fail((err) => {
-				this.emit('error', {message: 'failed to refresh service level api token', data: err});
+				this.emit('error', {message: 'failed to refresh service level api token', err});
 				callback(err);
 			});
 	}
