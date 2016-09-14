@@ -7,6 +7,7 @@
 CAMP 2.0 SDK
 
 ### How do I get set up? ###
+
 1. Clone the repository
 1. Run ```npm install```
 1. Create a config file in the config directory for yourself named #name#.config
