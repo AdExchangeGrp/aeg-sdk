@@ -21,77 +21,75 @@ class Token extends EventEmitter {
 	 * @param {Object} api - api module
 	 * @param {string} apiCall - api method name
 	 * @param {Object} apiCallOptions - options
-	 * @param {function} callback - nodeback
 	 */
-	callApi (app, api, apiCall, apiCallOptions, callback) {
+	async callApi (app, api, apiCall, apiCallOptions) {
 
-		this._fetch(app, (err, token) => {
+		let token = null;
 
-			if (err) {
+		try {
 
-				this.emit('error', {message: 'Could not get api token', err});
-				callback(err);
+			token = await this._fetch(app);
 
-			} else {
+		} catch (ex) {
 
-				api.setToken(token);
-				api[apiCall](apiCallOptions)
-					.then((result) => {
+			this.emit('error', {message: 'Could not get api token', err: ex});
+			throw ex;
 
-						callback(null, result.body);
+		}
 
-					})
-					.fail((err) => {
+		try {
 
-						callback(new ApiError(err));
+			api.setToken(token);
+			const result = await api[apiCall](apiCallOptions);
+			return result.body;
 
-					});
+		} catch (ex) {
 
-			}
+			throw new ApiError(ex);
 
-		});
+		}
 
 	}
 
 	/**
 	 * Try to fetch a valid access token
 	 * @param {Object} app - express app
-	 * @param {function} callback - nodeback
 	 * @private
 	 */
-	_fetch (app, callback) {
+	async _fetch (app) {
 
 		const accessToken = app.get('accessToken');
 
 		if (accessToken) {
 
 			securityApi.setToken(accessToken);
-			securityApi.authorize({scopes: this._config.scope, strict: false})
-				.then(() => {
 
-					if (Token._willExpire(app)) {
+			try {
 
-						this.emit('debug', {message: 'service level api token will expire'});
-						this._refreshToken(app, callback);
+				await securityApi.authorize({scopes: this._config.scope, strict: false});
 
-					} else {
+				if (Token._willExpire(app)) {
 
-						callback(null, accessToken);
+					this.emit('debug', {message: 'service level api token will expire'});
+					return await this._refreshToken(app);
 
-					}
+				} else {
 
-				})
-				.fail(() => {
+					return accessToken;
 
-					this.emit('debug', {message: 'service level api token has expired'});
-					this._refreshToken(app, callback);
+				}
 
-				});
+			} catch (ex) {
+
+				this.emit('debug', {message: 'service level api token has expired'});
+				return await this._refreshToken(app);
+
+			}
 
 		} else {
 
 			this.emit('debug', {message: 'service level api token not found'});
-			this._refreshToken(app, callback);
+			return await this._refreshToken(app);
 
 		}
 
@@ -100,33 +98,33 @@ class Token extends EventEmitter {
 	/**
 	 * Try to refresh an access token
 	 * @param {Object} app - express app
-	 * @param {function} callback - nodeback
 	 * @private
 	 */
-	_refreshToken (app, callback) {
+	async _refreshToken (app) {
 
 		this.emit('debug', {message: 'refresh service level api token'});
 
-		securityApi.apiToken(
-			{
-				Authorization: 'Basic ' + new Buffer(this._config.apiKey.id + ':' + this._config.apiKey.secret).toString('base64'),
-				grantType: 'client_credentials',
-				scope: this._config.scope
-			})
-			.then((result) => {
+		try {
 
-				app.set('accessToken', result.body.accessToken);
-				// api is in seconds, subtract a 30 second buffer
-				app.set('expiresIn', new Date(new Date().getTime() + ((result.body.expiresIn - 30) * 1000)));
-				callback(null, result.body.accessToken);
+			const result = await securityApi.apiToken(
+				{
+					Authorization: 'Basic ' + new Buffer(this._config.apiKey.id + ':' + this._config.apiKey.secret).toString('base64'),
+					grantType: 'client_credentials',
+					scope: this._config.scope
+				});
 
-			})
-			.fail((err) => {
+			app.set('accessToken', result.body.accessToken);
+			// api is in seconds, subtract a 30 second buffer
+			app.set('expiresIn', new Date(new Date().getTime() + ((result.body.expiresIn - 30) * 1000)));
 
-				this.emit('error', {message: 'failed to refresh service level api token', err});
-				callback(err);
+			return result.body.accessToken;
 
-			});
+		} catch (ex) {
+
+			this.emit('error', {message: 'failed to refresh service level api token', err: ex});
+			throw ex;
+
+		}
 
 	}
 
@@ -139,11 +137,13 @@ class Token extends EventEmitter {
 	static _willExpire (app) {
 
 		const expiresIn = app.get('expiresIn');
+
 		if (!expiresIn) {
 
 			return true;
 
 		}
+
 		return expiresIn <= new Date();
 
 	}
