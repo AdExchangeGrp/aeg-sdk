@@ -1,5 +1,3 @@
-'use strict';
-
 import {CodeGen} from 'swagger-js-codegen';
 import fs from 'fs';
 import request from 'request';
@@ -13,12 +11,14 @@ const fulfillmentServiceConfig = config.get('aeg-sdk').fulfillmentService;
 let argv = require('yargs')
 	.usage('Usage: {0} <command> [options]')
 	.command('swaggerCodeGen', 'Generate a swagger API client', (yargs) => {
+
 		argv = yargs.option('-s', {
 			alias: 'service',
 			demand: true,
 			description: 'The swagger service name to process',
 			nargs: 1
 		});
+
 	})
 	.example('swaggerCodeGen -s security')
 	.example('swaggerCodeGen -s affiliate')
@@ -26,37 +26,60 @@ let argv = require('yargs')
 	.demand(1)
 	.argv;
 
-let command = argv._[0];
+const command = argv._[0];
 
 if (command === 'swaggerCodeGen') {
-	let service = argv.s;
+
+	const service = argv.s;
 
 	if (service === 'security') {
+
 		generate('SecurityService', 'security-service.js', securityServiceConfig.swagger, (err) => {
+
 			if (err) {
+
 				throw err;
+
 			}
+
 		});
+
 	} else if (service === 'affiliate') {
+
 		generate('AffiliateService', 'affiliate-service.js', affiliateServiceConfig.swagger, (err) => {
+
 			if (err) {
+
 				throw err;
+
 			}
+
 		});
+
 	} else if (service === 'fulfillment') {
+
 		generate('FulfillmentService', 'fulfillment-service.js', fulfillmentServiceConfig.swagger, (err) => {
+
 			if (err) {
+
 				throw err;
+
 			}
+
 		});
+
 	}
+
 }
 
-function generate(className, fileName, swagger, callback) {
+function generate (className, fileName, swagger, callback) {
+
 	getSwaggerSpec(swagger, (err, result) => {
 
 		if (err) {
+
 			return callback(err);
+
 		}
 
 		let client = CodeGen.getCustomCode({
@@ -72,10 +95,13 @@ function generate(className, fileName, swagger, callback) {
 		fs.writeFileSync(path.join(__dirname, 'src', 'api', fileName), client);
 
 		callback();
+
 	});
 
 }
 
-function getSwaggerSpec(swagger, callback) {
+function getSwaggerSpec (swagger, callback) {
+
 	request(swagger, {method: 'GET', json: true}, callback);
+
 }
