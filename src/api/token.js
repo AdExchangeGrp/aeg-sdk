@@ -8,6 +8,9 @@ import ApiError from './api-error';
  */
 class Token extends EventEmitter {
 
+	/**
+	 * Constructor
+	 */
 	constructor () {
 
 		super();
