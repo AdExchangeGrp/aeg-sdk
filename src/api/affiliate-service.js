@@ -300,6 +300,90 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Flushes the promo cache
+     * @method
+     * @name AffiliateService#controlFlushPromotions
+     * 
+     */
+    AffiliateService.prototype.controlFlushPromotions = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/control/cache/promotions/flush';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'POST',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Sends a notification to ask for more cap
      * @method
      * @name AffiliateService#requestCap
@@ -868,6 +952,111 @@ var AffiliateService = (function() {
         if (parameters['affiliateId'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: affiliateId'));
             return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Returns an affiliate promotion state
+     * @method
+     * @name AffiliateService#promotion
+     * @param {string} affiliateId - The affiliate id
+     * @param {string} promotionId - The promotion id
+     * @param {string} feed - Archival or realtime data feed, defaults to archival
+     * 
+     */
+    AffiliateService.prototype.promotion = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/{affiliateId}/promotion/{promotionId}';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        path = path.replace('{affiliateId}', parameters['affiliateId']);
+
+        if (parameters['affiliateId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: affiliateId'));
+            return deferred.promise;
+        }
+
+        path = path.replace('{promotionId}', parameters['promotionId']);
+
+        if (parameters['promotionId'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: promotionId'));
+            return deferred.promise;
+        }
+
+        if (parameters['feed'] !== undefined) {
+            queryParameters['feed'] = parameters['feed'];
         }
 
         if (parameters.$queryParameters) {
@@ -2378,6 +2567,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformance
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} startDate - start date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} endDate - end date of the report YYYY-MM-DD HH:mm:ss
      * @param {string} offerPair - Offer pair filter
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
@@ -2419,9 +2610,12 @@ var AffiliateService = (function() {
             queryParameters['interval'] = parameters['interval'];
         }
 
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
+        if (parameters['startDate'] !== undefined) {
+            queryParameters['startDate'] = parameters['startDate'];
+        }
+
+        if (parameters['endDate'] !== undefined) {
+            queryParameters['endDate'] = parameters['endDate'];
         }
 
         if (parameters['offerPair'] !== undefined) {
@@ -2515,6 +2709,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsPerformanceSubIds
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} startDate - start date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} endDate - end date of the report YYYY-MM-DD HH:mm:ss
      * @param {string} offerPair - Offer pair filter
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
@@ -2559,9 +2755,12 @@ var AffiliateService = (function() {
             queryParameters['interval'] = parameters['interval'];
         }
 
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
+        if (parameters['startDate'] !== undefined) {
+            queryParameters['startDate'] = parameters['startDate'];
+        }
+
+        if (parameters['endDate'] !== undefined) {
+            queryParameters['endDate'] = parameters['endDate'];
         }
 
         if (parameters['offerPair'] !== undefined) {
@@ -2677,6 +2876,8 @@ var AffiliateService = (function() {
      * @name AffiliateService#reportsTopEpcAffiliate
      * @param {string} affiliateId - The affiliate id
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} startDate - start date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} endDate - end date of the report YYYY-MM-DD HH:mm:ss
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
      * @param {integer} limit - The number of records to return
@@ -2718,9 +2919,12 @@ var AffiliateService = (function() {
             queryParameters['interval'] = parameters['interval'];
         }
 
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
+        if (parameters['startDate'] !== undefined) {
+            queryParameters['startDate'] = parameters['startDate'];
+        }
+
+        if (parameters['endDate'] !== undefined) {
+            queryParameters['endDate'] = parameters['endDate'];
         }
 
         if (parameters['device'] !== undefined) {
@@ -2813,6 +3017,8 @@ var AffiliateService = (function() {
      * @method
      * @name AffiliateService#reportsTopEpcNetwork
      * @param {string} interval - The time interval to use (weekly, daily, etc...)
+     * @param {string} startDate - start date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} endDate - end date of the report YYYY-MM-DD HH:mm:ss
      * @param {string} device - Mobile or desktop
      * @param {string} vertical - The market vertical
      * @param {integer} limit - The number of records to return
@@ -2847,9 +3053,12 @@ var AffiliateService = (function() {
             queryParameters['interval'] = parameters['interval'];
         }
 
-        if (parameters['interval'] === undefined) {
-            deferred.reject(new Error('Missing required  parameter: interval'));
-            return deferred.promise;
+        if (parameters['startDate'] !== undefined) {
+            queryParameters['startDate'] = parameters['startDate'];
+        }
+
+        if (parameters['endDate'] !== undefined) {
+            queryParameters['endDate'] = parameters['endDate'];
         }
 
         if (parameters['device'] !== undefined) {
