@@ -51,7 +51,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/logLevel';
+        var path = '/v1/control/logLevel';
 
         var body;
         var queryParameters = {};
@@ -144,7 +144,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/cache/flush';
+        var path = '/v1/control/cache/flush';
 
         var body;
         var queryParameters = {};
@@ -228,7 +228,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/apiKey';
+        var path = '/v1/oauth/apiKey';
 
         var body;
         var queryParameters = {};
@@ -315,7 +315,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/apiToken';
+        var path = '/v1/oauth/apiToken';
 
         var body;
         var queryParameters = {};
@@ -410,7 +410,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/apiToken';
+        var path = '/v1/oauth/apiToken';
 
         var body;
         var queryParameters = {};
@@ -489,7 +489,6 @@ var SecurityService = (function() {
      * @param {string} password - User password
      * @param {string} searchTerm - Organization search type
      * @param {string} searchValue - Organization search value
-     * @param {boolean} fetchAccount - Return the account in the response
      * 
      */
     SecurityService.prototype.passwordToken = function(parameters) {
@@ -499,7 +498,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/passwordToken';
+        var path = '/v1/oauth/passwordToken';
 
         var body;
         var queryParameters = {};
@@ -530,10 +529,6 @@ var SecurityService = (function() {
 
         if (parameters['searchValue'] !== undefined) {
             form['searchValue'] = parameters['searchValue'];
-        }
-
-        if (parameters['fetchAccount'] !== undefined) {
-            form['fetchAccount'] = parameters['fetchAccount'];
         }
 
         if (parameters.$queryParameters) {
@@ -595,7 +590,6 @@ var SecurityService = (function() {
      * Revoke a password token
      * @method
      * @name SecurityService#revokePasswordToken
-     * @param {string} refreshToken - Optional refresh token to revoke
      * 
      */
     SecurityService.prototype.revokePasswordToken = function(parameters) {
@@ -605,7 +599,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/passwordToken';
+        var path = '/v1/oauth/passwordToken';
 
         var body;
         var queryParameters = {};
@@ -619,10 +613,6 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
-        }
-
-        if (parameters['refreshToken'] !== undefined) {
-            queryParameters['refreshToken'] = parameters['refreshToken'];
         }
 
         if (parameters.$queryParameters) {
@@ -685,8 +675,6 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#refreshPasswordToken
      * @param {string} refreshToken - The refresh token without the bearer
-     * @param {string} searchTerm - Organization search type
-     * @param {string} searchValue - Organization search value
      * 
      */
     SecurityService.prototype.refreshPasswordToken = function(parameters) {
@@ -696,7 +684,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/passwordToken/refresh';
+        var path = '/v1/oauth/passwordToken/refresh';
 
         var body;
         var queryParameters = {};
@@ -710,14 +698,6 @@ var SecurityService = (function() {
         if (parameters['refreshToken'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: refreshToken'));
             return deferred.promise;
-        }
-
-        if (parameters['searchTerm'] !== undefined) {
-            form['searchTerm'] = parameters['searchTerm'];
-        }
-
-        if (parameters['searchValue'] !== undefined) {
-            form['searchValue'] = parameters['searchValue'];
         }
 
         if (parameters.$queryParameters) {
@@ -790,7 +770,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/oauth/authorize';
+        var path = '/v1/oauth/authorize';
 
         var body;
         var queryParameters = {};
@@ -888,7 +868,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account';
+        var path = '/v1/account';
 
         var body;
         var queryParameters = {};
@@ -905,7 +885,7 @@ var SecurityService = (function() {
         }
 
         if (parameters['id'] !== undefined) {
-            form['id'] = parameters['id'];
+            queryParameters['id'] = parameters['id'];
         }
 
         if (parameters.$queryParameters) {
@@ -967,6 +947,7 @@ var SecurityService = (function() {
      * Revoke an account
      * @method
      * @name SecurityService#revokeAccount
+     * @param {string} account - Href of the account to remove
      * 
      */
     SecurityService.prototype.revokeAccount = function(parameters) {
@@ -976,7 +957,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account';
+        var path = '/v1/account';
 
         var body;
         var queryParameters = {};
@@ -990,6 +971,10 @@ var SecurityService = (function() {
         } else {
             var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
             headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['account'] !== undefined) {
+            form['account'] = parameters['account'];
         }
 
         if (parameters.$queryParameters) {
@@ -1057,8 +1042,6 @@ var SecurityService = (function() {
      * @param {string} givenName - Given / first name
      * @param {string} surname - Family / last name
      * @param {string} username - Arbitrary username
-     * @param {string} customData - Custom data defined as a JSON string
-     * @param {boolean} autoVerify - Auto verify this user (skip email verification)
      * 
      */
     SecurityService.prototype.registerAccount = function(parameters) {
@@ -1068,7 +1051,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account';
+        var path = '/v1/account';
 
         var body;
         var queryParameters = {};
@@ -1126,14 +1109,6 @@ var SecurityService = (function() {
 
         if (parameters['username'] !== undefined) {
             form['username'] = parameters['username'];
-        }
-
-        if (parameters['customData'] !== undefined) {
-            form['customData'] = parameters['customData'];
-        }
-
-        if (parameters['autoVerify'] !== undefined) {
-            form['autoVerify'] = parameters['autoVerify'];
         }
 
         if (parameters.$queryParameters) {
@@ -1201,7 +1176,6 @@ var SecurityService = (function() {
      * @param {string} givenName - Given / first name
      * @param {string} surname - Family / last name
      * @param {string} username - Arbitrary username
-     * @param {string} customData - Custom data
      * 
      */
     SecurityService.prototype.updateAccountProfile = function(parameters) {
@@ -1211,7 +1185,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/profile';
+        var path = '/v1/account/profile';
 
         var body;
         var queryParameters = {};
@@ -1249,10 +1223,6 @@ var SecurityService = (function() {
 
         if (parameters['username'] !== undefined) {
             form['username'] = parameters['username'];
-        }
-
-        if (parameters['customData'] !== undefined) {
-            form['customData'] = parameters['customData'];
         }
 
         if (parameters.$queryParameters) {
@@ -1325,7 +1295,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/scope';
+        var path = '/v1/account/scope';
 
         var body;
         var queryParameters = {};
@@ -1429,7 +1399,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/scope';
+        var path = '/v1/account/scope';
 
         var body;
         var queryParameters = {};
@@ -1532,7 +1502,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/account/validate/email/{email}';
+        var path = '/v1/account/validate/email/{email}';
 
         var body;
         var queryParameters = {};
@@ -1615,7 +1585,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organization';
+        var path = '/v1/organization';
 
         var body;
         var queryParameters = {};
@@ -1709,7 +1679,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organization';
+        var path = '/v1/organization';
 
         var body;
         var queryParameters = {};
@@ -1795,8 +1765,6 @@ var SecurityService = (function() {
      * @name SecurityService#createOrganization
 
      * @param {string} name - The organization name
-     * @param {string} parentOrganization - The resource href of the parent organization
-     * @param {boolean} createDirectory - Create a default cloud directory
      * 
      */
     SecurityService.prototype.createOrganization = function(parameters) {
@@ -1806,7 +1774,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organization';
+        var path = '/v1/organization';
 
         var body;
         var queryParameters = {};
@@ -1836,14 +1804,6 @@ var SecurityService = (function() {
         if (parameters['name'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: name'));
             return deferred.promise;
-        }
-
-        if (parameters['parentOrganization'] !== undefined) {
-            form['parentOrganization'] = parameters['parentOrganization'];
-        }
-
-        if (parameters['createDirectory'] !== undefined) {
-            form['createDirectory'] = parameters['createDirectory'];
         }
 
         if (parameters.$queryParameters) {
@@ -1915,7 +1875,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organizations';
+        var path = '/v1/organizations';
 
         var body;
         var queryParameters = {};
@@ -2003,7 +1963,7 @@ var SecurityService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/organization/approve';
+        var path = '/v1/organization/approve';
 
         var body;
         var queryParameters = {};

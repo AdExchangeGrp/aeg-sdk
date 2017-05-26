@@ -85,14 +85,14 @@ class Token extends EventEmitter {
 			} catch (ex) {
 
 				this.emit('debug', {message: 'service level api token has expired'});
-				return await this._refreshToken(app);
+				return this._refreshToken(app);
 
 			}
 
 		} else {
 
 			this.emit('debug', {message: 'service level api token not found'});
-			return await this._refreshToken(app);
+			return this._refreshToken(app);
 
 		}
 
@@ -111,7 +111,7 @@ class Token extends EventEmitter {
 
 			const result = await securityApi.apiToken(
 				{
-					Authorization: 'Basic ' + new Buffer(this._config.apiKey.id + ':' + this._config.apiKey.secret).toString('base64'),
+					Authorization: 'Basic ' + Buffer.from(this._config.apiKey.id + ':' + this._config.apiKey.secret, 'utf8').toString('base64'),
 					grantType: 'client_credentials',
 					scope: this._config.scope
 				});

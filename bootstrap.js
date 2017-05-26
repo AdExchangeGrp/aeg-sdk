@@ -86,6 +86,6 @@ async function generate (className, fileName, swagger) {
 
 async function getSwaggerSpec (swagger) {
 
-	return await request(swagger, {method: 'GET', json: true});
+	return request(swagger, {method: 'GET', json: true});
 
 }
