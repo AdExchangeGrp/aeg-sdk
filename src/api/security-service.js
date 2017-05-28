@@ -955,9 +955,19 @@ var SecurityService = (function() {
      * @param {string} organization - Href of the organization to add to
      * @param {string} email - Email address
      * @param {string} password - Password
+     * @param {string} title - Title
      * @param {string} givenName - Given / first name
+     * @param {string} middleName - Middle name
      * @param {string} surname - Family / last name
-     * @param {string} username - Arbitrary username
+     * @param {string} username - Arbitrary user name
+     * @param {string} address1 - Address 1
+     * @param {string} address2 - Address 2
+     * @param {string} city - City
+     * @param {string} state - State
+     * @param {string} postalCode - Postal Code
+     * @param {string} country - Country
+     * @param {string} phone - Phone
+     * @param {string} timezone - Timezone
      * 
      */
     SecurityService.prototype.registerAccount = function(parameters) {
@@ -1005,6 +1015,10 @@ var SecurityService = (function() {
             return deferred.promise;
         }
 
+        if (parameters['title'] !== undefined) {
+            form['title'] = parameters['title'];
+        }
+
         if (parameters['givenName'] !== undefined) {
             form['givenName'] = parameters['givenName'];
         }
@@ -1012,6 +1026,10 @@ var SecurityService = (function() {
         if (parameters['givenName'] === undefined) {
             deferred.reject(new Error('Missing required  parameter: givenName'));
             return deferred.promise;
+        }
+
+        if (parameters['middleName'] !== undefined) {
+            form['middleName'] = parameters['middleName'];
         }
 
         if (parameters['surname'] !== undefined) {
@@ -1025,6 +1043,38 @@ var SecurityService = (function() {
 
         if (parameters['username'] !== undefined) {
             form['username'] = parameters['username'];
+        }
+
+        if (parameters['address1'] !== undefined) {
+            form['address1'] = parameters['address1'];
+        }
+
+        if (parameters['address2'] !== undefined) {
+            form['address2'] = parameters['address2'];
+        }
+
+        if (parameters['city'] !== undefined) {
+            form['city'] = parameters['city'];
+        }
+
+        if (parameters['state'] !== undefined) {
+            form['state'] = parameters['state'];
+        }
+
+        if (parameters['postalCode'] !== undefined) {
+            form['postalCode'] = parameters['postalCode'];
+        }
+
+        if (parameters['country'] !== undefined) {
+            form['country'] = parameters['country'];
+        }
+
+        if (parameters['phone'] !== undefined) {
+            form['phone'] = parameters['phone'];
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            form['timezone'] = parameters['timezone'];
         }
 
         if (parameters.$queryParameters) {
@@ -1089,9 +1139,19 @@ var SecurityService = (function() {
      * @param {string} id - Account href
      * @param {string} email - Email address
      * @param {string} password - Password
+     * @param {string} title - Title
      * @param {string} givenName - Given / first name
+     * @param {string} middleName - Middle name
      * @param {string} surname - Family / last name
-     * @param {string} username - Arbitrary username
+     * @param {string} username - Arbitrary user name
+     * @param {string} address1 - Address 1
+     * @param {string} address2 - Address 2
+     * @param {string} city - City
+     * @param {string} state - State
+     * @param {string} postalCode - Postal Code
+     * @param {string} country - Country
+     * @param {string} phone - Phone
+     * @param {string} timezone - Timezone
      * 
      */
     SecurityService.prototype.updateAccountProfile = function(parameters) {
@@ -1129,8 +1189,16 @@ var SecurityService = (function() {
             form['password'] = parameters['password'];
         }
 
+        if (parameters['title'] !== undefined) {
+            form['title'] = parameters['title'];
+        }
+
         if (parameters['givenName'] !== undefined) {
             form['givenName'] = parameters['givenName'];
+        }
+
+        if (parameters['middleName'] !== undefined) {
+            form['middleName'] = parameters['middleName'];
         }
 
         if (parameters['surname'] !== undefined) {
@@ -1139,6 +1207,38 @@ var SecurityService = (function() {
 
         if (parameters['username'] !== undefined) {
             form['username'] = parameters['username'];
+        }
+
+        if (parameters['address1'] !== undefined) {
+            form['address1'] = parameters['address1'];
+        }
+
+        if (parameters['address2'] !== undefined) {
+            form['address2'] = parameters['address2'];
+        }
+
+        if (parameters['city'] !== undefined) {
+            form['city'] = parameters['city'];
+        }
+
+        if (parameters['state'] !== undefined) {
+            form['state'] = parameters['state'];
+        }
+
+        if (parameters['postalCode'] !== undefined) {
+            form['postalCode'] = parameters['postalCode'];
+        }
+
+        if (parameters['country'] !== undefined) {
+            form['country'] = parameters['country'];
+        }
+
+        if (parameters['phone'] !== undefined) {
+            form['phone'] = parameters['phone'];
+        }
+
+        if (parameters['timezone'] !== undefined) {
+            form['timezone'] = parameters['timezone'];
         }
 
         if (parameters.$queryParameters) {
