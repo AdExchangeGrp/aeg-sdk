@@ -51,7 +51,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/logLevel';
+        var path = '/v1/control/logLevel';
 
         var body;
         var queryParameters = {};
@@ -144,7 +144,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/cache/affiliate/flush';
+        var path = '/v1/control/cache/affiliate/flush';
 
         var body;
         var queryParameters = {};
@@ -228,7 +228,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/cache/points/flush';
+        var path = '/v1/control/cache/points/flush';
 
         var body;
         var queryParameters = {};
@@ -312,7 +312,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/control/cache/promotions/flush';
+        var path = '/v1/control/cache/promotions/flush';
 
         var body;
         var queryParameters = {};
@@ -398,7 +398,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/cap/request';
+        var path = '/v1/{affiliateId}/cap/request';
 
         var body;
         var queryParameters = {};
@@ -501,7 +501,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/neutral';
+        var path = '/v1/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/neutral';
 
         var body;
         var queryParameters = {};
@@ -609,7 +609,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/dislike';
+        var path = '/v1/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/dislike';
 
         var body;
         var queryParameters = {};
@@ -717,7 +717,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/like';
+        var path = '/v1/{affiliateId}/funnel/{funnelId}/offer/{offerId}/preference/like';
 
         var body;
         var queryParameters = {};
@@ -825,7 +825,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/funnel/{funnelId}/offer/{offerId}/skip';
+        var path = '/v1/{affiliateId}/funnel/{funnelId}/offer/{offerId}/skip';
 
         var body;
         var queryParameters = {};
@@ -931,7 +931,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/funnels';
+        var path = '/v1/{affiliateId}/funnels';
 
         var body;
         var queryParameters = {};
@@ -1025,7 +1025,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/promotion/{promotionId}';
+        var path = '/v1/{affiliateId}/promotion/{promotionId}';
 
         var body;
         var queryParameters = {};
@@ -1128,7 +1128,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/applications';
+        var path = '/v1/applications';
 
         var body;
         var queryParameters = {};
@@ -1217,7 +1217,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/{id}';
+        var path = '/v1/application/{id}';
 
         var body;
         var queryParameters = {};
@@ -1309,7 +1309,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/{id}';
+        var path = '/v1/application/{id}';
 
         var body;
         var queryParameters = {};
@@ -1432,7 +1432,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application';
+        var path = '/v1/application';
 
         var body;
         var queryParameters = {};
@@ -1780,7 +1780,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/account/resubmit';
+        var path = '/v1/application/account/resubmit';
 
         var body;
         var queryParameters = {};
@@ -2091,7 +2091,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/{id}/approve';
+        var path = '/v1/application/{id}/approve';
 
         var body;
         var queryParameters = {};
@@ -2193,7 +2193,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/{id}/deny';
+        var path = '/v1/application/{id}/deny';
 
         var body;
         var queryParameters = {};
@@ -2289,7 +2289,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/application/validate/affiliateId/{id}';
+        var path = '/v1/application/validate/affiliateId/{id}';
 
         var body;
         var queryParameters = {};
@@ -2382,7 +2382,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/points';
+        var path = '/v1/{affiliateId}/reports/points';
 
         var body;
         var queryParameters = {};
@@ -2479,7 +2479,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/offer-pairs';
+        var path = '/v1/{affiliateId}/reports/offer-pairs';
 
         var body;
         var queryParameters = {};
@@ -2583,7 +2583,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/performance';
+        var path = '/v1/{affiliateId}/reports/performance';
 
         var body;
         var queryParameters = {};
@@ -2704,6 +2704,120 @@ var AffiliateService = (function() {
         return deferred.promise;
     };
     /**
+     * Affiliate hourly parted performance data. Must be the affiliate or admin scoped.
+     * @method
+     * @name AffiliateService#reportsPerformanceHourlyParted
+     * @param {array} affiliateIds - Affiliates
+     * @param {array} offerPairIds - Offer pairs in the form X:X
+     * @param {string} startDate - start date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} endDate - end date of the report YYYY-MM-DD HH:mm:ss
+     * @param {string} vertical - The market vertical
+     * 
+     */
+    AffiliateService.prototype.reportsPerformanceHourlyParted = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/v1/reports/performanceHourlyParted';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
+        }
+
+        if (parameters['affiliateIds'] !== undefined) {
+            queryParameters['affiliateIds'] = parameters['affiliateIds'];
+        }
+
+        if (parameters['offerPairIds'] !== undefined) {
+            queryParameters['offerPairIds'] = parameters['offerPairIds'];
+        }
+
+        if (parameters['startDate'] !== undefined) {
+            queryParameters['startDate'] = parameters['startDate'];
+        }
+
+        if (parameters['endDate'] !== undefined) {
+            queryParameters['endDate'] = parameters['endDate'];
+        }
+
+        if (parameters['vertical'] !== undefined) {
+            queryParameters['vertical'] = parameters['vertical'];
+        }
+
+        if (parameters['vertical'] === undefined) {
+            deferred.reject(new Error('Missing required  parameter: vertical'));
+            return deferred.promise;
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
      * Affiliate performance data. Must be the affiliate or admin scoped.
      * @method
      * @name AffiliateService#reportsPerformanceSubIds
@@ -2728,7 +2842,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/performance/sub-ids';
+        var path = '/v1/{affiliateId}/reports/performance/sub-ids';
 
         var body;
         var queryParameters = {};
@@ -2892,7 +3006,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/{affiliateId}/reports/top-epc';
+        var path = '/v1/{affiliateId}/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -3033,7 +3147,7 @@ var AffiliateService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/reports/top-epc';
+        var path = '/v1/reports/top-epc';
 
         var body;
         var queryParameters = {};
@@ -3089,6 +3203,90 @@ var AffiliateService = (function() {
 
         if (parameters['feed'] !== undefined) {
             queryParameters['feed'] = parameters['feed'];
+        }
+
+        if (parameters.$queryParameters) {
+            Object.keys(parameters.$queryParameters)
+                .forEach(function(parameterName) {
+                    var parameter = parameters.$queryParameters[parameterName];
+                    queryParameters[parameterName] = parameter;
+                });
+        }
+
+        var req = {
+            method: 'GET',
+            uri: domain + path,
+            qs: queryParameters,
+            headers: headers,
+            body: body
+        };
+
+        if (typeof(body) === 'object' && !(body instanceof Buffer)) {
+            req.json = true;
+        }
+
+        if (!req.json) {
+            if (Object.keys(form).length > 0) {
+                req.form = form;
+            } else {
+                req.form = {};
+            }
+        }
+
+        request(req, function(error, response, body) {
+            if (error) {
+                deferred.reject(error);
+            } else {
+                if (/^application\/(.*\\+)?json/.test(response.headers['content-type'])) {
+                    try {
+                        body = JSON.parse(body);
+                    } catch (e) {
+
+                    }
+                }
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    deferred.resolve({
+                        response: response,
+                        body: body
+                    });
+                } else {
+                    deferred.reject({
+                        response: response,
+                        body: body
+                    });
+                }
+            }
+        });
+
+        return deferred.promise;
+    };
+    /**
+     * Fetches landing page data
+     * @method
+     * @name AffiliateService#landings
+     * 
+     */
+    AffiliateService.prototype.landings = function(parameters) {
+        if (parameters === undefined) {
+            parameters = {};
+        }
+        var deferred = Q.defer();
+
+        var domain = this.domain;
+        var path = '/v1/landings';
+
+        var body;
+        var queryParameters = {};
+        var headers = {};
+        var form = {};
+
+        if (this.token.isQuery) {
+            queryParameters[this.token.headerOrQueryName] = this.token.value;
+        } else if (this.token.headerOrQueryName) {
+            headers[this.token.headerOrQueryName] = this.token.value;
+        } else {
+            var prefix = this.token.prefix ? this.token.prefix : 'Bearer';
+            headers['Authorization'] = prefix + ' ' + this.token.value;
         }
 
         if (parameters.$queryParameters) {
