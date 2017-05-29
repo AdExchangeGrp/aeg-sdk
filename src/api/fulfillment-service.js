@@ -50,7 +50,7 @@ var FulfillmentService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/configuration';
+        var path = '/v1/configuration';
 
         var body;
         var queryParameters = {};
@@ -135,7 +135,7 @@ var FulfillmentService = (function() {
         var deferred = Q.defer();
 
         var domain = this.domain;
-        var path = '/configuration';
+        var path = '/v1/configuration';
 
         var body;
         var queryParameters = {};
