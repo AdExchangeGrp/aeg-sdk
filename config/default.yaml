@@ -4,11 +4,11 @@ aeg-sdk:
     id: x
     secret: x
   securityService:
-    host: http://localhost:3000/v1
+    host: http://localhost:3000
     swagger: http://localhost:3000/swagger
   affiliateService:
-    host: http://localhost:3002/v1
+    host: http://localhost:3002
     swagger: http://localhost:3002/swagger
   fulfillmentService:
-    host: http://localhost:3005/v1
-    swagger: http://localhost:3005/v1/swagger
+    host: http://localhost:3005
+    swagger: http://localhost:3005/swagger
