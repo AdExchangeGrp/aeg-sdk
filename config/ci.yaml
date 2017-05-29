@@ -4,8 +4,8 @@ aeg-sdk:
     id: x
     secret: x
   securityService:
-    host: https://api-ci.aegcamp.com/v1/security
+    host: https://api-ci.aegcamp.com/security
   affiliateService:
-    host: https://api-ci.aegcamp.com/v1/affiliate
+    host: https://api-ci.aegcamp.com/affiliate
   fulfillmentService:
-    host: https://api-ci.aegcamp.com/v1/fulfillment
+    host: https://api-ci.aegcamp.com/fulfillment
