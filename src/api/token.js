@@ -9,16 +9,6 @@ import ApiError from './api-error';
 class Token extends EventEmitter {
 
 	/**
-	 * Constructor
-	 */
-	constructor () {
-
-		super();
-		this._config = config.get('aeg-sdk');
-
-	}
-
-	/**
 	 * Wraps an api call to ensure a valid token
 	 * @param {Object} app - express app
 	 * @param {Object} api - api module
@@ -69,7 +59,7 @@ class Token extends EventEmitter {
 
 			try {
 
-				await securityApi.authorize({scopes: this._config.scope, strict: false});
+				await securityApi.authorize({scopes: config.get('aeg-sdk').scope, strict: false});
 
 				if (Token._willExpire(app)) {
 
@@ -109,11 +99,13 @@ class Token extends EventEmitter {
 
 		try {
 
+			const conf = config.get('aeg-sdk');
+
 			const result = await securityApi.apiToken(
 				{
-					Authorization: 'Basic ' + Buffer.from(this._config.apiKey.id + ':' + this._config.apiKey.secret, 'utf8').toString('base64'),
+					Authorization: 'Basic ' + Buffer.from(conf.apiKey.id + ':' + conf.apiKey.secret, 'utf8').toString('base64'),
 					grantType: 'client_credentials',
-					scope: this._config.scope
+					scope: conf.scope
 				});
 
 			app.set('accessToken', result.body.accessToken);
