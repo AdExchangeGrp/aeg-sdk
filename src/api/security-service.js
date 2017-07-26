@@ -1301,7 +1301,7 @@ var SecurityService = (function() {
      * @method
      * @name SecurityService#updateAccountPassword
      * @param {string} id - Account href
-     * @param {string} directory - Directory href
+     * @param {string} organization - Organization href
      * @param {string} email - Email address
      * @param {string} password - Password
      * 
@@ -1333,8 +1333,8 @@ var SecurityService = (function() {
             form['id'] = parameters['id'];
         }
 
-        if (parameters['directory'] !== undefined) {
-            form['directory'] = parameters['directory'];
+        if (parameters['organization'] !== undefined) {
+            form['organization'] = parameters['organization'];
         }
 
         if (parameters['email'] !== undefined) {
