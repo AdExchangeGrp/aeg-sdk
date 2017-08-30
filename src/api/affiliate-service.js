@@ -12,13 +12,21 @@ var AffiliateService = (function() {
 
     var request = require('request');
     var Q = require('q');
+    var config = require('config');
+    var _ = require('lodash');
 
     function AffiliateService(options) {
-        var domain = (typeof options === 'object') ? options.domain : options;
-        this.domain = domain ? domain : '';
-        if (this.domain.length === 0) {
-            throw new Error('Domain parameter must be specified as a string.');
+
+        var identifier = _.camelCase('AffiliateService');
+
+        if (config.has('aeg-sdk') && config.get('aeg-sdk')[identifier]) {
+
+            this.domain = config.get('aeg-sdk')[identifier].host;
+
         }
+
+        request = (typeof options === 'object') ? (options.request ? options.request : request) : request;
+
         this.token = (typeof options === 'object') ? (options.token ? options.token : {}) : {};
     }
 

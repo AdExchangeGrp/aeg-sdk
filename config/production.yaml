@@ -1,8 +1,8 @@
 aeg-sdk:
   scope: 'affiliate:service'
   apiKey:
-    id: x
-    secret: x
+    id: rDMUB1fKPly5t2kw/UNjkp/AIAy6hjUSnkX7ZmkwiQA=
+    secret: a7rrG6Cba4z4pu1DVVhxSlN9tRvlexqDsKNZp3it2+8=
   securityService:
     host: https://api.aegcamp.com/security
   affiliateService:

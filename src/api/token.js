@@ -1,7 +1,9 @@
 import { EventEmitter } from 'events';
 import config from 'config';
-import securityApi from './security-api';
 import ApiError from './api-error';
+import { SecurityService } from './security-service';
+
+const conf = config.get('aeg-sdk');
 
 /**
  * Manages an access token refresh cycle
@@ -12,16 +14,18 @@ class Token extends EventEmitter {
 	 * Wraps an api call to ensure a valid token
 	 * @param {Object} app - express app
 	 * @param {Object} api - api module
-	 * @param {string} apiCall - api method name
-	 * @param {Object} apiCallOptions - options
+	 * @param {string} method - api method name
+	 * @param {Object} params - params
+	 * @param {Object} options
 	 */
-	async callApi (app, api, apiCall, apiCallOptions) {
+	async callApi (app, api, method, params, options = {}) {
 
 		let token = null;
+		const securityService = new SecurityService(options);
 
 		try {
 
-			token = await this._fetch(app);
+			token = await this._fetch(app, securityService);
 
 		} catch (ex) {
 
@@ -33,7 +37,7 @@ class Token extends EventEmitter {
 		try {
 
 			api.setToken(token);
-			const result = await api[apiCall](apiCallOptions);
+			const result = await api[method](params);
 			return result.body;
 
 		} catch (ex) {
@@ -47,24 +51,25 @@ class Token extends EventEmitter {
 	/**
 	 * Try to fetch a valid access token
 	 * @param {Object} app - express app
+	 * @param {Object} securityService
 	 * @private
 	 */
-	async _fetch (app) {
+	async _fetch (app, securityService) {
 
 		const accessToken = app.get('accessToken');
 
 		if (accessToken) {
 
-			securityApi.setToken(accessToken);
+			securityService.setToken(accessToken);
 
 			try {
 
-				await securityApi.authorize({scopes: config.get('aeg-sdk').scope, strict: false});
+				await securityService.authorize({scopes: config.get('aeg-sdk').scope, strict: false});
 
 				if (Token._willExpire(app)) {
 
 					this.emit('debug', {message: 'service level api token will expire'});
-					return await this._refreshToken(app);
+					return await this._refreshToken(app, securityService);
 
 				} else {
 
@@ -75,14 +80,14 @@ class Token extends EventEmitter {
 			} catch (ex) {
 
 				this.emit('debug', {message: 'service level api token has expired'});
-				return this._refreshToken(app);
+				return this._refreshToken(app, securityService);
 
 			}
 
 		} else {
 
 			this.emit('debug', {message: 'service level api token not found'});
-			return this._refreshToken(app);
+			return this._refreshToken(app, securityService);
 
 		}
 
@@ -91,17 +96,16 @@ class Token extends EventEmitter {
 	/**
 	 * Try to refresh an access token
 	 * @param {Object} app - express app
+	 * @param {Object} securityService
 	 * @private
 	 */
-	async _refreshToken (app) {
+	async _refreshToken (app, securityService) {
 
 		this.emit('debug', {message: 'refresh service level api token'});
 
 		try {
 
-			const conf = config.get('aeg-sdk');
-
-			const result = await securityApi.apiToken(
+			const result = await securityService.apiToken(
 				{
 					Authorization: 'Basic ' + Buffer.from(conf.apiKey.id + ':' + conf.apiKey.secret, 'utf8').toString('base64'),
 					grantType: 'client_credentials',
