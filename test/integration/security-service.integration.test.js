@@ -1,5 +1,5 @@
-import { SecurityService } from '../../src/api/security-service';
-import token from '../../src/api/token';
+import { SecurityService } from '../../src/security-service';
+import token from '../../src/token';
 import app from '../express-mock';
 
 token

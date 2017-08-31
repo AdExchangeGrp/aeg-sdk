@@ -68,13 +68,13 @@ async function generate (className, fileName, swagger) {
 		className: className,
 		swagger: response.body,
 		template: {
-			class: fs.readFileSync('src/swagger/templates/node-class.mustache', 'utf-8'),
-			method: fs.readFileSync('src/swagger/templates/method.mustache', 'utf-8'),
-			request: fs.readFileSync('src/swagger/templates/node-request.mustache', 'utf-8')
+			class: fs.readFileSync('src/templates/node-class.mustache', 'utf-8'),
+			method: fs.readFileSync('src/templates/method.mustache', 'utf-8'),
+			request: fs.readFileSync('src/templates/node-request.mustache', 'utf-8')
 		}
 	});
 
-	fs.writeFileSync(path.join(__dirname, 'src', 'api', fileName), client);
+	fs.writeFileSync(path.join(__dirname, 'src', fileName), client);
 
 }
 
