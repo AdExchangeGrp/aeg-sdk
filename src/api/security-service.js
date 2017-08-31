@@ -23,6 +23,10 @@ var SecurityService = (function() {
 
             this.domain = config.get('aeg-sdk')[identifier].host;
 
+        } else {
+
+            throw new Error('Domain parameter must be specified as a string.');
+
         }
 
         request = (typeof options === 'object') ? (options.request ? options.request : request) : request;
