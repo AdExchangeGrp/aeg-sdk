@@ -1,6 +1,6 @@
 {
   "name": "@adexchange/aeg-sdk",
-  "version": "0.0.200",
+  "version": "0.0.1",
   "description": "SDK for CAMP 2.0",
   "main": "lib/index.js",
   "author": "Ad Exchange Group",
@@ -15,9 +15,8 @@
     "eslint": "eslint .",
     "eslint:watch": "npm run eslint && onchange \"**/*.js\" \".eslint*\" -- npm run eslint",
     "compile": "babel -d ./lib/ ./src/",
-    "build": "npm run eslint && npm run compile && istanbul cover _mocha -- --recursive --compilers js:babel-core/register --reporter mocha-junit-reporter test/unit",
-    "patch": "git reset --hard HEAD && git clean -fd && npm run compile && npm version patch -m \"[ci skip] %s\" && git push origin master && git push origin master --tags && npm publish"
-  },
+    "build": "npm run eslint && npm run compile && istanbul cover _mocha -- --recursive --compilers js:babel-core/register --reporter mocha-junit-reporter test/unit"
+ },
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",

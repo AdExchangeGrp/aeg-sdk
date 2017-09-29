@@ -1,9 +1,9 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/aeg-sdk
+    working_directory: ~/src
     docker:
-      - image: adexchangegrp/node6-build:latest
+      - image: $DOCKER_BUILD_IMAGE
     steps:
       - checkout
       - restore_cache:
@@ -26,7 +26,9 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               git config --global user.email $GIT_EMAIL
               git config --global user.name $GIT_USER
-              npm run patch
+              npm version 0.0.$CIRCLE_BUILD_NUM
+              git push --tags
+              npm publish
             fi
 
       - store_artifacts:
